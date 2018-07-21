@@ -1,0 +1,26 @@
+@import './variables.scss';
+@import './element-ui.scss';
+
+body {
+	margin: 0;
+}
+.main {
+	height: 100vh;
+	width: 100vw;
+	margin: 0;
+	padding: 0;
+	.header {
+		background-color: $bg-color-2;
+		height: 10vh;
+		top: 0;
+	}
+	.body {
+		background-color: $bg-color-1;
+		height: 85vh;
+	}
+	.footer {
+		background-color: $bg-color-2;
+		height: 5vh;
+		bottom: 0;
+	}
+}
