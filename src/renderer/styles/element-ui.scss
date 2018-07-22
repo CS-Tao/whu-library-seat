@@ -1,0 +1,19 @@
+@import './variables.scss';
+
+.el-form-item__label {
+  color: $second-color;
+}
+
+.el-input__inner {
+  background: transparent;
+  border: 1px solid $second-color;
+  color: $text-color
+}
+
+.el-input-number__increase {
+  background: transparent;
+}
+
+.el-input-number__decrease {
+  background: transparent;
+}

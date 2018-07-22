@@ -1,26 +1,34 @@
 @import './variables.scss';
+@import './flex.scss';
 @import './element-ui.scss';
+
+::-webkit-scrollbar{ width:0px }
 
 body {
 	margin: 0;
 }
 .main {
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-direction: column;
+	flex-direction: column;
+	-webkit-align-items: stretch;
+	align-items: stretch;
 	height: 100vh;
 	width: 100vw;
-	margin: 0;
-	padding: 0;
+	min-width: 360px;
 	.header {
 		background-color: $bg-color-2;
-		height: 10vh;
-		top: 0;
+		flex: 6;
+		box-shadow: 0 0 5px black;
 	}
 	.body {
 		background-color: $bg-color-1;
-		height: 85vh;
+		flex: 20;
 	}
 	.footer {
 		background-color: $bg-color-2;
-		height: 5vh;
-		bottom: 0;
+		flex: 1.8;
+		box-shadow: 0 0 5px black;
 	}
 }
