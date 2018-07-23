@@ -32,19 +32,15 @@ app.on('ready', () => {
   })
 
   const contextMenu = Menu.buildFromTemplate([
-    { label: '设置', type: 'normal' },
     {
-      label: '窗口置顶',
-      type: 'checkbox',
-      checked: false,
-      click: (menuItem, browserWindow, event) => {
-        mainWindow.setAlwaysOnTop(menuItem.checked)
-        if (!mainWindow.isVisible()) {
-          mainWindow.show()
-          mainWindow.setSkipTaskbar(false)
-        }
-      }
+      label: '查看文档',
+      click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/') }
     },
+    {
+      label: '项目地址',
+      click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat') }
+    },
+    { label: '打开控制面板', type: 'normal' },
     { type: 'separator' },
     {
       label: '退出程序',
@@ -58,6 +54,77 @@ app.on('ready', () => {
   tray.setToolTip('武汉大学图书馆抢座软件')
   tray.setContextMenu(contextMenu)
 })
+
+const template = [
+  {
+    label: '文件',
+    submenu: [
+      {
+        label: '退出程序',
+        click () {
+          mainWindow = null
+          app.exit()
+        }
+      }
+    ]
+  },
+  {
+    label: '设置',
+    submenu: [
+      { label: '保存用户信息' },
+      { label: '保存座位信息' },
+      { label: '打开控制面板' }
+    ]
+  },
+  {
+    label: '视图',
+    submenu: [
+      { role: 'reload', label: '重新加载' },
+      { role: 'forcereload', label: '强制重新加载' }
+    ]
+  },
+  {
+    label: '窗口',
+    role: 'window',
+    submenu: [
+      {
+        label: '置顶',
+        type: 'checkbox',
+        checked: false,
+        click: (menuItem, browserWindow, event) => {
+          mainWindow.setAlwaysOnTop(menuItem.checked)
+          if (!mainWindow.isVisible()) {
+            mainWindow.show()
+            mainWindow.setSkipTaskbar(false)
+          }
+        }
+      },
+      { role: 'minimize', label: '最小化' },
+      { role: 'close', label: '关闭' }
+    ]
+  },
+  {
+    label: '关于',
+    role: 'about',
+    submenu: [
+      {
+        label: '文档',
+        click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/') }
+      },
+      {
+        label: '项目',
+        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat') }
+      },
+      {
+        label: '问题反馈',
+        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/issues/new') }
+      }
+    ]
+  }
+]
+
+const menu = Menu.buildFromTemplate(template)
+Menu.setApplicationMenu(menu)
 
 function createWindow () {
   /**
