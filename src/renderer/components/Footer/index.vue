@@ -28,6 +28,7 @@ export default {
     margin: auto;
     flex: 10;
     font-size: 14px;
+    cursor: default!important;
   }
   svg {
     fill: inherit;

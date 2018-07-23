@@ -173,19 +173,6 @@ export default {
     .sun-checked {
       width: 26px;
       margin: 2px 0;
-      fill: $text-color;
-      opacity: $button-blur-opacity;
-      &:hover {
-        opacity: $button-hover-opacity;
-      }
-      &:active {
-        fill: $button-yellow;
-        opacity: $button-click-opacity;
-      }
-    }
-    .sun-unchecked {
-      width: 26px;
-      margin: 2px 0;
       fill: $button-yellow;
       opacity: $button-blur-opacity;
       &:hover {
@@ -193,6 +180,19 @@ export default {
       }
       &:active {
         fill: $text-color;
+        opacity: $button-click-opacity;
+      }
+    }
+    .sun-unchecked {
+      width: 26px;
+      margin: 2px 0;
+      fill: $text-color;
+      opacity: $button-blur-opacity;
+      &:hover {
+        opacity: $button-hover-opacity;
+      }
+      &:active {
+        fill: $button-yellow;
         opacity: $button-click-opacity;
       }
     }

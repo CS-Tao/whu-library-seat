@@ -8,6 +8,10 @@
   background: transparent;
   border: 1px solid $second-color;
   color: $text-color-middlelight;
+	-webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .el-input.is-disabled .el-input__inner {
   background-color: transparent;
