@@ -7,13 +7,57 @@
 .el-input__inner {
   background: transparent;
   border: 1px solid $second-color;
-  color: $text-color
+  color: $text-color-middlelight;
 }
-
+.el-input.is-disabled .el-input__inner {
+  background-color: transparent;
+  border: 1px solid $second-color;
+  color: $text-color-lowlight;
+}
 .el-input-number__increase {
   background: transparent;
 }
-
 .el-input-number__decrease {
   background: transparent;
+}
+
+.el-select-dropdown {
+  background-color: $bg-color-2;
+  border: 1px solid $second-color;
+}
+.el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+  background-color: $bg-color-highlight;
+}
+.el-select-dropdown__item {
+  color: $text-color-middlelight;
+}
+.el-select-dropdown__item.selected {
+  color: $primary-color;
+}
+
+.el-popper .popper__arrow::after {
+  top: 0px!important;
+  border-bottom-color: $second-color!important;
+}
+
+.el-picker-panel {
+  color: $text-color-highlight;
+  background-color: $bg-color-2;
+  border: 1px solid $second-color;
+}
+.el-date-table td.current span {
+  background-color: $primary-color!important;
+  color: $text-color-highlight;
+}
+.el-date-table td.next-month, .el-date-table td.prev-month {
+  color: $text-color-lowlight;
+}
+.el-date-picker__header-label {
+  color: $text-color-highlight;
+}
+.el-date-table th {
+  color: $text-color-highlight;
+}
+.el-picker-panel__icon-btn {
+  color: $text-color-highlight;
 }

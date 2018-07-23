@@ -2,33 +2,46 @@
 @import './flex.scss';
 @import './element-ui.scss';
 
-::-webkit-scrollbar{ width:0px }
+::-webkit-scrollbar { width:0px }
 
 body {
 	margin: 0;
+	-webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .main {
-	display: -webkit-flex;
-	display: flex;
-	-webkit-flex-direction: column;
-	flex-direction: column;
-	-webkit-align-items: stretch;
-	align-items: stretch;
 	height: 100vh;
 	width: 100vw;
-	min-width: 360px;
+	min-width: 350px;
 	.header {
+		position: fixed;
+		top: 0;
+		width: 100vw;
+		margin: 0;
+		z-index: 10;
 		background-color: $bg-color-2;
-		flex: 6;
-		box-shadow: 0 0 5px black;
+		height: $layout-header-h;
+		box-shadow: 0 1px 2px black;
 	}
 	.body {
+		position: fixed;
+		top: 0;
+		height: $layout-body-h;
+		width: 100vw;
+		margin: 0;
+		z-index: 8;
 		background-color: $bg-color-1;
-		flex: 20;
 	}
 	.footer {
+		position: fixed;
+		bottom: 0;
+		width: 100vw;
+		margin: 0;
+		z-index: 9;
 		background-color: $bg-color-2;
-		flex: 1.8;
-		box-shadow: 0 0 5px black;
+		height: $layout-footer-h;
+		box-shadow: 0 -1px 2px black;
 	}
 }

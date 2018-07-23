@@ -1,11 +1,21 @@
+$layout-width: 500px;
+$layout-header-h: 120px;
+$layout-body-h: 100vh;
+$layout-footer-h: 34px;
+
 $primary-color: rgb(77, 136, 255);
 $second-color: rgb(153, 153, 153);
-$primary-button-background: rgba(77, 136, 255, 0.4);
+$primary-button-background-blur: rgba(77, 136, 255, 0.3);
+$primary-button-background-hover: rgba(77, 136, 255, 0.38);
+$primary-button-background-click: rgba(77, 136, 255, 0.5);
 
 $bg-color-1: rgb(28, 30, 35);
 $bg-color-2: rgb(49, 54, 65);
+$bg-color-highlight: rgb(40, 45, 55);
 
-$text-color: rgb(215, 215, 215);
+$text-color: rgb(205, 205, 205);
+$text-color-lowlight: rgb(150, 150, 150);
+$text-color-middlelight: rgb(230, 230, 230);
 $text-color-highlight: white;
 
 $button-green: rgb(0, 204, 0);
@@ -13,6 +23,6 @@ $button-blue: rgb(77, 136, 255);
 $button-red: rgb(255, 21, 21);
 $button-yellow: rgb(255, 255, 0);
 
-$button-blur-opacity: 0.6;
-$button-focus-opacity: 0.8;
+$button-blur-opacity: 0.8;
+$button-hover-opacity: 0.9;
 $button-click-opacity: 1;
