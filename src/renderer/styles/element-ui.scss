@@ -40,28 +40,113 @@
 }
 
 .el-popper .popper__arrow::after {
-  top: 0px!important;
   border-bottom-color: $second-color!important;
+  display: none;
 }
-
+.el-time-panel {
+  color: $text-color-highlight;
+  background-color: $bg-color-2;
+  border: 1px solid $second-color;
+  opacity: 0.9;
+}
 .el-picker-panel {
   color: $text-color-highlight;
   background-color: $bg-color-2;
   border: 1px solid $second-color;
+  opacity: 0.9;
 }
-.el-date-table td.current span {
-  background-color: $primary-color!important;
+.el-time-range-picker__body {
+  border: 1px solid $second-color;
+}
+.el-time-spinner__item {
+  color: $text-color;
+  opacity: 0.8;
+}
+.el-time-spinner__item.active:not(.disabled) {
   color: $text-color-highlight;
+  opacity: 1;
 }
-.el-date-table td.next-month, .el-date-table td.prev-month {
+.el-scrollbar__bar.is-vertical {
+  color: $second-color;
+}
+.el-time-panel__footer {
+  border-top: 1px solid $second-color;
+}
+.el-time-panel__btn {
+  color: $text-color;
+  background: $cancel-button-background-blur!important;
+  border: 1px solid $cancel-button-border!important;
+  border-radius: 4px;
+  &:hover {
+    background: $cancel-button-background-hover!important;
+  }
+  &:active {
+    background: $cancel-button-background-click!important;
+  }
+}
+.el-date-editor .el-range-input {
+  background-color: transparent;
+  color: $text-color-middlelight;
+  border-radius: 6px;
+}
+.el-time-panel__btn.confirm {
+  color: $text-color;
+  background: $primary-button-background-blur!important;
+  border: 1px solid $primary-color!important;
+  border-radius: 4px;
+  font-weight: 100;
+  &:hover {
+    background: $primary-button-background-hover!important;
+  }
+  &:active {
+    background: $primary-button-background-click!important;
+  }
+}
+.el-date-editor .el-range-input {
+  background-color: transparent;
+  color: $text-color-middlelight;
+  border-radius: 6px;
+}
+.el-date-editor .el-range-separator {
   color: $text-color-lowlight;
 }
-.el-date-picker__header-label {
-  color: $text-color-highlight;
+.el-time-range-picker {
+  width: $layout-width - 20px;
+  left: 10px!important;
 }
-.el-date-table th {
-  color: $text-color-highlight;
+
+
+.el-message {
+  width: 300px!important;
+  min-width: 300px!important;
+  max-width: 300px!important;
+  opacity: 0.85;
 }
-.el-picker-panel__icon-btn {
+.el-message--success {
+  background-color: $bg-color-1;
+}
+.el-message--warning {
+  background-color: $bg-color-1;
+}
+
+.el-notification {
+  top: $layout-header-h + 15px!important;
+  width: $layout-width - 32!important;
+  min-width: $layout-width - 32!important;
+  max-width: $layout-width - 32!important;
+  opacity: 0.9;
+  background-color: $bg-color-1;
+  border: 1px solid $second-color;
+  padding: 14px 26px 14px 13px;
+  transition: opacity .3s,transform .3s,left .3s,right .3s,top .4s,bottom .3s,-webkit-transform .3s;
+}
+.el-notification__title {
   color: $text-color-highlight;
+  font-size: $text-size-large;
+}
+.el-notification__content {
+  color: $text-color;
+}
+.el-notification__closeBtn {
+  color: $text-color;
 }
