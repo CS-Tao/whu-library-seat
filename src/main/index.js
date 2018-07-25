@@ -1,8 +1,8 @@
 'use strict'
 
-import { app, BrowserWindow, Menu, Tray } from 'electron'
-
+import { app, BrowserWindow, Menu, Tray, ipcMain } from 'electron'
 import path from 'path'
+import Store from 'electron-store'
 
 /**
  * Set `__static` path to static files in production
@@ -11,6 +11,10 @@ import path from 'path'
 if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
+
+const store = new Store({
+  name: 'whu-library-seat'
+})
 
 let mainWindow
 const winURL = process.env.NODE_ENV === 'development'
@@ -46,7 +50,9 @@ app.on('ready', () => {
       label: '退出程序',
       type: 'normal',
       click: (menuItem, browserWindow, event) => {
+        store.set('mainWindowPosition', mainWindow.getPosition())
         mainWindow = null
+        tray.destroy()
         app.exit()
       }
     }
@@ -62,7 +68,9 @@ const template = [
       {
         label: '退出程序',
         click () {
+          store.set('mainWindowPosition', mainWindow.getPosition())
           mainWindow = null
+          tray.destroy()
           app.exit()
         }
       }
@@ -71,9 +79,14 @@ const template = [
   {
     label: '设置',
     submenu: [
-      { label: '保存用户信息' },
-      { label: '保存座位信息' },
-      { label: '打开控制面板' }
+      {
+        label: '恢复所有设置',
+        click () {
+          store.clear()
+          if (mainWindow) {
+            mainWindow.reload()
+          }
+        }}
     ]
   },
   {
@@ -90,9 +103,10 @@ const template = [
       {
         label: '置顶',
         type: 'checkbox',
-        checked: false,
+        checked: store.get('mainWindowOnTop', false),
         click: (menuItem, browserWindow, event) => {
           mainWindow.setAlwaysOnTop(menuItem.checked)
+          store.set('mainWindowOnTop', menuItem.checked)
           if (!mainWindow.isVisible()) {
             mainWindow.show()
             mainWindow.setSkipTaskbar(false)
@@ -139,11 +153,14 @@ function createWindow () {
     maximizable: false,
     darkTheme: true,
     icon: path.join(__static, '/app.png'),
-    webSecurity: false,
-    title: '武汉大学图书馆抢座软件'
+    webPreferences: { webSecurity: false },
+    title: '武汉大学图书馆抢座软件',
+    backgroundColor: '#1C1E23'
   })
 
-  mainWindow.setPosition(100, mainWindow.getPosition()[1])
+  let position = store.get('mainWindowPosition', [150, -1])
+
+  mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
 
   mainWindow.loadURL(winURL)
 
@@ -184,6 +201,11 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+ipcMain.on('exit-app', (event, arg) => {
+  tray.destroy()
+  app.exit(arg)
 })
 
 /**
