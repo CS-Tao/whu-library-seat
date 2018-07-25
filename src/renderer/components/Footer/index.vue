@@ -1,20 +1,65 @@
 <template>
-	<div class="footer">
+	<div class="footer" :class="{'footer-unlogin': !hasToken}">
     <div class="warper flex-col">
-      <div class="text">&nbsp; © 2018 CS-Tao</div>
-      <i class="operation-icon" @click="openSource()">
+      <span class="text">&nbsp; © 2018 CS-Tao</span>
+      <i v-if="!hasToken" class="operation-icon" @click="openSource()">
         <svg class="operation-icon" aria-labelledby="simpleicons-github-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title id="simpleicons-github-icon">GitHub icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
       </i>
-      <div>&nbsp;&nbsp;</div>
+      <i v-if="hasToken" class="toggle-button" @click="openUserForm()">
+        <svg class="icon" :class="userBtnChecked?'icon-checked':'icon-unchecked'" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 350 350" style="enable-background:new 0 0 350 350;" xml:space="preserve"><g><path d="M175,171.173c38.914,0,70.463-38.318,70.463-85.586C245.463,38.318,235.105,0,175,0s-70.465,38.318-70.465,85.587 C104.535,132.855,136.084,171.173,175,171.173z"/><path d="M41.909,301.853C41.897,298.971,41.885,301.041,41.909,301.853L41.909,301.853z"/><path d="M308.085,304.104C308.123,303.315,308.098,298.63,308.085,304.104L308.085,304.104z"/><path d="M307.935,298.397c-1.305-82.342-12.059-105.805-94.352-120.657c0,0-11.584,14.761-38.584,14.761 s-38.586-14.761-38.586-14.761c-81.395,14.69-92.803,37.805-94.303,117.982c-0.123,6.547-0.18,6.891-0.202,6.131 c0.005,1.424,0.011,4.058,0.011,8.651c0,0,19.592,39.496,133.08,39.496c113.486,0,133.08-39.496,133.08-39.496 c0-2.951,0.002-5.003,0.005-6.399C308.062,304.575,308.018,303.664,307.935,298.397z"/></g></svg>
+      </i>
+      <span style="cursor: default!important;" v-if="hasToken">&nbsp;&nbsp;</span>
+      <i v-if="hasToken" class="toggle-button" @click="openHistoryForm()">
+        <svg class="icon" :class="historyBtnChecked?'icon-checked':'icon-unchecked'" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512.001 512.001;" xml:space="preserve"><g><path d="M304.427,147.399H275.38v-29.046c0-10.706-8.68-19.386-19.386-19.386c-10.706,0-19.386,8.68-19.386,19.386V147.4h-29.047 c-10.706,0-19.386,8.68-19.386,19.386s8.68,19.386,19.386,19.386h29.047v29.046c0,10.706,8.68,19.386,19.386,19.386 c10.706,0,19.386-8.68,19.386-19.386v-29.046h29.047c10.706,0,19.386-8.68,19.386-19.386 C323.813,156.079,315.135,147.399,304.427,147.399z"/><path d="M446.704,19.386C446.704,8.68,438.024,0,427.318,0H84.672C73.966,0,65.286,8.68,65.286,19.386 c0,19.634-0.004,395.991-0.004,415.78c0,10.706,8.68,19.386,19.386,19.386h56.06v38.045c0,17.236,20.909,25.888,33.091,13.71 l33.746-33.736l33.735,33.733c12.109,12.114,33.094,3.665,33.094-13.707v-38.045h152.938c10.706,0,19.386-8.68,19.386-19.386 C446.72,423.13,446.704,234.426,446.704,19.386z M104.059,38.773h303.873v256.026H104.059V38.773z M235.623,445.793 l-14.346-14.345c-7.568-7.571-19.842-7.571-27.413-0.003l-14.363,14.357c0-22.535,0-29.22,0-51.734h56.122 C235.623,416.595,235.623,423.285,235.623,445.793z M407.947,415.78H274.395v-21.714h94.993c10.706,0,19.386-8.68,19.386-19.386 c0-10.706-8.68-19.386-19.386-19.386H142.614c-10.706,0-19.386,8.68-19.386,19.386c0,10.071,7.68,18.342,17.501,19.291v21.81 h-36.674v-82.207h303.892V415.78z"/></g></svg>
+      </i>
+      <span style="cursor: default!important;" v-if="hasToken">&nbsp;&nbsp;&nbsp;</span>
+      <i v-if="hasToken" class="operation-icon" @click="logout()">
+        <svg version="1.1" class="operation-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><g><path d="M330.667,384h-21.333c-5.891,0-10.667,4.776-10.667,10.667v74.667h-256V42.667h256v74.667 c0,5.891,4.776,10.667,10.667,10.667h21.333c5.891,0,10.667-4.776,10.667-10.667V42.667C341.333,19.103,322.231,0,298.667,0h-256 C19.103,0,0,19.103,0,42.667v426.667C0,492.898,19.103,512,42.667,512h256c23.564,0,42.667-19.102,42.667-42.667v-74.667 C341.333,388.776,336.558,384,330.667,384z"/><path d="M508.542,248.135l-128-117.333c-3.125-2.844-7.656-3.625-11.5-1.896c-3.875,1.698-6.375,5.531-6.375,9.76V160 c0,3.021,1.281,5.906,3.531,7.927l74.151,66.74H138.667c-5.896,0-10.667,4.771-10.667,10.667v21.333 c0,5.896,4.771,10.667,10.667,10.667h301.682l-74.151,66.74c-2.25,2.021-3.531,4.906-3.531,7.927v21.333 c0,4.229,2.5,8.063,6.375,9.76c1.375,0.615,2.844,0.906,4.292,0.906c2.615,0,5.198-0.969,7.208-2.802l128-117.333 C510.75,261.844,512,258.99,512,256S510.75,250.156,508.542,248.135z"/></g></svg>
+      </i>
+      <span style="cursor: default!important;" v-if="!hasToken">&nbsp;&nbsp;</span>
+      <el-button v-if="!hasToken" type="primary" class="exit-button" @click="exitApp()">退出</el-button>
+      <span style="cursor: default!important;">&nbsp;&nbsp;</span>
     </div>
 	</div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { ipcRenderer } from 'electron'
+
 export default {
+  props: {
+    bodyMode: {
+      type: String,
+      require: true
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'hasToken'
+    ]),
+    userBtnChecked () {
+      return this.bodyMode === 'userForm'
+    },
+    historyBtnChecked () {
+      return this.bodyMode === 'historyForm'
+    }
+  },
   methods: {
     openSource () {
       this.$openLink('https://github.com/CS-Tao/whu-library-seat')
+    },
+    logout () {
+      this.$store.dispatch('setToken', '0')
+    },
+    openUserForm () {
+      this.$emit('iconClicked', this.bodyMode !== 'userForm' ? 'user' : 'normal')
+    },
+    openHistoryForm () {
+      this.$emit('iconClicked', this.bodyMode !== 'historyForm' ? 'history' : 'normal')
+    },
+    exitApp () {
+      ipcRenderer.sendSync('exit-app', 0)
     }
   }
 }
@@ -23,11 +68,52 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
 .warper {
+  .toggle-button {
+    padding: 0;
+    float: right;
+    margin: auto;
+    background: transparent!important;
+    border-color: transparent!important;
+    svg {
+      fill: inherit;
+    }
+    .icon {
+      float: right;
+      margin: auto;
+      cursor: pointer;
+      width: 25px;
+      height: 25px;
+    }
+    .icon-checked {
+      fill: $button-blue;
+      opacity: $button-click-opacity;
+    }
+    .icon-unchecked {
+      fill: $text-color-lowlight;
+      opacity: $button-click-opacity;
+    }
+  }
+  .exit-button {
+    margin: auto;
+    padding: 0;
+    width: 40px;
+    height: 25px;
+    font-size: $text-size-normal - 2;
+    color: $text-color;
+    background: $exit-button-background-blur!important;
+    border-color: $exit-button-border!important;
+    &:hover {
+      background: $exit-button-background-hover!important;
+    }
+    &:active {
+      background: $exit-button-background-click!important;
+    }
+  }
   .text {
     color: $second-color;
     margin: auto;
     flex: 10;
-    font-size: 14px;
+    font-size: $text-size-normal;
     cursor: default!important;
   }
   svg {
@@ -37,14 +123,14 @@ export default {
     fill: $text-color;
     float: right;
     margin: auto;
-    flex: 0.8;
     cursor: pointer;
     width: 25px;
+    opacity: $button-blur-opacity;
     &:hover {
-      fill: $text-color-middlelight;
+      opacity: $button-hover-opacity;
     }
     &:active {
-      fill: $text-color-highlight;
+    opacity: $button-click-opacity;
     }
   }
 }
