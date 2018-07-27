@@ -16,8 +16,11 @@ Mock.mock(/\/rest\/v2\/violations/, 'get', libraryApi.ValidateToken)
 // 得到位置详细信息
 Mock.mock(/\/rest\/v2\/room\/layoutByDate\//, 'get', libraryApi.LayoutByDate)
 
-// 预定位置
+// 预约位置
 Mock.mock(/\/rest\/v2\/freeBook/, 'post', libraryApi.Book)
+
+// 取消预约
+Mock.mock(/\/rest\/v2\/cancel\//, 'get', libraryApi.Cancel)
 
 // 得到用户信息
 Mock.mock(/\/rest\/v2\/user/, 'get', libraryApi.User)

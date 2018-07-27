@@ -204,8 +204,14 @@ app.on('activate', () => {
 })
 
 ipcMain.on('exit-app', (event, arg) => {
-  tray.destroy()
-  app.exit(arg)
+  store.set('mainWindowPosition', mainWindow.getPosition())
+  mainWindow = null
+  if (tray) {
+    tray.destroy()
+  }
+  if (app) {
+    app.exit(arg)
+  }
 })
 
 /**

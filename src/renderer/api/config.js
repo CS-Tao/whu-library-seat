@@ -11,7 +11,8 @@ const service = axios.create({
   baseURL: store.get('baseUrl', 'https://seat.lib.whu.edu.cn:8443'),
   timeout: 5000,
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 8.0.0; STF-AL10 Build/HUAWEISTF-AL10)'
   },
   withCredentials: true
 })

@@ -52,7 +52,7 @@ export default {
       }
     })
   },
-  // 预定位置
+  // 预约位置
   // t=1&startTime=1290&endTime=1350&seat=5728&date=2018-07-23&t2=2
   Book: (t, t2, startTime, endTime, seat, date, token) => {
     return request({
@@ -61,8 +61,16 @@ export default {
       headers: {
         token
       },
-      body: {
-        t, t2, startTime, endTime, seat, date
+      data: `t=${t}&startTime=${startTime}&endTime=${endTime}&seat=${seat}&date=${date}&t2=${t2}`
+    })
+  },
+  // 取消预约
+  Cancel: (id, token) => {
+    return request({
+      url: '/rest/v2/cancel/' + id,
+      method: 'get',
+      headers: {
+        token
       }
     })
   },
