@@ -1,7 +1,7 @@
 <template>
 	<div class="flex-row">
     <div class="warp">
-      <span class="title">{{ title }}</span>
+      <span class="title">用户信息</span>
       <span class="info"><span class="info-key">Id</span><span class="info-value">{{ userInfo.id }}</span></span>
       <span class="info"><span class="info-key">姓名</span><span class="info-value">{{ userInfo.name }}</span></span>
       <span class="info"><span class="info-key">学号</span><span class="info-value">{{ userInfo.username }}</span></span>
@@ -23,7 +23,6 @@ import libraryRestApi from '@/api/library.api'
 export default {
   data () {
     return {
-      title: '个人信息',
       buttonText: '违约记录',
       userInfo: {
         id: '无数据',
@@ -51,49 +50,52 @@ export default {
       } else {
         this.$message({
           type: 'error',
-          duration: '2000',
+          duration: '5000',
           showClose: true,
           message: response.data.message
         })
       }
     }).catch(() => {})
-  },
-  methods: {
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
+$warp-width: 280px;
+$warp-height: 300px;
+$warp-padding: 20px;
 .warp {
-    margin: auto;
-    width: 280px;
-    padding: $layout-header-h - $text-size-large 0 $layout-footer-h 0;
-    .title {
-      display: block;
-      margin-left: (140 - $text-size-large * 2);
-      margin-right: (140 - $text-size-large * 2);
-      margin-top: 0;
-      margin-bottom: 20px;
+  width: $warp-width;
+  height: $warp-height;
+  margin: $layout-header-h ($layout-width - $warp-width)/2 - $warp-padding $layout-footer-h ($layout-width - $warp-width)/2 - $warp-padding;
+  padding: $warp-padding;
+  border: 1px solid $text-color;
+  border-radius: 4px;
+  .title {
+    display: block;
+    margin-left: (140 - $text-size-large * 2);
+    margin-right: (140 - $text-size-large * 2);
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: $text-color;
+    font-size: $text-size-large;
+  }
+  .info {
+    display: block;
+    margin: 10px 0;
+    .info-key {
+      left: 0;
       color: $text-color;
-      font-size: $text-size-large;
     }
-    .info {
-      display: block;
-      margin: 10px 0;
-      .info-key {
-        left: 0;
-        color: $text-color;
-      }
-      .info-value {
-        float: right;
-        font-size: $text-size-normal - 1;
-        color: $text-color-lowlight;
-      }
-    }
-    .button {
+    .info-value {
       float: right;
-      padding: 3px 0;
+      font-size: $text-size-normal - 1;
+      color: $text-color-lowlight;
     }
   }
+}
+span {
+  cursor: default!important;
+}
 </style>
