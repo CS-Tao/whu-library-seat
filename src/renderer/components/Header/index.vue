@@ -146,8 +146,7 @@ export default {
       }
       libraryRestApi.Login(this.userInfo.account, this.userInfo.passwd).then((response) => {
         if (response.data.status === 'success') {
-          this.$store.dispatch('setToken', response.data.data.token)
-          this.loadRooms()
+          this.loadRooms(response.data.data.token)
         } else {
           this.$store.dispatch('setToken', '0')
           this.$message({
@@ -159,10 +158,13 @@ export default {
         }
       }).catch(() => {})
     },
-    loadRooms () {
-      libraryRestApi.FreeFilters(this.userToken).then((response) => {
+    // 载入房间信息 && 验证 token
+    loadRooms (token) {
+      libraryRestApi.FreeFilters(token).then((response) => {
         if (response.data.status === 'success') {
-          this.$store.dispatch('saveRoomInfo', response.data.data)
+          this.$store.dispatch('saveLibraryInfo', response.data.data)
+          this.$store.dispatch('setToken', token)
+          console.log(token)
         } else {
           this.$store.dispatch('setToken', '0')
           this.$message({

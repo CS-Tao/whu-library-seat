@@ -50,6 +50,7 @@ export default {
       this.$openLink('https://github.com/CS-Tao/whu-library-seat')
     },
     logout () {
+      this.$emit('iconClicked', 'normal')
       this.$store.dispatch('setToken', '0')
     },
     openUserForm () {
