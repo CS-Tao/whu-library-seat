@@ -19,6 +19,10 @@ export default {
     console.log('Mock: ' + config.url)
     return {'status': 'success', 'data': {'id': 3442608, 'receipt': '0175-608-1', 'onDate': '2018 年 07 月 23 日', 'begin': '21 : 30', 'end': '22 : 30', 'location': '信息馆2层东区东自然科学区，座位号009', 'checkedIn': false}, 'message': '', 'code': '0'}
   },
+  Cancel: config => {
+    console.log('Mock: ' + config.url)
+    return {'status': 'success', 'data': null, 'message': '', 'code': '0'}
+  },
   User: config => {
     console.log('Mock: ' + config.url)
     return {'status': 'success', 'data': {'id': 139600, 'enabled': true, 'name': '罗诗琦', 'username': '2017302590175', 'username2': null, 'status': 'NORMAL', 'lastLogin': '2018-07-21T18:29:35.000', 'checkedIn': true, 'lastIn': '19:34', 'lastOut': '18:28', 'lastInBuildingId': 1, 'lastInBuildingName': '信息馆', 'violationCount': 5}, 'message': '', 'code': '0'}
