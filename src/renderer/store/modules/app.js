@@ -7,7 +7,8 @@ const store = new Store({
 const defaultSettingInfo = {
   baseUrl: 'https://seat.lib.whu.edu.cn:8443',
   oppointmentTime: new Date(2018, 4, 10, 22, 45),
-  availableTime: [new Date(2018, 4, 10, 8, 0), new Date(2018, 4, 10, 22, 30)],
+  beginTime: new Date(2018, 4, 10, 8, 0),
+  endTime: new Date(2018, 4, 10, 22, 30),
   backgroundEnable: true
 }
 
@@ -19,6 +20,7 @@ const app = {
       token: '0'
     },
     seatInfo: {
+      date: '',
       library: store.get('whuSeatLibrary', ''),
       room: store.get('whuSeatRoom', ''),
       beginTime: store.get('whuSeatBeginTime', ''),
@@ -30,10 +32,11 @@ const app = {
     settingInfo: {
       baseUrl: store.get('baseUrl', defaultSettingInfo.baseUrl),
       oppointmentTime: new Date(store.get('oppointmentTime', defaultSettingInfo.oppointmentTime)),
-      availableTime: [new Date(store.get('availableTime', defaultSettingInfo.availableTime)[0]), new Date(store.get('availableTime', defaultSettingInfo.availableTime)[1])],
+      beginTime: new Date(store.get('availableBeginTime', defaultSettingInfo.beginTime)),
+      endTime: new Date(store.get('availableEndTime', defaultSettingInfo.endTime)),
       backgroundEnable: store.get('backgroundEnable', defaultSettingInfo.backgroundEnable)
     },
-    roomInfo: {
+    libraryInfo: {
       buildings: [],
       rooms: [],
       dates: []
@@ -52,37 +55,33 @@ const app = {
       state.userInfo.token = token
     },
     SAVE_SEATINFO: (state, seatInfo) => {
-      state.seatInfo.library = seatInfo.library
-      state.seatInfo.room = seatInfo.room
-      state.seatInfo.beginTime = seatInfo.beginTime
-      state.seatInfo.endTime = seatInfo.endTime
-      state.seatInfo.seatNum = seatInfo.seatNum
-      state.seatInfo.battery = seatInfo.changer
-      state.seatInfo.sun = seatInfo.sun
+      state.seatInfo.library = seatInfo
       store.set('whuSeatLibrary', seatInfo.library)
       store.set('whuSeatRoom', seatInfo.room)
       store.set('whuSeatBeginTime', seatInfo.beginTime)
       store.set('whuSeatEndTime', seatInfo.endTime)
       store.set('whuSeatNum', seatInfo.seatNum)
-      store.set('whuSeatBattery', seatInfo.changer)
+      store.set('whuSeatBattery', seatInfo.battery)
       store.set('whuSeatSun', seatInfo.sun)
     },
     SAVE_SETTINGS: (state, settings) => {
       state.settingInfo = settings
       store.set('baseUrl', settings.baseUrl)
       store.set('oppointmentTime', settings.oppointmentTime)
-      store.set('availableTime', settings.availableTime)
+      store.set('availableBeginTime', settings.beginTime)
+      store.set('availableEndTime', settings.endTime)
       store.set('backgroundEnable', settings.backgroundEnable)
     },
     RESTORE_SETTINGS: (state) => {
-      state.settingInfo = defaultSettingInfo
+      state.settingInfo = {...defaultSettingInfo}
       store.set('baseUrl', defaultSettingInfo.baseUrl)
       store.set('oppointmentTime', defaultSettingInfo.oppointmentTime)
-      store.set('availableTime', defaultSettingInfo.availableTime)
+      store.set('availableBeginTime', defaultSettingInfo.beginTime)
+      store.set('availableEndTime', defaultSettingInfo.endTime)
       store.set('backgroundEnable', defaultSettingInfo.backgroundEnable)
     },
-    SAVE_ROOM_INFO: (state, data) => {
-      state.roomInfo = data
+    SAVE_LIBRARY_INFO: (state, data) => {
+      state.libraryInfo = data
     }
   },
   actions: {
@@ -96,16 +95,16 @@ const app = {
       commit('SET_TOKEN', token)
     },
     saveSeatInfo ({ commit }, seatInfo) {
-      commit('SAVE_SEATINFO', seatInfo)
+      commit('SAVE_SEATINFO', {...seatInfo})
     },
     saveSettings ({ commit }, settings) {
-      commit('SAVE_SETTINGS', settings)
+      commit('SAVE_SETTINGS', {...settings})
     },
     restoreSettings ({ commit }) {
       commit('RESTORE_SETTINGS')
     },
-    saveRoomInfo ({ commit }, data) {
-      commit('SAVE_ROOM_INFO', data)
+    saveLibraryInfo ({ commit }, data) {
+      commit('SAVE_LIBRARY_INFO', {...data})
     }
   }
 }

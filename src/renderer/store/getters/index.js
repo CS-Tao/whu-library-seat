@@ -14,11 +14,11 @@ function formatDate (date, options) {
   return result
 }
 
-function getTomorrow () {
-  var tomorrow = new Date()
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  return tomorrow
-}
+// function getTomorrow () {
+//   var tomorrow = new Date()
+//   tomorrow.setDate(tomorrow.getDate() + 1)
+//   return tomorrow
+// }
 
 function getTimeInterval (beginTime = 8, count = 30, interval = 30) {
   var timeArray = []
@@ -37,21 +37,15 @@ const getters = {
   userPasswd: state => state.app.userInfo.passwd,
   userToken: state => state.app.userInfo.token,
   hasToken: state => state.app.userInfo.token !== '0',
-  // seat info
-  seatInfoLibrary: state => state.app.seatInfo.library,
-  seatInfoRoom: state => state.app.seatInfo.room,
-  seatInfoBeginTime: state => state.app.seatInfo.beginTime,
-  seatInfoEndTime: state => state.app.seatInfo.endTime,
-  seatInfoSeatNum: state => state.app.seatInfo.seatNum,
-  seatInfoBattery: state => state.app.seatInfo.battery,
-  seatInfoSun: state => state.app.seatInfo.sun,
-  // library & room
-  freeLibrarys: state => state.app.roomInfo.buildings,
-  freeRooms: state => state.app.roomInfo.rooms,
-  // freeDates: state => state.app.roomInfo.dates,
-  freeDates: state => [formatDate(new Date()), formatDate(getTomorrow())],
+  // time info
+  // freeDates: state => [formatDate(new Date()), formatDate(getTomorrow())],
+  freeDates: state => [formatDate(new Date()), formatDate(new Date())],
   freeBeginTime: state => getTimeInterval(),
   freeEndTime: state => getTimeInterval(),
+  // seat info
+  seatInfo: state => state.app.seatInfo,
+  // library info
+  libraryInfo: state => state.app.libraryInfo,
   // settings
   settingInfo: state => state.app.settingInfo
 }
