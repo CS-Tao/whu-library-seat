@@ -12,9 +12,9 @@ $primary-button-background-blur: rgba(77, 136, 255, 0.3);
 $primary-button-background-hover: rgba(77, 136, 255, 0.38);
 $primary-button-background-click: rgba(77, 136, 255, 0.5);
 
-$cancel-button-background-blur: rgba(255, 255, 0, 0.2);
-$cancel-button-background-hover: rgba(255, 255, 0, 0.3);
-$cancel-button-background-click: rgba(255, 255, 0, 0.38);
+$cancel-button-background-blur: rgba(255, 255, 0, 0.18);
+$cancel-button-background-hover: rgba(255, 255, 0, 0.24);
+$cancel-button-background-click: rgba(255, 255, 0, 0.3);
 $cancel-button-border: rgba(255, 255, 0, 0.5);
 
 $exit-button-background-blur: rgba(255, 21, 21, 0.2);
@@ -26,8 +26,9 @@ $bg-color-1: rgb(28, 30, 35);
 $bg-color-2: rgb(49, 54, 65);
 $bg-color-highlight: rgb(40, 45, 55);
 
-$text-color: rgb(205, 205, 205);
+$text-color-disabled: rgb(120, 120, 120);
 $text-color-lowlight: rgb(150, 150, 150);
+$text-color: rgb(205, 205, 205);
 $text-color-middlelight: rgb(230, 230, 230);
 $text-color-highlight: white;
 

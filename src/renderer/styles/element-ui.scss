@@ -18,11 +18,23 @@
   border: 1px solid $second-color;
   color: $text-color-lowlight;
 }
-.el-input-number__increase {
-  background: transparent;
-}
-.el-input-number__decrease {
-  background: transparent;
+.el-input-number {
+  .el-input__inner {
+    padding: 0 20px 0 0!important;
+  }
+  .el-input-number__increase {
+    width: 20px!important;
+    color: $text-color;
+    background: transparent;
+  }
+  .el-input-number__decrease {
+    width: 20px!important;
+    color: $text-color;
+    background: transparent;
+  }
+  .el-input-number__decrease.is-disabled, .el-input-number__increase.is-disabled {
+    color: $text-color-disabled;
+  }
 }
 
 .el-select-dropdown {
@@ -115,7 +127,6 @@
   left: 10px!important;
 }
 
-
 .el-message {
   width: 300px!important;
   min-width: 300px!important;
@@ -149,4 +160,60 @@
 }
 .el-notification__closeBtn {
   color: $text-color;
+}
+
+.el-table {
+  color: $text-color!important;
+  font-size: 14px;
+  .el-table__body-wrapper {
+    .el-table__body {
+      tr.current-row>td {
+        background-color: $primary-button-background-click;
+      }
+    }
+  }
+  thead {
+    color: $text-color-middlelight!important;
+    font-family: 'Times New Roman'!important;
+    font-size: $text-size-large - 2;
+  }
+  tr {
+    background-color: $bg-color-1!important;
+  }
+  tr:hover>td {
+    background-color: $bg-color-highlight!important;
+    color: $text-color-highlight;
+  }
+  th.is-leaf {
+    border-bottom: 1px solid $text-color;
+  }
+}
+.el-table th, .el-table tr {
+  background-color: $bg-color-highlight;
+}
+.el-table__body tr.el-table__row.hover-row > td{
+  background-color:inherit;
+}
+.el-table--border, .el-table--group {
+  border: 1px solid $text-color-disabled!important;
+  td {
+    border-bottom: 1px solid $text-color-disabled!important;
+    border-right: 1px solid $text-color-disabled!important;
+  }
+  th {
+    border-bottom: 1px solid $text-color-disabled!important;
+    border-right:  1px solid $text-color-disabled!important;
+  }
+}
+.el-table--border::after, .el-table--group::after, .el-table::before {
+  background-color: $bg-color-1;
+}
+.el-table_1_column_2, .el-table_1_column_1 {
+  padding-top: 10px!important;
+  div {
+    line-height: 30px!important;
+  }
+} 
+.el-table, .el-table__expanded-cell {
+  background-color: $bg-color-1;
 }
