@@ -24,13 +24,16 @@
   }
   .el-input-number__increase {
     width: 20px!important;
-    color: $text-color;
+    color: $text-color-highlight;
     background: transparent;
+    border-left: 1px solid $text-color-disabled!important;
+    border-bottom: 1px solid $text-color-disabled!important;
   }
   .el-input-number__decrease {
     width: 20px!important;
-    color: $text-color;
+    color: $text-color-highlight;
     background: transparent;
+    border-left: 1px solid $text-color-disabled!important;
   }
   .el-input-number__decrease.is-disabled, .el-input-number__increase.is-disabled {
     color: $text-color-disabled;
