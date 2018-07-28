@@ -14,13 +14,13 @@ function formatDate (date, options) {
   return result
 }
 
-// function getTomorrow () {
-//   var tomorrow = new Date()
-//   tomorrow.setDate(tomorrow.getDate() + 1)
-//   return tomorrow
-// }
+function getTomorrow () {
+  var tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  return tomorrow
+}
 
-function getTimeInterval (beginTime = 8, count = 30, interval = 30) {
+function getTimeInterval (beginTime = 0, count = 48, interval = 30) {
   var timeArray = []
   for (var i = 0; i < count; i++) {
     timeArray.push({
@@ -31,15 +31,30 @@ function getTimeInterval (beginTime = 8, count = 30, interval = 30) {
   return timeArray
 }
 
+// 添加 restTime 和 complete
+function addVarToTimer (timerInfo) {
+  if (timerInfo.totalTime && timerInfo.waitedTime) {
+    timerInfo.restTime = timerInfo.totalTime - timerInfo.waitedTime
+    timerInfo.restTime = timerInfo.restTime < 0 ? 0 : timerInfo.restTime
+  } else {
+    timerInfo.restTime = null
+  }
+  if (timerInfo.status === 'working' || timerInfo.status === 'waiting') {
+    timerInfo.complete = false
+  } else {
+    timerInfo.complete = true
+  }
+  return timerInfo
+}
+
 const getters = {
   // user info
   userAccount: state => state.app.userInfo.account,
   userPasswd: state => state.app.userInfo.passwd,
   userToken: state => state.app.userInfo.token,
-  hasToken: state => state.app.userInfo.token !== '0',
+  hasToken: state => !!state.app.userInfo.token,
   // time info
-  // freeDates: state => [formatDate(new Date()), formatDate(getTomorrow())],
-  freeDates: state => [formatDate(new Date()), formatDate(new Date())],
+  freeDates: state => [formatDate(new Date()), formatDate(getTomorrow())],
   freeBeginTime: state => getTimeInterval(),
   freeEndTime: state => getTimeInterval(),
   // seat info
@@ -47,7 +62,10 @@ const getters = {
   // library info
   libraryInfo: state => state.app.libraryInfo,
   // settings
-  settingInfo: state => state.app.settingInfo
+  settingInfo: state => state.app.settingInfo,
+  oppointmentTime: state => state.app.settingInfo.oppointmentTime,
+  // timer info
+  timerInfo: state => addVarToTimer(state.app.timerInfo)
 }
 
 export default getters
