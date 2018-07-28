@@ -16,11 +16,30 @@
           <time-picker :disabled="useCurrentTime||!timerInfo.complete" class="input" v-model="timePicked"></time-picker>
         </el-form-item>
         <el-form-item label="使用当前时间" label-width="100px" class="form-item" style="margin-top: 15px;text-align: center;">
-          <el-switch :disabled="!timerInfo.complete" v-model="useCurrentTime" @change="useCurrentTimeClicked()" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+          <el-switch
+            :disabled="!timerInfo.complete"
+            v-model="useCurrentTime"
+            @change="useCurrentTimeClicked()"
+            active-color="#13ce66"
+            inactive-color="#ff4949">
+          </el-switch>
         </el-form-item>
         <div class="form-item" style="text-align: center;">
-          <el-button :disabled="!timerInfo.complete" type="primary" :class="timerInfo.complete?'save-button':'button-disabled'" @click="okBtnClicked()">{{timerInfo.message}}</el-button>
-          <el-button type="primary" class="cancel-button" @click="cancelBtnClicked()">{{timerInfo.complete?'退出':'取消'}}</el-button>
+          <el-button
+            :disabled="!timerInfo.complete"
+            type="primary"
+            :class="timerInfo.complete?'save-button':'button-disabled'"
+            :icon="timerInfo.status === 'working'?'el-icon-loading':null"
+            :style="timerInfo.status === 'working'?'width: 100px;':'width: 80px;'"
+            @click="okBtnClicked()">
+            {{timerInfo.message}}
+          </el-button>
+          <el-button
+            type="primary"
+            class="cancel-button"
+            @click="cancelBtnClicked()">
+            {{timerInfo.complete?'退出':'取消'}}
+          </el-button>
         </div>
       </el-form>
     </div>
@@ -94,7 +113,7 @@ export default {
         this.$emit('input', new Date())
       }
       this.$emit('input', this.result)
-      this.$emit('btnClick', false)
+      this.$emit('btnClick', 'ok')
       this.$store.dispatch('setTimer', {
         bookFunc: this.grabSeat,
         time: this.result
@@ -108,16 +127,16 @@ export default {
     },
     cancelBtnClicked () {
       if (this.timerInfo.complete) {
-        this.$emit('btnClick', true)
+        this.$emit('btnClick', 'exit')
       } else {
         this.$store.dispatch('updateTimer', 'unset')
         this.$message({
           type: 'info',
           duration: 1000,
           showClose: true,
-          message: '定时器已取消'
+          message: '已取消定时器'
         })
-        this.$emit('btnClick', false)
+        this.$emit('btnClick', 'cancel')
       }
     },
     useCurrentTimeClicked () {
@@ -163,7 +182,7 @@ $warp-padding: 0px;
   height: $warp-height;
   top: $layout-header-h + ($layout-height - $layout-header-h - $layout-footer-h - $warp-height) / 2;
   left: ($layout-width - $warp-width)/2 - $warp-padding;
-	box-shadow: 0 0px 30px black;
+	box-shadow: 0 0px 14px black;
   .warp-content {
     width: 100%;
     height: 100%;

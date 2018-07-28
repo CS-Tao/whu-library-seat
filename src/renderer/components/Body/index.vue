@@ -89,7 +89,9 @@ export default {
       seatsForSelect: [],
       reserveTime: null,
       checkReserveTime: false,
-      grabCount: 0
+      grabCount: 0,
+      triedSeatIds: [],
+      stopGrab: false
     }
   },
   computed: {
@@ -119,7 +121,7 @@ export default {
   },
   mounted () {
     this.form = {...this.seatInfo}
-    this.form.date = this.freeDates.length > 1 ? this.freeDates[1] : (this.freeDates.length > 0 ? this.freeDates[0] : '')
+    this.form.date = this.freeDates.length > 0 ? this.freeDates[0] : null
     this.form.library = this.seatInfo.library
     this.libraryChanged()
     this.form.room = this.seatInfo.room
@@ -184,9 +186,12 @@ export default {
         message
       })
     },
-    oppointmentTimechecked (wantExit) {
-      if (wantExit) {
+    oppointmentTimechecked (message) {
+      if (message === 'exit') {
         this.checkReserveTime = false
+      } else if (message === 'ok') {
+      } else if (message === 'cancel') {
+        this.stopGrab = true
       }
     },
     mainButtonClicked () {
@@ -227,9 +232,11 @@ export default {
       this.loginAndReserveSeat()
     },
     loginAndReserveSeat () {
+      this.stopGrab = false
       libraryRestApi.Login(this.userAccount, this.userPasswd).then((response) => {
         if (response.data.status === 'success') {
           this.$store.dispatch('setToken', response.data.data.token)
+          this.triedSeatIds = []
           this.reserveSeat(this.form.beginTime, this.form.endTime, this.form.seatNum, this.form.date, response.data.data.token)
         } else {
           this.$message({
@@ -242,6 +249,7 @@ export default {
       }).catch(() => {})
     },
     reserveSeat (beginTime, endTime, seatNum, date, userToken) {
+      this.triedSeatIds.push(seatNum)
       libraryRestApi.Book(1, 2, beginTime, endTime, seatNum, date, userToken).then((response) => {
         if (response.data.status === 'success') {
           this.$store.dispatch('updateTimer', 'success')
@@ -263,6 +271,7 @@ export default {
             if (response.data.message === '预约失败，请尽快选择其他时段或座位') {
               // 位置不可用，如果未达抢座上限则继续抢
               this.grabCount += 1
+              var newSeatId = this.getNewSeatNum()
               if (this.grabSeat >= 100) {
                 this.$store.dispatch('updateTimer', 'fail')
                 this.$message({
@@ -271,11 +280,31 @@ export default {
                   showClose: true,
                   message: '抢座失败：达到抢座尝试上限(100)，结束抢座'
                 })
-              } else {
+              } else if (newSeatId === -1) {
+                this.$store.dispatch('updateTimer', 'fail')
+                this.$message({
+                  type: 'error',
+                  duration: 0,
+                  showClose: true,
+                  message: '抢座失败：该房间在指定的时间段内没有空闲位置'
+                })
+              } else if (!this.stopGrab) {
                 this.$store.dispatch('updateTimer', 'working')
-                console.log('换位置继续抢')
-                // this.reserveSeat(beginTime, endTime, this.getNewSeatNum(), date, userToken)
-              }
+                // 打印信息
+                var seatInTheRoom = this.seats.filter((item) => {
+                  return item.type !== 'empty'
+                })
+                for (let index = 0; index < seatInTheRoom.length; index++) {
+                  if (seatInTheRoom[index].id === newSeatId) {
+                    console.log('第' + (this.grabCount + 1) + '次尝试抢座(座位号: ' + seatInTheRoom[index].name + ', Id: ' + newSeatId + ')')
+                    break
+                  }
+                }
+                // 结束打印
+                // 800ms 后开始下一次抢座
+                this.sleep(800)
+                this.reserveSeat(beginTime, endTime, newSeatId, date, userToken)
+              } else {}
             } else {
               this.$store.dispatch('updateTimer', 'fail')
               this.$message({
@@ -307,8 +336,61 @@ export default {
         }
       }).catch(() => {})
     },
+    // 获得预定房间内未尝试过的 座位 id 号，全部尝试完之后返回 -1
     getNewSeatNum () {
-      return 0
+      var seed = this.form.seatNum
+      var triedRoomIds = this.triedSeatIds
+      var seatInTheRoom = this.seats.filter((item) => {
+        return item.type !== 'empty'
+      })
+      seatInTheRoom.sort((x, y) => {
+        return parseInt(x.name) - parseInt(y.name)
+      })
+      var seatInTheRoomBetter = this.seats.filter((item) => {
+        return item.type !== 'empty' && (this.form.battery ? item.power : true) && (this.form.sun ? item.window : true)
+      })
+      seatInTheRoomBetter.sort((x, y) => {
+        return parseInt(x.name) - parseInt(y.name)
+      })
+      var seatInTheRoomPoor = this.seats.filter((item) => {
+        return seatInTheRoom.includes(item) && !seatInTheRoomBetter.includes(item)
+      })
+      seatInTheRoomPoor.sort((x, y) => {
+        return parseInt(x.name) - parseInt(y.name)
+      })
+      // 判断种子点是否已经尝试过了, 如果没有则返回种子点
+      if (!triedRoomIds.includes(seed)) { return seed }
+      // 种子点在 seatInTheRoomBetter 中的索引号
+      var seedIndex = -1
+      for (let index = 0; index < seatInTheRoomBetter.length; index++) {
+        if (seatInTheRoomBetter[index].id === seed) {
+          seedIndex = index
+          break
+        }
+      }
+      // 在筛选过的座位中选择位置
+      for (let distance = 1; distance < seatInTheRoomBetter.length; distance++) {
+        if (seedIndex - distance >= 0 && !!seatInTheRoomBetter[seedIndex - distance].id && !triedRoomIds.includes(seatInTheRoomBetter[seedIndex - distance].id)) {
+          return seatInTheRoomBetter[seedIndex - distance].id
+        } else if (seedIndex + distance < seatInTheRoomBetter.length && !!seatInTheRoomBetter[seedIndex + distance].id && !triedRoomIds.includes(seatInTheRoomBetter[seedIndex + distance].id)) {
+          return seatInTheRoomBetter[seedIndex + distance].id
+        }
+      }
+      // 在该房间内其他座位中选择位置
+      for (let index = 0; index < seatInTheRoomPoor.length; index++) {
+        if (!!seatInTheRoomPoor[index].id && !triedRoomIds.includes(seatInTheRoomPoor[index].id)) {
+          return seatInTheRoomPoor[index].id
+        }
+      }
+      return -1
+    },
+    sleep (numberMillis) {
+      var now = new Date()
+      var exitTime = now.getTime() + numberMillis
+      while (true) {
+        now = new Date()
+        if (now.getTime() > exitTime) { return }
+      }
     }
   }
 }
