@@ -4,7 +4,8 @@
       <div style="margin:auto;text-align:center;">
         <el-form-item label="日期">
           <el-select v-model="form.date" placeholder="请选择日期" class="input">
-            <el-option v-for="n in freeDates.length" :key="n-1" :label="freeDates[n-1]" :value="freeDates[n-1]"></el-option>
+            <el-option key="0" label="今天" :value="freeDates[0]"><span>今天&nbsp;&nbsp;{{freeDates[0]}}</span></el-option>
+            <el-option key="1" label="明天" :value="freeDates[1]"><span>明天&nbsp;&nbsp;{{freeDates[1]}}</span></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="时间">
@@ -50,6 +51,7 @@
     </el-form>
     <user-form v-if="hasToken&&showMode==='userForm'"></user-form>
     <history-form v-if="hasToken&&showMode==='historyForm'"></history-form>
+    <timer-form v-if="hasToken&&checkReserveTime" v-model="reserveTime" :grabSeat="grabSeat" @btnClick="oppointmentTimechecked($event)"></timer-form>
 	</div>
 </template>
 
@@ -57,6 +59,7 @@
 import { mapGetters } from 'vuex'
 import userForm from './User'
 import historyForm from './History'
+import timerForm from './Timer'
 import libraryRestApi from '@/api/library.api'
 
 export default {
@@ -67,7 +70,7 @@ export default {
     }
   },
   components: {
-    userForm, historyForm
+    userForm, historyForm, timerForm
   },
   data () {
     return {
@@ -83,19 +86,36 @@ export default {
       },
       singleLibRooms: [],
       seats: [],
-      seatsForSelect: []
+      seatsForSelect: [],
+      reserveTime: null,
+      checkReserveTime: false,
+      grabCount: 0
     }
   },
   computed: {
     ...mapGetters([
+      'userAccount',
+      'userPasswd',
       'freeDates',
       'freeBeginTime',
       'freeEndTime',
       'libraryInfo',
+      'timerInfo',
       'seatInfo',
+      'oppointmentTime',
       'hasToken',
       'userToken'
-    ])
+    ]),
+    restTime () {
+      if (this.timerInfo.totalTime && this.timerInfo.waitedTime) {
+        return this.timerInfo.totalTime - this.timerInfo.waitedTime
+      } else {
+        return -1
+      }
+    },
+    timerSeted () {
+      return this.totalTime >= 0
+    }
   },
   mounted () {
     this.form = {...this.seatInfo}
@@ -104,10 +124,11 @@ export default {
     this.libraryChanged()
     this.form.room = this.seatInfo.room
     this.roomChanged()
+    this.reserveTime = this.oppointmentTime
   },
   methods: {
-    saveSeatInfo (settings) {
-      this.$store.dispatch('saveSeatInfo', settings)
+    saveSeatInfo (seatInfo) {
+      this.$store.dispatch('saveSeatInfo', seatInfo)
     },
     libraryChanged () {
       this.singleLibRooms = this.libraryInfo.rooms.filter((item) => {
@@ -150,7 +171,7 @@ export default {
       this.seatsForSelect.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
       })
-      if (this.form.library === this.seatInfo.library && this.form.room === this.seatInfo.room) {
+      if (this.form.library && this.form.library === this.seatInfo.library && this.form.room && this.form.room === this.seatInfo.room) {
         this.form.seatNum = this.seatInfo.seatNum
       } else {
         this.form.seatNum = null
@@ -162,6 +183,11 @@ export default {
         duration: '2000',
         message
       })
+    },
+    oppointmentTimechecked (wantExit) {
+      if (wantExit) {
+        this.checkReserveTime = false
+      }
     },
     mainButtonClicked () {
       if (this.form.date === null) {
@@ -192,29 +218,97 @@ export default {
         this.showWarning('请选择位置')
         return
       }
+      // 保存输入信息
       this.saveSeatInfo(this.form)
-      libraryRestApi.Book(1, 2, this.form.beginTime, this.form.endTime, this.form.seatNum, this.form.date, this.userToken).then((response) => {
+      // 打开定时器
+      this.checkReserveTime = true
+    },
+    grabSeat () {
+      this.loginAndReserveSeat()
+    },
+    loginAndReserveSeat () {
+      libraryRestApi.Login(this.userAccount, this.userPasswd).then((response) => {
         if (response.data.status === 'success') {
-          this.$notify({
-            title: '预约成功',
-            type: 'success',
-            dangerouslyUseHTMLString: true,
-            message: '<el-card shadow="never" style="line-height: 30px;">ID：' + response.data.data.id +
-            '<br/>凭证：' + response.data.data.receipt +
-            '<br/>日期：' + response.data.data.onDate +
-            '<br/>时间：' + response.data.data.begin + ' - ' + response.data.data.end +
-            '<br/>位置：' + response.data.data.location + '</el-card>',
-            duration: 0
-          })
+          this.$store.dispatch('setToken', response.data.data.token)
+          this.reserveSeat(this.form.beginTime, this.form.endTime, this.form.seatNum, this.form.date, response.data.data.token)
         } else {
           this.$message({
             type: 'error',
-            duration: '2000',
+            duration: '0',
             showClose: true,
             message: response.data.message
           })
         }
       }).catch(() => {})
+    },
+    reserveSeat (beginTime, endTime, seatNum, date, userToken) {
+      libraryRestApi.Book(1, 2, beginTime, endTime, seatNum, date, userToken).then((response) => {
+        if (response.data.status === 'success') {
+          this.$store.dispatch('updateTimer', 'success')
+          this.$notify({
+            title: '预约成功',
+            type: 'success',
+            dangerouslyUseHTMLString: true,
+            message: '<el-card shadow="never" style="line-height: 30px;">ID：' + response.data.data.id +
+              '<br/>凭证：' + response.data.data.receipt +
+              '<br/>日期：' + response.data.data.onDate +
+              '<br/>时间：' + response.data.data.begin + ' - ' + response.data.data.end +
+              '<br/>位置：' + response.data.data.location + '</el-card>',
+            duration: 0
+          })
+        } else {
+          if (response.data.code === 1 || response.data.code === '1') {
+            // 预约失败，请尽快选择其他时段或座位
+            // 系统可预约时间为 22:45 ~ 23:50
+            if (response.data.message === '预约失败，请尽快选择其他时段或座位') {
+              // 位置不可用，如果未达抢座上限则继续抢
+              this.grabCount += 1
+              if (this.grabSeat >= 100) {
+                this.$store.dispatch('updateTimer', 'fail')
+                this.$message({
+                  type: 'error',
+                  duration: 0,
+                  showClose: true,
+                  message: '抢座失败：达到抢座尝试上限(100)，结束抢座'
+                })
+              } else {
+                this.$store.dispatch('updateTimer', 'working')
+                console.log('换位置继续抢')
+                // this.reserveSeat(beginTime, endTime, this.getNewSeatNum(), date, userToken)
+              }
+            } else {
+              this.$store.dispatch('updateTimer', 'fail')
+              this.$message({
+                type: 'error',
+                duration: 0,
+                showClose: true,
+                message: response.data.message
+              })
+            }
+          } else if (response.data.code === 12 && response.data.code === '12') {
+            // 登录失败: 用户名或密码不正确
+            this.$store.dispatch('updateTimer', 'fail')
+            this.$message({
+              type: 'error',
+              duration: 0,
+              showClose: true,
+              message: response.data.message
+            })
+          } else {
+            // 其他
+            this.$store.dispatch('updateTimer', 'fail')
+            this.$message({
+              type: 'error',
+              duration: 0,
+              showClose: true,
+              message: response.data.message
+            })
+          }
+        }
+      }).catch(() => {})
+    },
+    getNewSeatNum () {
+      return 0
     }
   }
 }

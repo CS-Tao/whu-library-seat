@@ -148,7 +148,7 @@ export default {
         if (response.data.status === 'success') {
           this.loadRooms(response.data.data.token)
         } else {
-          this.$store.dispatch('setToken', '0')
+          this.$store.dispatch('setToken', null)
           this.$message({
             type: 'error',
             duration: '2000',
@@ -164,9 +164,8 @@ export default {
         if (response.data.status === 'success') {
           this.$store.dispatch('saveLibraryInfo', response.data.data)
           this.$store.dispatch('setToken', token)
-          console.log(token)
         } else {
-          this.$store.dispatch('setToken', '0')
+          this.$store.dispatch('setToken', null)
           this.$message({
             type: 'error',
             duration: '2000',
@@ -235,24 +234,10 @@ export default {
     .icon-locked {
       color: $button-green;
       opacity: $button-click-opacity;
-      // &:hover {
-      //   opacity: $button-hover-opacity;
-      // }
-      // &:active {
-      //   color: $text-color;
-      //   opacity: $button-click-opacity;
-      // }
     }
     .icon-unlocked {
       color: $text-color-lowlight;
       opacity: $button-click-opacity;
-      // &:hover {
-      //   color: $text-color-highlight;
-      // }
-      // &:active {
-      //   color: $button-green;
-      //   opacity: $button-click-opacity;
-      // }
     }
   }
   .login-button {

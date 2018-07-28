@@ -2,33 +2,24 @@
   <el-form
     :model="settings"
     status-icon
-    ref="settingForm"
     label-width="70px"
     class="flex-row">
     <div style="margin:auto;">
       <span class="form-item title">设置</span>
       <el-form-item label="服务地址" class="form-item">
-        <el-input
-          v-model="settings.baseUrl"
-          prefix-icon="el-icon-tickets"
-          class="input">
-        </el-input>
+        <el-input v-model="settings.baseUrl" prefix-icon="el-icon-tickets" class="input"></el-input>
       </el-form-item>
-      <el-form-item label="开馆时间" class="form-item">
+      <!-- <el-form-item label="开馆时间" class="form-item">
         <time-picker class="input" v-model="settings.beginTime"></time-picker>
       </el-form-item>
       <el-form-item label="闭馆时间" class="form-item">
         <time-picker class="input" v-model="settings.endTime"></time-picker>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="预约时间" class="form-item">
         <time-picker class="input" v-model="settings.oppointmentTime"></time-picker>
       </el-form-item>
       <el-form-item label="点击窗口的关闭按钮时退出到托盘" label-width="224px" class="form-item" style="margin-top: 15px;text-align: center;">
-        <el-switch
-          v-model="settings.backgroundEnable"
-          active-color="#13ce66"
-          inactive-color="#ff4949">
-        </el-switch>
+        <el-switch v-model="settings.backgroundEnable" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </el-form-item>
       <div class="form-item" style="text-align: center;">
         <el-button type="primary" class="save-button" @click="saveSettings()">保存设置</el-button>
