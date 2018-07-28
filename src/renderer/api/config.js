@@ -1,6 +1,6 @@
 import axios from 'axios'
 import Store from 'electron-store'
-import { Notification } from 'element-ui'
+import { Message } from 'element-ui'
 
 const store = new Store({
   name: 'whu-library-seat'
@@ -11,8 +11,7 @@ const service = axios.create({
   baseURL: store.get('baseUrl', 'https://seat.lib.whu.edu.cn:8443'),
   timeout: 5000,
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    'User-Agent': 'Dalvik/2.1.0 (Linux; U; Android 8.0.0; STF-AL10 Build/HUAWEISTF-AL10)'
+    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
   },
   withCredentials: true
 })
@@ -30,10 +29,11 @@ service.interceptors.request.use(config => {
 service.interceptors.response.use(
   response => response,
   error => {
-    Notification({
+    Message({
       message: error.message,
       type: 'error',
-      duration: 3 * 1000
+      duration: 3000,
+      showClose: true
     })
     return Promise.reject(error)
   })
