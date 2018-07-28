@@ -23,7 +23,7 @@ const winURL = process.env.NODE_ENV === 'development'
 
 let tray = null
 app.on('ready', () => {
-  tray = new Tray(path.join(__static, '/app.png'))
+  tray = new Tray(path.join(__static, '/tray.png'))
 
   tray.on('click', () => {
     if (mainWindow.isVisible()) {
@@ -169,10 +169,13 @@ function createWindow () {
   }
 
   mainWindow.on('close', (e) => {
-    e.preventDefault()
-    if (mainWindow) {
-      mainWindow.hide()
-      mainWindow.setSkipTaskbar(true)
+    let background = store.get('backgroundEnable', false)
+    if (background) {
+      e.preventDefault()
+      if (mainWindow) {
+        mainWindow.hide()
+        mainWindow.setSkipTaskbar(true)
+      }
     }
   })
 
