@@ -32,6 +32,7 @@ install:
 - nvm install 7
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
+- npm install -g vuepress
 # - npm install -g xvfb-maybe
 - yarn
 script:
