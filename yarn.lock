@@ -8513,6 +8513,10 @@ vue@^2.3.3:
   version "2.5.16"
   resolved "http://registry.npm.taobao.org/vue/download/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 
+vuepress-theme-vue@^1.0.3:
+  version "1.0.3"
+  resolved "http://registry.npm.taobao.org/vuepress-theme-vue/download/vuepress-theme-vue-1.0.3.tgz#8465434401bc99325de53ba038e1eed2d2ec84b9"
+
 vuex@^2.3.1:
   version "2.5.0"
   resolved "http://registry.npm.taobao.org/vuex/download/vuex-2.5.0.tgz#20f0265ade6c9a5ac6724a405d3ffdb4726c9741"
