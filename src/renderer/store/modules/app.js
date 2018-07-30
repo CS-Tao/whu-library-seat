@@ -23,9 +23,9 @@ function getTomorrowTime (hours, minutes, seconds) {
 
 const defaultSettingInfo = {
   baseUrl: 'https://seat.lib.whu.edu.cn:8443',
-  oppointmentTime: getTodayTime(10, 22, 45),
-  beginTime: getTomorrowTime(10, 8, 0),
-  endTime: getTomorrowTime(10, 22, 30),
+  oppointmentTime: getTodayTime(22, 45, 0),
+  beginTime: getTomorrowTime(8, 0, 0),
+  endTime: getTomorrowTime(22, 30, 0),
   backgroundEnable: false
 }
 
