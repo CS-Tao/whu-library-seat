@@ -32,12 +32,19 @@ install:
 - nvm install 7
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
-- npm install -g xvfb-maybe
+- npm install -g vuepress
+# - npm install -g xvfb-maybe
 - yarn
 script:
 #- xvfb-maybe node_modules/.bin/karma start test/unit/karma.conf.js
 #- yarn run pack && xvfb-maybe node_modules/.bin/mocha test/e2e
 - yarn run build
-branches:
-  only:
-  - master
+- yarn build:docs
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GH_TOKEN
+  on:
+    branch: master
+  local-dir: dist/docs
