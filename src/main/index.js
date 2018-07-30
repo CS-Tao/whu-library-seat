@@ -44,7 +44,6 @@ app.on('ready', () => {
       label: '项目地址',
       click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat') }
     },
-    { label: '打开控制面板', type: 'normal' },
     { type: 'separator' },
     {
       label: '退出程序',
