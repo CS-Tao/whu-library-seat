@@ -70,7 +70,7 @@ const app = {
       room: store.get('whuSeatRoom', null),
       beginTime: store.get('whuSeatBeginTime', null),
       endTime: store.get('whuSeatEndTime', null),
-      seatNum: store.get('whuSeatNum', 1),
+      seatNum: store.get('whuSeatNum', null),
       battery: store.get('whuSeatBattery', false),
       sun: store.get('whuSeatSun', false)
     },

@@ -122,17 +122,21 @@ export default {
   mounted () {
     this.form = {...this.seatInfo}
     this.form.date = this.freeDates.length > 0 ? this.freeDates[0] : null
-    this.form.library = this.seatInfo.library
-    this.libraryChanged()
-    this.form.room = this.seatInfo.room
-    this.roomChanged()
-    this.reserveTime = this.oppointmentTime
+    if (this.seatInfo.library !== null) {
+      this.form.library = this.seatInfo.library
+      this.libraryChanged()
+      if (this.seatInfo.room !== null) {
+        this.form.room = this.seatInfo.room
+        this.roomChanged()
+      }
+    }
   },
   methods: {
     saveSeatInfo (seatInfo) {
       this.$store.dispatch('saveSeatInfo', seatInfo)
     },
     libraryChanged () {
+      if (this.form.library === null) { return }
       this.singleLibRooms = this.libraryInfo.rooms.filter((item) => {
         return item[2] === this.form.library
       })
@@ -140,6 +144,7 @@ export default {
       this.form.seatNum = null
     },
     roomChanged () {
+      if (this.form.room === null || this.form.date === null) { return }
       libraryRestApi.LayoutByDate(this.form.room, this.form.date, this.userToken).then((response) => {
         if (response.data.status === 'success') {
           this.seats = []
