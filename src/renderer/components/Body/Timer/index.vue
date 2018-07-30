@@ -100,10 +100,10 @@ export default {
   },
   mounted () {
     this.datePicked = 0
-    if (this.value) {
-      this.timePicked.setHours(this.value.getHours())
-      this.timePicked.setMinutes(this.value.getMinutes())
-      this.timePicked.setSeconds(this.value.getSeconds())
+    if (this.oppointmentTime) {
+      this.timePicked.setHours(this.oppointmentTime.getHours())
+      this.timePicked.setMinutes(this.oppointmentTime.getMinutes())
+      this.timePicked.setSeconds(this.oppointmentTime.getSeconds())
       this.timePicked = new Date(this.timePicked)
     }
   },

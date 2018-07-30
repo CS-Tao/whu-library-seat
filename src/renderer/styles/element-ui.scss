@@ -142,6 +142,22 @@
 .el-message--warning {
   background-color: $bg-color-1;
 }
+.heart-message { 
+  background-color: $bg-color-highlight; 
+  color: $heart-color!important; 
+  border-color: $heart-color; 
+  display: -webkit-flex; 
+  display: flex; 
+  -webkit-flex-direction: row; 
+  flex-direction: row; 
+  -webkit-align-items: stretch; 
+  align-items: stretch; 
+  justify-content:center; 
+  .el-message__content { 
+    color: $heart-color!important; 
+    height: 20px; 
+  } 
+}
 
 .el-notification {
   top: $layout-header-h + 15px!important;

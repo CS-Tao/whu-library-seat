@@ -117,6 +117,9 @@ export default {
     },
     timerSeted () {
       return this.totalTime >= 0
+    },
+    isVip () {
+      return this.userAccount === 2015302590039 || this.userPasswd === 2017302590175
     }
   },
   mounted () {
@@ -237,11 +240,12 @@ export default {
       this.loginAndReserveSeat()
     },
     loginAndReserveSeat () {
+      this.triedSeatIds = []
       this.stopGrab = false
+      this.grabCount = 0
       libraryRestApi.Login(this.userAccount, this.userPasswd).then((response) => {
         if (response.data.status === 'success') {
           this.$store.dispatch('setToken', response.data.data.token)
-          this.triedSeatIds = []
           this.reserveSeat(this.form.beginTime, this.form.endTime, this.form.seatNum, this.form.date, response.data.data.token)
         } else {
           this.$message({
@@ -302,12 +306,15 @@ export default {
                 for (let index = 0; index < seatInTheRoom.length; index++) {
                   if (seatInTheRoom[index].id === newSeatId) {
                     console.log('第' + (this.grabCount + 1) + '次尝试抢座(座位号: ' + seatInTheRoom[index].name + ', Id: ' + newSeatId + ')')
+                    this.$store.dispatch('updateTimer', '尝试 ' + seatInTheRoom[index].name)
                     break
                   }
                 }
                 // 结束打印
-                // 800ms 后开始下一次抢座
-                this.sleep(800)
+                // 开始下一次抢座
+                if (!this.isVip) {
+                  this.sleep(800)
+                }
                 this.reserveSeat(beginTime, endTime, newSeatId, date, userToken)
               } else {}
             } else {

@@ -148,6 +148,10 @@ const app = {
         state.timerInfo.message = '抢座失败'
       } else if (status === statusEnum.unset) {
         state.timerInfo.message = '定时抢座'
+      } else {
+        // 传入 button 需要显示的消息
+        state.timerInfo.status = statusEnum.working
+        state.timerInfo.message = status
       }
     },
     CANCEL_TIMER: (state, status) => {
