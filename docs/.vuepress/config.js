@@ -31,12 +31,12 @@ module.exports = {
         lastUpdated: '上次更新',
         nav: [
           {
-            text: '用户手册',
-            link: '/specification/',
+            text: '版权声明',
+            link: '/copyright/'
           },
           {
-            text: '程序框架',
-            link: '/framework/'
+            text: '用户手册',
+            link: '/specification/',
           }
         ],
         sidebar: {
@@ -44,28 +44,11 @@ module.exports = {
             {
               title: '用户手册',
               children: [
-                ['', '概述'],
+                ['', '下载安装'],
+                ['settings', '软件设置'],
                 ['menu', '菜单'],
-                ['tray', '托盘'],
-                ['settings', '设置'],
-                ['login', '登录'],
-                ['main-form', '主界面'],
-                ['reservation', '定时预约']
-              ]
-            }
-          ],
-          '/framework/': [
-            {
-              title: '程序框架',
-              children: [
-                ['', '概述'],
-                ['electron-vue', 'Electron-Vue'],
-                ['element-ui', 'Element-UI'],
-                ['vuex', 'Vuex'],
-                ['style', '样式'],
-                ['apis', '数据接口'],
-                ['mockjs', '数据模拟'],
-                ['components', '视图和组件']
+                ['reservation', '定时预约'],
+                ['others', '其他']
               ]
             }
           ]

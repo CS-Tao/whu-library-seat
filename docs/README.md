@@ -42,3 +42,7 @@ footer: Copyright © 2018 CS-Tao
 登录成功后，点击主界面下方的`预约历史`按钮可以查看预约历史，如果有处于预约状态的条目，点击`取消预约`按钮即可取消预约，如下图所示
 
 ![取消预约演示](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/cancel.gif)
+
+::: warning Copyright © 2018 CS-Tao
+本软件开源，但没有向开发者提供任何源码许可证，作者本人保留源代码的所有权利，任何组织和个人不得将本软件的全部或部分源码用于商业用途
+:::
