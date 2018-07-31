@@ -124,7 +124,7 @@ export default {
   },
   mounted () {
     this.form = {...this.seatInfo}
-    this.form.date = null
+    this.form.date = this.freeDates.length > 0 ? this.freeDates[0] : null
     if (this.seatInfo.library !== null) {
       this.form.library = this.seatInfo.library
       this.libraryChanged()
