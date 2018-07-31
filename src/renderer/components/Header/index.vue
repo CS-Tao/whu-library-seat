@@ -125,8 +125,10 @@ export default {
     showError (message) {
       this.$message({
         type: 'error',
-        duration: '2000',
-        message
+        duration: '0',
+        showClose: true,
+        dangerouslyUseHTMLString: true,
+        message: '<p style="line-height:20px;">' + message + '</p>'
       })
     },
     lockAccount () {
@@ -171,11 +173,11 @@ export default {
           // 用户验证
           if (userItem === null) {
             this.$store.dispatch('setToken', null)
-            this.showError('对不起，您未在用户白名单中，不能使用本软件，请联系软件管理员')
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
             return false
           } else if (!userItem.status) {
             this.$store.dispatch('setToken', null)
-            this.showError('对不起，您未在用户白名单中，不能使用本软件，请联系软件管理员')
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
             return false
           }
           for (let index = 0; index < groups.length; index++) {
@@ -187,11 +189,11 @@ export default {
           // 组验证
           if (groupItem === null) {
             this.$store.dispatch('setToken', null)
-            this.showError('对不起，您未在用户白名单中，不能使用本软件，请联系软件管理员')
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
             return false
           } else if (!groupItem.status) {
             this.$store.dispatch('setToken', null)
-            this.showError('对不起，您未在用户白名单中，不能使用本软件，请联系软件管理员')
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
             return false
           }
           this.login()
