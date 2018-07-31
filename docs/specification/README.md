@@ -2,21 +2,21 @@
 
 本软件是针对`武汉大学`图书馆预约系统开发的抢座软件，支持 Windows、Mac OS、Linux 等操作系统
 
-下载链接：[https://github.com/CS-Tao/whu-library-seat/releases/latest](https://github.com/CS-Tao/whu-library-seat/releases/latest)
+所有下载链接: [https://github.com/CS-Tao/whu-library-seat/releases/latest](https://github.com/CS-Tao/whu-library-seat/releases/latest)
 
 #### 下载说明
 
 - Windows
-    - 安装包: `whu-library-seat.Setup.<version>.exe`
-    - 免安装: `win-unpacked.zip`
+    - 安装包: `whu-library-seat-setup-<version>.exe`
+    - 最新版本: [v1.0.3](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.3/whu-library-seat-setup-1.0.3.exe)
 
 - Mac OS
     - 安装包: `whu-library-seat-<version>.dmg`
-    - 免安装: `whu-library-seat-<version>-mac.zip`
+    - 在新版本：[v1.0.3](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.3/whu-library-seat-1.0.3.dmg)
 
 - Linux
     - 安装包: `whu-library-seat-<version>-x86_64.AppImage`
-    - 免安装: `linux-unpacked.tar`
+    - 在新版本：[v1.0.3](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.3/whu-library-seat-1.0.3-x86_64.AppImage)
 
 ### 安装软件
 
