@@ -1,5 +1,9 @@
 import Mock from 'mockjs'
+import gitcontentsApi from './gitcontents.api'
 import libraryApi from './library.api'
+
+// 用户验证
+Mock.mock(/\/user-validation\/validation.json/, 'get', gitcontentsApi.validateUser)
 
 // 登录
 Mock.mock(/\/rest\/auth/, 'get', libraryApi.Login)

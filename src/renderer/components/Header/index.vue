@@ -60,7 +60,7 @@
           </el-button>
         </el-form-item>
         <div class="form-item" v-if="!hasToken">
-          <el-button type="primary" class="login-button" @click="login()">登录</el-button>
+          <el-button type="primary" class="login-button" @click="validateUser()">登录</el-button>
         </div>
       </div>
     </el-form>
@@ -71,6 +71,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import settingsForm from './Settings'
+import gitcontentsApi from '@/api/gitcontents.api'
 import libraryRestApi from '@/api/library.api'
 
 export default {
@@ -121,6 +122,13 @@ export default {
         message
       })
     },
+    showError (message) {
+      this.$message({
+        type: 'error',
+        duration: '2000',
+        message
+      })
+    },
     lockAccount () {
       this.accountLocked = !this.accountLocked
       if (this.accountLocked) {
@@ -138,6 +146,63 @@ export default {
           this.login(this.userInfo.account, this.userInfo.passwd)
         }
       }
+    },
+    validateUser () {
+      if (this.userInfo.account === null || this.userInfo.account === '') {
+        this.showWarning('学号不能为空')
+        return false
+      }
+      if (this.userInfo.passwd === null || this.userInfo.passwd === '') {
+        this.showWarning('密码不能为空')
+        return false
+      }
+      gitcontentsApi.validateUser().then((response) => {
+        if (response.data.status === 'success') {
+          var users = response.data.data.users
+          var groups = response.data.data.groups
+          var userItem = null
+          var groupItem = null
+          for (let index = 0; index < users.length; index++) {
+            if (users[index].account === this.userInfo.account) {
+              userItem = users[index]
+              break
+            }
+          }
+          // 用户验证
+          if (userItem === null) {
+            this.$store.dispatch('setToken', null)
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，请联系软件管理员')
+            return false
+          } else if (!userItem.status) {
+            this.$store.dispatch('setToken', null)
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，请联系软件管理员')
+            return false
+          }
+          for (let index = 0; index < groups.length; index++) {
+            if (groups[index].id === userItem.id) {
+              groupItem = groups[index]
+              break
+            }
+          }
+          // 组验证
+          if (groupItem === null) {
+            this.$store.dispatch('setToken', null)
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，请联系软件管理员')
+            return false
+          } else if (!groupItem.status) {
+            this.$store.dispatch('setToken', null)
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，请联系软件管理员')
+            return false
+          }
+          this.login()
+        } else {
+          this.$store.dispatch('setToken', null)
+          this.showError('软件用户认证失败')
+        }
+      }).catch(() => {
+        this.$store.dispatch('setToken', null)
+        return false
+      })
     },
     login () {
       if (this.userInfo.account === null || this.userInfo.account === '') {
