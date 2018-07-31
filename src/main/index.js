@@ -1,5 +1,6 @@
 'use strict'
 
+import { autoUpdater } from 'electron-updater'
 import { app, BrowserWindow, Menu, Tray, ipcMain } from 'electron'
 import path from 'path'
 import Store from 'electron-store'
@@ -224,9 +225,6 @@ ipcMain.on('exit-app', (event, arg) => {
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
  */
 
-/*
-import { autoUpdater } from 'electron-updater'
-
 autoUpdater.on('update-downloaded', () => {
   autoUpdater.quitAndInstall()
 })
@@ -234,4 +232,3 @@ autoUpdater.on('update-downloaded', () => {
 app.on('ready', () => {
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
- */

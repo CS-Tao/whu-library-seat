@@ -54,11 +54,19 @@
     },
     "linux": {
       "icon": "build/icons"
-    }
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "CS-Tao",
+        "repo": "whu-library-seat"
+      }
+    ]
   },
   "dependencies": {
     "axios": "^0.16.1",
     "electron-store": "^2.0.0",
+    "electron-updater": "^3.0.3",
     "element-ui": "^2.4.4",
     "mockjs": "^1.0.1-beta3",
     "vue": "^2.3.3",
