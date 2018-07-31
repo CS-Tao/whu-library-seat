@@ -29,15 +29,35 @@ before_install:
 install:
 #- export DISPLAY=':99.0'
 #- Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-- nvm install 7
+- nvm install 8
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
-- npm install -g xvfb-maybe
+- npm install -g vuepress
+# - npm install -g xvfb-maybe
 - yarn
 script:
 #- xvfb-maybe node_modules/.bin/karma start test/unit/karma.conf.js
 #- yarn run pack && xvfb-maybe node_modules/.bin/mocha test/e2e
-- yarn run build
-branches:
-  only:
-  - master
+- yarn build:docs
+- yarn build
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then tar -cf build/linux-unpacked.tar build/linux-unpacked/*; fi
+
+deploy:
+  - provider: pages
+    skip-cleanup: true
+    github-token: $GH_TOKEN
+    on:
+      branch:
+        - master
+    local-dir: dist/docs
+  - provider: releases
+    api_key: $GH_TOKEN
+    file_glob: true
+    file:
+      - build/whu-library-seat-*.dmg
+      - build/whu-library-seat-*.zip
+      - build/whu-library-seat-*.AppImage
+      - build/linux-unpacked.tar
+    skip_cleanup: true
+    on:
+      tags: true

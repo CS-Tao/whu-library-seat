@@ -1,16 +1,63 @@
+$layout-width: 360px;
+$layout-height: 550px;
+$layout-header-h: 120px;
+$layout-header-unlogin-h: 100vh;
+$layout-body-h: 100vh;
+$layout-footer-h: 34px;
+
 $primary-color: rgb(77, 136, 255);
 $second-color: rgb(153, 153, 153);
 
+$primary-button-background-blur: rgba(77, 136, 255, 0.3);
+$primary-button-background-hover: rgba(77, 136, 255, 0.38);
+$primary-button-background-click: rgba(77, 136, 255, 0.5);
+
+$ok-button-background-blur: rgba(0, 204, 0, 0.3);
+$ok-button-background-hover: rgba(0, 204, 0, 0.38);
+$ok-button-background-click: rgba(0, 204, 0, 0.5);
+
+$cancel-button-background-blur: rgba(255, 255, 0, 0.18);
+$cancel-button-background-hover: rgba(255, 255, 0, 0.24);
+$cancel-button-background-click: rgba(255, 255, 0, 0.3);
+$cancel-button-border: rgba(255, 255, 0, 0.5);
+
+$logout-button-background-blur: rgba(255, 255, 0, 0.7);
+$logout-button-background-hover: rgba(255, 255, 0, 0.8);
+$logout-button-background-click: rgba(255, 255, 0, 0.9);
+$logout-button-border: rgba(255, 255, 0, 1);
+
+$exit-button-background-blur: rgba(255, 0, 0, 0.7);
+$exit-button-background-hover: rgba(255, 0, 0, 0.8);
+$exit-button-background-click: rgba(255, 0, 0, 0.9);
+$exit-button-border: rgba(255, 0, 0, 1);
+
+$disabled-button-background-blur: rgba(120, 120, 120, 0.2);
+$disabled-button-background-hover: rgba(120, 120, 120, 0.3);
+$disabled-button-background-click: rgba(120, 120, 120, 0.4);
+$disabled-button-border: rgba(120, 120, 120, 0.9);
+
 $bg-color-1: rgb(28, 30, 35);
 $bg-color-2: rgb(49, 54, 65);
+$bg-color-highlight: rgb(40, 45, 55);
 
-$text-color: rgb(215, 215, 215);
+$text-color-disabled: rgb(120, 120, 120);
+$text-color-lowlight: rgb(150, 150, 150);
+$text-color: rgb(205, 205, 205);
+$text-color-middlelight: rgb(230, 230, 230);
+$text-color-highlight: white;
+
+$text-size-small: 10px;
+$text-size-normal: 14px;
+$text-size-large: 18px;
 
 $button-green: rgb(0, 204, 0);
 $button-blue: rgb(77, 136, 255);
-$button-red: rgb(255, 21, 21);
+$button-red: rgb(255, 0, 0);
 $button-yellow: rgb(255, 255, 0);
+$heart-color: rgb(253, 78, 113); 
 
-$button-blur-opacity: 0.6;
-$button-focus-opacity: 0.8;
+$button-blur-opacity: 0.8;
+$button-hover-opacity: 0.9;
 $button-click-opacity: 1;
+
+$transition-header-timeout: 0.7s;

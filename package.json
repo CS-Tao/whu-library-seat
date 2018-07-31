@@ -1,15 +1,16 @@
 {
   "name": "whu-library-seat",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "author": "CS-Tao <whucstao@qq.com>",
   "description": "武汉大学图书馆抢座软件",
-  "license": "MIT",
+  "license": "null",
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
     "build:dir": "node .electron-vue/build.js && electron-builder --dir",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
     "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
+    "build:docs": "vuepress build docs",
     "dev": "node .electron-vue/dev-runner.js",
     "e2e": "npm run pack && mocha test/e2e",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src test",
@@ -57,11 +58,13 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "electron-store": "^2.0.0",
     "element-ui": "^2.4.4",
     "mockjs": "^1.0.1-beta3",
     "vue": "^2.3.3",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
+    "vuepress-theme-vue": "^1.0.3",
     "vuex": "^2.3.1"
   },
   "devDependencies": {

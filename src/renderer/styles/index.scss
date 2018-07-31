@@ -1,26 +1,55 @@
 @import './variables.scss';
+@import './flex.scss';
 @import './element-ui.scss';
+
+::-webkit-scrollbar { width:0px }
 
 body {
 	margin: 0;
+  	user-select: none;
+	  -webkit-user-select: none;
+  	-moz-user-select: none;
+  	-ms-user-select: none;
 }
 .main {
 	height: 100vh;
 	width: 100vw;
-	margin: 0;
-	padding: 0;
+	min-width: 350px;
 	.header {
-		background-color: $bg-color-2;
-		height: 10vh;
+		position: fixed;
 		top: 0;
+		width: 100vw;
+		margin: 0;
+		z-index: 9;
+		background-color: $bg-color-2;
+		height: $layout-header-h;
+		box-shadow: 0 1px 2px black;
+		transition: height $transition-header-timeout + 0.3;
+	}
+	.header-unlogin {
+		height: $layout-header-unlogin-h;
+		transition: height $transition-header-timeout;
 	}
 	.body {
+		position: fixed;
+		top: 0;
+		height: $layout-body-h;
+		width: 100vw;
+		margin: 0;
+		z-index: 8;
 		background-color: $bg-color-1;
-		height: 85vh;
 	}
 	.footer {
-		background-color: $bg-color-2;
-		height: 5vh;
+		position: fixed;
 		bottom: 0;
-	}
+		width: 100vw;
+		margin: 0;
+		z-index: 10;
+		background-color: $bg-color-2;
+		height: $layout-footer-h;
+		box-shadow: 0 -1px 2px black;
+  }
+  .footer-unlogin {
+		box-shadow: 0 0 1px $second-color;
+  }
 }
