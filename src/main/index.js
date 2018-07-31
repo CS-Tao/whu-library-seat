@@ -236,7 +236,7 @@ ipcMain.on('check-updates', (event, arg) => {
 })
 
 autoUpdater.on('update-downloaded', () => {
-  ipcMain.send('update-downloaded')
+  mainWindow.webContents.send('update-downloaded')
 })
 
 ipcMain.on('quit-and-install', (event, arg) => {
