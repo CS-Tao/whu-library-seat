@@ -7,7 +7,7 @@
 #### 下载说明
 
 - Windows
-    - 安装包: `whu-library-seat Setup <version>.exe`
+    - 安装包: `whu-library-seat.Setup.<version>.exe`
     - 免安装: `win-unpacked.zip`
 
 - Mac OS
