@@ -1,9 +1,9 @@
 {
   "name": "whu-library-seat",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "CS-Tao <whucstao@qq.com>",
   "description": "武汉大学图书馆抢座软件",
-  "license": "null",
+  "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {
     "build": "node .electron-vue/build.js && electron-builder",
