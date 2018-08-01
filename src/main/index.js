@@ -131,7 +131,7 @@ const template = [
     submenu: [
       {
         label: '版本 v' + appVersion,
-        enabled: false
+        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases/tag/v' + appVersion) }
       },
       { type: 'separator' },
       {
