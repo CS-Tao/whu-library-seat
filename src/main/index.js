@@ -22,6 +22,8 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
+const appVersion = app.getVersion()
+
 let tray = null
 app.on('ready', () => {
   tray = new Tray(path.join(__static, '/tray.png'))
@@ -128,6 +130,11 @@ const template = [
     role: 'about',
     submenu: [
       {
+        label: '版本 v' + appVersion,
+        enabled: false
+      },
+      { type: 'separator' },
+      {
         label: '文档',
         click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/') }
       },
@@ -135,6 +142,7 @@ const template = [
         label: '项目',
         click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat') }
       },
+      { type: 'separator' },
       {
         label: '申请权限',
         click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/specification/#申请软件使用权') }
@@ -143,6 +151,7 @@ const template = [
         label: '用户白名单',
         click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json') }
       },
+      { type: 'separator' },
       {
         label: '问题反馈',
         click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/issues/new') }
@@ -231,14 +240,21 @@ ipcMain.on('exit-app', (event, arg) => {
   }
 })
 
+// 配置自动更新
+
 ipcMain.on('check-updates', (event, arg) => {
+  // 检查更新
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
 
-autoUpdater.on('update-downloaded', () => {
-  mainWindow.webContents.send('update-downloaded')
+ipcMain.on('quit-and-install', (event, arg) => {
+  // 退出安装
+  if (process.env.NODE_ENV === 'production') autoUpdater.quitAndInstall()
 })
 
-ipcMain.on('quit-and-install', (event, arg) => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.quitAndInstall()
+autoUpdater.autoInstallOnAppQuit = false
+
+autoUpdater.on('update-downloaded', () => {
+  // 更新下载完毕
+  mainWindow.webContents.send('update-downloaded')
 })
