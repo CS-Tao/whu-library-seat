@@ -277,7 +277,7 @@ export default {
           if (response.data.code === 1 || response.data.code === '1') {
             // 预约失败，请尽快选择其他时段或座位
             // 系统可预约时间为 22:45 ~ 23:50
-            if (response.data.message === '预约失败，请尽快选择其他时段或座位') {
+            if (response.data.message === '预约失败，请尽快选择其他时段或座位' || response.data.message === '参数错误') {
               // 位置不可用，如果未达抢座上限则继续抢
               this.grabCount += 1
               var newSeatId = this.getNewSeatNum()
