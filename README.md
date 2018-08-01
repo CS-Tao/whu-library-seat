@@ -9,31 +9,37 @@
 
 ## 下载和安装
 
-下载链接：[https://github.com/CS-Tao/whu-library-seat/releases/latest](https://github.com/CS-Tao/whu-library-seat/releases/latest)
+### 最新版本
 
-### 下载说明
+最新版本(包括预览版): [https://github.com/CS-Tao/whu-library-seat/releases/latest](https://github.com/CS-Tao/whu-library-seat/releases/latest)
+
+### 稳定版本
 
 - Windows
     - 安装包: `whu-library-seat-setup-<version>.exe`
-    - 最新版本: [v1.0.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.2/whu-library-seat-setup-1.0.2.exe)
+    - 稳定版本: [v1.0.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.2/whu-library-seat-setup-1.0.2.exe)
 
 - Mac OS
     - 安装包: `whu-library-seat-<version>.dmg`
-    - 在新版本：[v1.0.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.2/whu-library-seat-1.0.2.dmg)
+    - 稳定版本：[v1.0.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.2/whu-library-seat-1.0.2.dmg)
 
 - Linux
     - 安装包: `whu-library-seat-<version>-x86_64.AppImage`
-    - 在新版本：[v1.0.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.2/whu-library-seat-1.0.2-x86_64.AppImage)
+    - 稳定版本：[v1.0.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.2/whu-library-seat-1.0.2-x86_64.AppImage)
 
 ### 安装软件
 
-下载了安装版的用户请直接执行文件夹中的安装文件安装本软件，下载了免安装绿色版的用户请将解压后的文件夹放到您方便找到的目录下
+运行安装包即可
 
 ### 申请软件使用权
 
 在您登录之前，软件会检查您的学号是否被记录在[这个文件](https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json)中，只有被记录在这个文件中的学号才能使用本软件，如果您的学号没有被记录，您可以通过邮件[联系我](http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=whucstao@qq.com)(请在邮件中注明学号、院系和姓名)
 
-当然，因为本软件为开源软件，您可以在遵守本软件[#版权声明](#版权声明)的前提下，自己构建软件并删除其中的认证代码，具体请查看[#面向开发者](#面向开发者)
+当然，因为本软件为开源软件，您可以在遵守本软件[版权声明](#版权声明)的前提下，自己构建软件并删除其中的认证代码，具体请查看[面向开发者](#面向开发者)
+
+### 软件更新
+
+软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮
 
 ## 使用说明
 
@@ -72,6 +78,6 @@ yarn build
 
 ## 版权声明
 
-本软件开源，但没有向开发者提供任何源码`许可证`，作者本人保留源代码的所有权利，任何组织和个人不得将本软件的全部或部分源码用于商业活动
+本软件开源，但没有向开发者提供任何源码`许可证`，作者本人保留源代码的所有权利，任何组织和个人不得将本软件或源码用于商业活动
 
 Copyright © 2018 CS-Tao
