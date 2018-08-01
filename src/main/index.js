@@ -1,5 +1,6 @@
 'use strict'
 
+import { autoUpdater } from 'electron-updater'
 import { app, BrowserWindow, Menu, Tray, ipcMain } from 'electron'
 import path from 'path'
 import Store from 'electron-store'
@@ -20,6 +21,8 @@ let mainWindow
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
+
+const appVersion = app.getVersion()
 
 let tray = null
 app.on('ready', () => {
@@ -113,13 +116,24 @@ const template = [
         }
       },
       { role: 'minimize', label: '最小化' },
-      { role: 'close', label: '关闭' }
+      {
+        label: '退出到托盘',
+        click: (menuItem, browserWindow, event) => {
+          mainWindow.hide()
+          mainWindow.setSkipTaskbar(true)
+        }
+      }
     ]
   },
   {
     label: '关于',
     role: 'about',
     submenu: [
+      {
+        label: '版本 v' + appVersion,
+        enabled: false
+      },
+      { type: 'separator' },
       {
         label: '文档',
         click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/') }
@@ -128,6 +142,16 @@ const template = [
         label: '项目',
         click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat') }
       },
+      { type: 'separator' },
+      {
+        label: '申请权限',
+        click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/specification/#申请软件使用权') }
+      },
+      {
+        label: '用户白名单',
+        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json') }
+      },
+      { type: 'separator' },
       {
         label: '问题反馈',
         click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/issues/new') }
@@ -216,22 +240,21 @@ ipcMain.on('exit-app', (event, arg) => {
   }
 })
 
-/**
- * Auto Updater
- *
- * Uncomment the following code below and install `electron-updater` to
- * support auto updating. Code Signing with a valid certificate is required.
- * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
- */
+// 配置自动更新
 
-/*
-import { autoUpdater } from 'electron-updater'
-
-autoUpdater.on('update-downloaded', () => {
-  autoUpdater.quitAndInstall()
-})
-
-app.on('ready', () => {
+ipcMain.on('check-updates', (event, arg) => {
+  // 检查更新
   if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
 })
- */
+
+ipcMain.on('quit-and-install', (event, arg) => {
+  // 退出安装
+  if (process.env.NODE_ENV === 'production') autoUpdater.quitAndInstall()
+})
+
+autoUpdater.autoInstallOnAppQuit = false
+
+autoUpdater.on('update-downloaded', () => {
+  // 更新下载完毕
+  mainWindow.webContents.send('update-downloaded')
+})

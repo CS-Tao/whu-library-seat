@@ -34,9 +34,9 @@
 
     最小化窗口
 
-- 关闭
+- 退出到托盘
 
-    退出软件或将软件隐藏到托盘(详见[设置](/specification/settings.html#退出到托盘))，和窗体自带的关闭按钮功能一致
+    将软件隐藏到托盘
 
 ### 关于
 
@@ -47,6 +47,14 @@
 - 项目
 
     打开[项目地址](https://github.com/CS-Tao/whu-library-seat)
+
+- 申请权限
+
+    打开[申请软件使用权](https://home.cs-tao.cc/whu-library-seat/specification/#申请软件使用权)
+
+- 申请权限
+
+    打开[用户白名单](https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json)
 
 - 问题反馈
 
