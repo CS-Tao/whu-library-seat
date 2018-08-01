@@ -40,3 +40,10 @@ script:
 #- yarn run pack && xvfb-maybe node_modules/.bin/mocha test/e2e
 - yarn build:docs
 - yarn build
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GH_TOKEN
+  on:
+    branch: master
+  local-dir: dist/docs
