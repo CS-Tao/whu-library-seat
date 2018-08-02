@@ -50,18 +50,16 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/icon.ico",
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     },
     "linux": {
       "icon": "build/icons"
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "CS-Tao",
-        "repo": "whu-library-seat"
-      }
-    ]
+    }
   },
   "dependencies": {
     "axios": "^0.16.1",
