@@ -16,6 +16,8 @@
             <el-tag v-else-if="scope.row.stat === 'STOP'" class="tag">结束使用</el-tag>
             <el-tag v-else-if="scope.row.stat === 'MISS'" class="tag" type="danger">失约</el-tag>
             <el-tag v-else-if="scope.row.stat === 'INCOMPLETE'" class="tag" type="danger">早退</el-tag>
+            <el-tag v-else-if="scope.row.stat === 'CHECK_IN'" class="tag" type="success">已签到</el-tag>
+            <el-tag v-else-if="scope.row.stat === 'AWAY'" class="tag">暂离</el-tag>
             <el-tag v-else type="info">未知状态</el-tag>
           </template>
         </el-table-column>
