@@ -240,6 +240,11 @@ ipcMain.on('exit-app', (event, arg) => {
   }
 })
 
+ipcMain.on('show-window', (event, arg) => {
+  mainWindow.show()
+  mainWindow.setSkipTaskbar(false)
+})
+
 // 配置自动更新
 
 ipcMain.on('check-updates', (event, arg) => {

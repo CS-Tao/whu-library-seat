@@ -61,6 +61,9 @@ import userForm from './User'
 import historyForm from './History'
 import timerForm from './Timer'
 import libraryRestApi from '@/api/library.api'
+import { ipcRenderer } from 'electron'
+import notifier from 'node-notifier'
+import path from 'path'
 
 export default {
   props: {
@@ -273,6 +276,7 @@ export default {
               '<br/>位置：' + response.data.data.location + '</el-card>',
             duration: 0
           })
+          this.windowsNotification('预约成功', '请打开软件查看')
         } else {
           if (response.data.code === 1 || response.data.code === '1') {
             // 预约失败，请尽快选择其他时段或座位
@@ -289,6 +293,7 @@ export default {
                   showClose: true,
                   message: '抢座失败：达到抢座尝试上限(100)，结束抢座'
                 })
+                this.windowsNotification('抢座失败', '达到抢座尝试上限(100)，结束抢座')
               } else if (newSeatId === -1) {
                 this.$store.dispatch('updateTimer', 'fail')
                 this.$message({
@@ -297,6 +302,7 @@ export default {
                   showClose: true,
                   message: '抢座失败：该房间在指定的时间段内没有空闲位置'
                 })
+                this.windowsNotification('抢座失败', '该房间在指定的时间段内没有空闲位置')
               } else if (!this.stopGrab) {
                 this.$store.dispatch('updateTimer', 'working')
                 // 打印信息
@@ -305,7 +311,7 @@ export default {
                 })
                 for (let index = 0; index < seatInTheRoom.length; index++) {
                   if (seatInTheRoom[index].id === newSeatId) {
-                    console.log('第' + (this.grabCount + 1) + '次尝试抢座(座位号: ' + seatInTheRoom[index].name + ', Id: ' + newSeatId + ')')
+                    // console.log('第' + (this.grabCount + 1) + '次尝试抢座(座位号: ' + seatInTheRoom[index].name + ', Id: ' + newSeatId + ')')
                     this.$store.dispatch('updateTimer', '尝试 ' + seatInTheRoom[index].name)
                     break
                   }
@@ -325,6 +331,7 @@ export default {
                 showClose: true,
                 message: response.data.message
               })
+              this.windowsNotification('抢座失败', response.data.message)
             }
           } else if (response.data.code === 12 && response.data.code === '12') {
             // 登录失败: 用户名或密码不正确
@@ -335,6 +342,7 @@ export default {
               showClose: true,
               message: response.data.message
             })
+            this.windowsNotification('抢座失败', response.data.message)
           } else {
             // 其他
             this.$store.dispatch('updateTimer', 'fail')
@@ -344,6 +352,7 @@ export default {
               showClose: true,
               message: response.data.message
             })
+            this.windowsNotification('抢座失败', response.data.message)
           }
         }
       }).catch(() => {})
@@ -403,6 +412,29 @@ export default {
         now = new Date()
         if (now.getTime() > exitTime) { return }
       }
+    },
+    windowsNotification (title, message) {
+      notifier.notify(
+        {
+          appName: 'cc.cs-tao.whu-library-seat',
+          title: title,
+          subTitle: title,
+          message: message,
+          icon: path.join(__static, '/toast.png'),
+          sound: true,
+          wait: true
+        },
+        (err, response) => {
+          console.log(JSON.stringify(err))
+          console.log(JSON.stringify(response))
+        }
+      )
+      notifier.on('click', (notifierObject, options) => {
+        ipcRenderer.send('show-window')
+      })
+      notifier.on('timeout', (notifierObject, options) => {
+        ipcRenderer.send('show-window')
+      })
     }
   }
 }
