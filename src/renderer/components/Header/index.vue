@@ -181,7 +181,7 @@ export default {
             return false
           }
           for (let index = 0; index < groups.length; index++) {
-            if (groups[index].id === userItem.id) {
+            if (groups[index].id === userItem.groupId) {
               groupItem = groups[index]
               break
             }

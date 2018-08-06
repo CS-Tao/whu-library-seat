@@ -9,23 +9,23 @@
 
 ## 下载和安装
 
-### 最新版本
+### 最新版本下载
 
 最新版本(包括预览版): [https://github.com/CS-Tao/whu-library-seat/releases/latest](https://github.com/CS-Tao/whu-library-seat/releases/latest)
 
-### 稳定版本
+### 稳定版本下载
 
 - Windows
     - 安装包: `whu-library-seat-setup-<version>.exe`
-    - 稳定版本: [v1.0.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.2/whu-library-seat-setup-1.0.2.exe)
+    - 链接: [v1.0.4](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.4/whu-library-seat-setup-1.0.4.exe)
 
 - Mac OS
     - 安装包: `whu-library-seat-<version>.dmg`
-    - 稳定版本：[v1.0.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.2/whu-library-seat-1.0.2.dmg)
+    - 链接[v1.0.4](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.4/whu-library-seat-1.0.4.dmg)
 
 - Linux
     - 安装包: `whu-library-seat-<version>-x86_64.AppImage`
-    - 稳定版本：[v1.0.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.2/whu-library-seat-1.0.2-x86_64.AppImage)
+    - 链接[v1.0.4](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.0.4/whu-library-seat-1.0.4-x86_64.AppImage)
 
 ### 安装软件
 
