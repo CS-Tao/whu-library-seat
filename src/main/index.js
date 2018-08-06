@@ -1,7 +1,7 @@
 'use strict'
 
 import { autoUpdater } from 'electron-updater'
-import { app, BrowserWindow, Menu, Tray, ipcMain } from 'electron'
+import { app, BrowserWindow, Menu, Tray, ipcMain, screen } from 'electron'
 import path from 'path'
 import Store from 'electron-store'
 
@@ -49,12 +49,24 @@ app.on('ready', () => {
     },
     { type: 'separator' },
     {
+      label: '恢复所有设置',
+      click () {
+        store.clear()
+        if (mainWindow) {
+          mainWindow.reload()
+        }
+      }
+    },
+    { type: 'separator' },
+    {
       label: '退出程序',
       type: 'normal',
       click: (menuItem, browserWindow, event) => {
         store.set('mainWindowPosition', mainWindow.getPosition())
         mainWindow = null
-        tray.destroy()
+        if (tray) {
+          tray.destroy()
+        }
         app.exit()
       }
     }
@@ -72,7 +84,9 @@ const template = [
         click () {
           store.set('mainWindowPosition', mainWindow.getPosition())
           mainWindow = null
-          tray.destroy()
+          if (tray) {
+            tray.destroy()
+          }
           app.exit()
         }
       }
@@ -181,9 +195,16 @@ function createWindow () {
     backgroundColor: '#1C1E23'
   })
 
-  let position = store.get('mainWindowPosition', [150, -1])
+  const size = screen.getPrimaryDisplay().size
 
-  mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
+  let position = store.get('mainWindowPosition', [size.width - 500, -1])
+
+  if (position[0] < 0 || position[0] > size.width || position[1] < 0 || position[1] > size.height) {
+    store.set('mainWindowPosition', [size.width - 500, -1])
+    mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
+  } else {
+    mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
+  }
 
   mainWindow.loadURL(winURL)
 
