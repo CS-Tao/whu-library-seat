@@ -62,8 +62,6 @@ import historyForm from './History'
 import timerForm from './Timer'
 import libraryRestApi from '@/api/library.api'
 import { ipcRenderer } from 'electron'
-import notifier from 'node-notifier'
-import path from 'path'
 
 export default {
   props: {
@@ -414,27 +412,7 @@ export default {
       }
     },
     windowsNotification (title, message) {
-      notifier.notify(
-        {
-          appName: 'cc.cs-tao.whu-library-seat',
-          title: title,
-          subTitle: title,
-          message: message,
-          icon: path.join(__static, '/toast.png'),
-          sound: true,
-          wait: true
-        },
-        (err, response) => {
-          console.log(JSON.stringify(err))
-          console.log(JSON.stringify(response))
-        }
-      )
-      notifier.on('click', (notifierObject, options) => {
-        ipcRenderer.send('show-window')
-      })
-      notifier.on('timeout', (notifierObject, options) => {
-        ipcRenderer.send('show-window')
-      })
+      ipcRenderer.send('show-window-notify', title, message)
     }
   }
 }

@@ -4,6 +4,7 @@ import { autoUpdater } from 'electron-updater'
 import { app, BrowserWindow, Menu, Tray, ipcMain, screen } from 'electron'
 import path from 'path'
 import Store from 'electron-store'
+import notifier from 'node-notifier'
 
 /**
  * Set `__static` path to static files in production
@@ -261,9 +262,28 @@ ipcMain.on('exit-app', (event, arg) => {
   }
 })
 
-ipcMain.on('show-window', (event, arg) => {
-  mainWindow.show()
-  mainWindow.setSkipTaskbar(false)
+ipcMain.on('show-window-notify', (event, title, message) => {
+  if (mainWindow.isVisible()) {
+    mainWindow.show()
+    return
+  }
+  notifier.notify(
+    {
+      appName: 'cc.cs-tao.whu-library-seat',
+      title: title,
+      subTitle: title,
+      message: message,
+      icon: path.join(__static, '/toast.png'),
+      sound: true,
+      wait: true
+    },
+    () => {}
+  )
+  notifier.on('click', (notifierObject, options) => {
+    mainWindow.show()
+    mainWindow.setSkipTaskbar(false)
+  })
+  notifier.on('timeout', () => {})
 })
 
 // 配置自动更新
