@@ -17,8 +17,12 @@ export default {
   },
   Book: config => {
     console.log('Mock: ' + config.url)
-    // return {'status': 'success', 'data': {'id': 3442608, 'receipt': '0175-608-1', 'onDate': '2018 年 07 月 23 日', 'begin': '21 : 30', 'end': '22 : 30', 'location': '信息馆2层东区东自然科学区，座位号009', 'checkedIn': false}, 'message': '', 'code': '0'}
-    return {'status': 'fail', 'data': null, 'message': '预约失败，请尽快选择其他时段或座位', 'code': '1'}
+    var num = Math.random()
+    if (num > 0.02) {
+      return {'status': 'fail', 'data': null, 'message': '预约失败，请尽快选择其他时段或座位', 'code': '1'}
+    } else {
+      return {'status': 'success', 'data': {'id': 3442608, 'receipt': '0175-608-1', 'onDate': '2018 年 07 月 23 日', 'begin': '21 : 30', 'end': '22 : 30', 'location': '信息馆2层东区东自然科学区，座位号009', 'checkedIn': false}, 'message': '', 'code': '0'}
+    }
   },
   Cancel: config => {
     console.log('Mock: ' + config.url)
