@@ -120,7 +120,7 @@ export default {
       return this.totalTime >= 0
     },
     isVip () {
-      return this.userAccount === 2015302590039 || this.userPasswd === 2017302590175
+      return this.userAccount === 2015302590039 || this.userAccount === 2017302590175
     }
   },
   mounted () {

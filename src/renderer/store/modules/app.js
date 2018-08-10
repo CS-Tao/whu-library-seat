@@ -91,14 +91,20 @@ const app = {
   mutations: {
     SET_ACCOUNT: (state, account) => {
       state.userInfo.account = account
-      store.set('whuSeatUserAccount', account)
     },
     SET_PASSWD: (state, passwd) => {
       state.userInfo.passwd = passwd
-      store.set('whuSeatUserPasswd', passwd)
     },
     SET_TOKEN: (state, token) => {
       state.userInfo.token = token
+    },
+    SAVE_ACCOUNT: (state, account) => {
+      state.userInfo.account = account
+      store.set('whuSeatUserAccount', account)
+    },
+    SAVE_PASSWD: (state, passwd) => {
+      state.userInfo.passwd = passwd
+      store.set('whuSeatUserPasswd', passwd)
     },
     SAVE_SEATINFO: (state, seatInfo) => {
       state.seatInfo = seatInfo
@@ -182,6 +188,12 @@ const app = {
     },
     setToken ({ commit }, token) {
       commit('SET_TOKEN', token)
+    },
+    saveAccount ({ commit }, account) {
+      commit('SAVE_ACCOUNT', account)
+    },
+    savePasswd ({ commit }, passwd) {
+      commit('SAVE_PASSWD', passwd)
     },
     saveSeatInfo ({ commit }, seatInfo) {
       commit('SAVE_SEATINFO', {...seatInfo})

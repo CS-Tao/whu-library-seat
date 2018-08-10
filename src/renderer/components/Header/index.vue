@@ -83,7 +83,6 @@ export default {
       },
       accountLocked: false,
       passwdLocked: false,
-      serviceLocked: false,
       settingsVisible: false
     }
   },
@@ -115,6 +114,15 @@ export default {
     openSettings () {
       this.settingsVisible = !this.settingsVisible
     },
+    showInfo (message) {
+      this.$message({
+        type: 'info',
+        duration: '3000',
+        showClose: true,
+        dangerouslyUseHTMLString: true,
+        message: '<p style="line-height:20px;">' + message + '</p>'
+      })
+    },
     showWarning (message) {
       this.$message({
         type: 'warning',
@@ -134,7 +142,7 @@ export default {
     lockAccount () {
       this.accountLocked = !this.accountLocked
       if (this.accountLocked) {
-        this.$store.dispatch('setAccount', this.userInfo.account)
+        this.$store.dispatch('saveAccount', this.userInfo.account)
         if (this.hasToken) {
           this.login(this.userInfo.account, this.userInfo.passwd)
         }
@@ -143,7 +151,7 @@ export default {
     lockPasswd () {
       this.passwdLocked = !this.passwdLocked
       if (this.passwdLocked) {
-        this.$store.dispatch('setPasswd', this.userInfo.passwd)
+        this.$store.dispatch('savePasswd', this.userInfo.passwd)
         if (this.hasToken) {
           this.login(this.userInfo.account, this.userInfo.passwd)
         }
@@ -215,6 +223,9 @@ export default {
         this.showWarning('密码不能为空')
         return
       }
+
+      this.$store.dispatch('setAccount', this.userInfo.account)
+      this.$store.dispatch('setPasswd', this.userInfo.passwd)
       libraryRestApi.Login(this.userInfo.account, this.userInfo.passwd).then((response) => {
         if (response.data.status === 'success') {
           this.loadRooms(response.data.data.token)
