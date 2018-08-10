@@ -27,7 +27,8 @@ const appVersion = app.getVersion()
 
 let tray = null
 app.on('ready', () => {
-  tray = new Tray(path.join(__static, '/tray.png'))
+  const iconName = process.platform === 'win32' ? 'windows-tray.png' : 'trayTemplate.png'
+  tray = new Tray(path.join(__static, iconName))
 
   tray.on('click', () => {
     if (mainWindow.isVisible()) {
@@ -182,7 +183,7 @@ function createWindow () {
   /**
    * Initial window options
    */
-  mainWindow = new BrowserWindow({
+  const windowOptions = {
     height: 550,
     width: 360,
     center: false,
@@ -190,11 +191,16 @@ function createWindow () {
     useContentSize: true,
     maximizable: false,
     darkTheme: true,
-    icon: path.join(__static, '/app.png'),
     webPreferences: { webSecurity: false },
     title: '武汉大学图书馆抢座软件',
     backgroundColor: '#1C1E23'
-  })
+  }
+
+  if (process.platform === 'linux') {
+    windowOptions.icon = path.join(__static, 'app-512.png')
+  }
+
+  mainWindow = new BrowserWindow(windowOptions)
 
   const size = screen.getPrimaryDisplay().size
 
