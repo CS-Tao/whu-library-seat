@@ -1,9 +1,10 @@
 'use strict'
 
 import { autoUpdater } from 'electron-updater'
-import { app, BrowserWindow, Menu, Tray, ipcMain } from 'electron'
+import { app, BrowserWindow, Menu, Tray, ipcMain, screen } from 'electron'
 import path from 'path'
 import Store from 'electron-store'
+import notifier from 'node-notifier'
 
 /**
  * Set `__static` path to static files in production
@@ -26,7 +27,8 @@ const appVersion = app.getVersion()
 
 let tray = null
 app.on('ready', () => {
-  tray = new Tray(path.join(__static, '/tray.png'))
+  const iconName = process.platform === 'win32' ? 'windows-tray.png' : 'trayTemplate.png'
+  tray = new Tray(path.join(__static, iconName))
 
   tray.on('click', () => {
     if (mainWindow.isVisible()) {
@@ -49,12 +51,24 @@ app.on('ready', () => {
     },
     { type: 'separator' },
     {
+      label: '恢复所有设置',
+      click () {
+        store.clear()
+        if (mainWindow) {
+          mainWindow.reload()
+        }
+      }
+    },
+    { type: 'separator' },
+    {
       label: '退出程序',
       type: 'normal',
       click: (menuItem, browserWindow, event) => {
         store.set('mainWindowPosition', mainWindow.getPosition())
         mainWindow = null
-        tray.destroy()
+        if (tray) {
+          tray.destroy()
+        }
         app.exit()
       }
     }
@@ -72,7 +86,9 @@ const template = [
         click () {
           store.set('mainWindowPosition', mainWindow.getPosition())
           mainWindow = null
-          tray.destroy()
+          if (tray) {
+            tray.destroy()
+          }
           app.exit()
         }
       }
@@ -131,7 +147,7 @@ const template = [
     submenu: [
       {
         label: '版本 v' + appVersion,
-        enabled: false
+        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases/tag/v' + appVersion) }
       },
       { type: 'separator' },
       {
@@ -167,7 +183,7 @@ function createWindow () {
   /**
    * Initial window options
    */
-  mainWindow = new BrowserWindow({
+  const windowOptions = {
     height: 550,
     width: 360,
     center: false,
@@ -175,15 +191,27 @@ function createWindow () {
     useContentSize: true,
     maximizable: false,
     darkTheme: true,
-    icon: path.join(__static, '/app.png'),
     webPreferences: { webSecurity: false },
     title: '武汉大学图书馆抢座软件',
     backgroundColor: '#1C1E23'
-  })
+  }
 
-  let position = store.get('mainWindowPosition', [150, -1])
+  if (process.platform === 'linux') {
+    windowOptions.icon = path.join(__static, 'app-512.png')
+  }
 
-  mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
+  mainWindow = new BrowserWindow(windowOptions)
+
+  const size = screen.getPrimaryDisplay().size
+
+  let position = store.get('mainWindowPosition', [size.width - 500, -1])
+
+  if (position[0] < 0 || position[0] > size.width || position[1] < 0 || position[1] > size.height) {
+    store.set('mainWindowPosition', [size.width - 500, -1])
+    mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
+  } else {
+    mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
+  }
 
   mainWindow.loadURL(winURL)
 
@@ -238,6 +266,30 @@ ipcMain.on('exit-app', (event, arg) => {
   if (app) {
     app.exit(arg)
   }
+})
+
+ipcMain.on('show-window-notify', (event, title, message) => {
+  if (mainWindow.isVisible()) {
+    mainWindow.show()
+    return
+  }
+  notifier.notify(
+    {
+      appName: 'cc.cs-tao.whu-library-seat',
+      title: title,
+      subTitle: title,
+      message: message,
+      icon: path.join(__static, '/toast.png'),
+      sound: true,
+      wait: true
+    },
+    () => {}
+  )
+  notifier.on('click', (notifierObject, options) => {
+    mainWindow.show()
+    mainWindow.setSkipTaskbar(false)
+  })
+  notifier.on('timeout', () => {})
 })
 
 // 配置自动更新
