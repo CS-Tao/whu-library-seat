@@ -87,6 +87,7 @@ $warp-padding: 20px;
     .info-key {
       left: 0;
       color: $text-color;
+      font-size: $text-size-normal;
     }
     .info-value {
       float: right;
