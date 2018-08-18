@@ -10,7 +10,7 @@
       <span class="info"><span class="info-key">最近入馆</span><span class="info-value">{{ userInfo.lastIn }}</span></span>
       <span class="info"><span class="info-key">最近出馆</span><span class="info-value">{{ userInfo.lastOut }}</span></span>
       <span class="info"><span class="info-key">最近签到地点</span><span class="info-value">{{ userInfo.lastInBuildingName }}</span></span>
-      <span class="info"><span class="info-key">最近登录时间</span><span class="info-value">{{ userInfo.lastLogin }}</span></span>
+      <span class="info"><span class="info-key">最近登录时间</span><span class="info-value">{{ formatDate(new Date(userInfo.lastLogin)) }}</span></span>
       <!-- <span><span class="info-key"></span><span class="info-value">{{ violationCount }}</span></span> -->
     </div>
   </div>
@@ -56,6 +56,17 @@ export default {
         })
       }
     }).catch(() => {})
+  },
+  methods: {
+    formatDate (time) {
+      var year = time.getFullYear()
+      var month = time.getMonth() + 1
+      var day = time.getDate()
+      var hour = time.getHours()
+      var minute = time.getMinutes()
+      var seconds = time.getSeconds()
+      return `${year}-${month < 10 ? '0' + month : month}-${day < 10 ? '0' + day : day} ${hour < 10 ? '0' + hour : hour}:${minute < 10 ? '0' + minute : minute}:${seconds < 10 ? '0' + seconds : seconds}`
+    }
   }
 }
 </script>
