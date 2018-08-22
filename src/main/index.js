@@ -196,7 +196,7 @@ function createWindow () {
     backgroundColor: '#1C1E23'
   }
 
-  if (process.platform === 'linux') {
+  if (process.platform === 'linux' || process.platform === 'win32') {
     windowOptions.icon = path.join(__static, 'app-512.png')
   }
 
