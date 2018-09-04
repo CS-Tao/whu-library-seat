@@ -107,6 +107,15 @@ $warp-padding: 10px;
   padding: $warp-padding;
   border: 1px solid $text-color;
   border-radius: 4px;
+	::-webkit-scrollbar {
+    width: 5px;
+    background-color: $bg-color-highlight;
+    border-radius: 2px;
+    &-thumb {
+      background-color: $text-color-lowlight;
+      border-radius: 2px;
+    }
+	}
   .table {
     height: 100%;
     .cancel-button {
