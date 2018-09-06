@@ -20,6 +20,8 @@
 import { mapGetters } from 'vuex'
 import libraryRestApi from '@/api/library.api'
 
+const emptyMessage = '数据加载失败'
+
 export default {
   data () {
     return {
@@ -52,7 +54,7 @@ export default {
           type: 'error',
           duration: '5000',
           showClose: true,
-          message: response.data.message
+          message: response.data.message ? response.data.message : emptyMessage
         })
       }
     }).catch(() => {})
