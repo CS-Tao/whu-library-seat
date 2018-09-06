@@ -320,6 +320,8 @@ export default {
                 // 开始下一次抢座
                 if (!this.isVip) {
                   this.sleep(800)
+                } else {
+                  this.sleep(520)
                 }
                 this.reserveSeat(beginTime, endTime, newSeatId, date, userToken)
               } else {}
