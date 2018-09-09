@@ -52,6 +52,19 @@ export default {
       }
     })
   },
+  // 按时间搜索位置
+  // startTime=1290&endTime=1350
+  // t=1&roomId=7&buildingId=1&batch=9999&page=1&t2=2
+  SearchSeat: (dateStr, roomId, buildingId, startTime, endTime, token) => {
+    return request({
+      url: `/rest/v2/searchSeats/${dateStr}/${startTime}/${endTime}`,
+      method: 'post',
+      headers: {
+        token
+      },
+      data: `t=1&roomId=${roomId}&buildingId=${buildingId}&batch=9999&page=1&t2=2`
+    })
+  },
   // 预约位置
   // t=1&startTime=1290&endTime=1350&seat=5728&date=2018-07-23&t2=2
   Book: (t, t2, startTime, endTime, seat, date, token) => {
