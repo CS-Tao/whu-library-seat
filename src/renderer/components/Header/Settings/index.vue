@@ -32,6 +32,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import timePicker from '@/components/Utils/timePicker'
+import Store from 'electron-store'
+
+const store = new Store({
+  name: 'whu-library-seat'
+})
 
 export default {
   data () {
@@ -58,20 +63,28 @@ export default {
   },
   methods: {
     saveSettings () {
+      var saveMessage = '保存成功'
+      if (this.settings.baseUrl !== store.get('baseUrl', 'https://seat.lib.whu.edu.cn:8443')) {
+        saveMessage = '保存成功，重启生效'
+      }
       this.$store.dispatch('saveSettings', this.settings)
       this.$message({
         type: 'success',
         duration: '800',
-        message: '保存成功'
+        message: saveMessage
       })
     },
     restoreSettings () {
+      var restoreMessage = '已恢复默认设置'
+      if (this.settings.baseUrl !== store.get('baseUrl', 'https://seat.lib.whu.edu.cn:8443')) {
+        restoreMessage = '已恢复默认设置，重启生效'
+      }
       this.$store.dispatch('restoreSettings')
       this.settings = {...this.settingInfo}
       this.$message({
         type: 'success',
         duration: '800',
-        message: '已恢复默认设置'
+        message: restoreMessage
       })
     }
   }

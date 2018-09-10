@@ -24,8 +24,9 @@
         <el-form-item label="房间">
           <el-select v-model="form.room" placeholder="请选择房间" class="input" @change="roomChanged()">
             <el-option v-for="room in singleLibRooms" :key="room[0]" :label="room[1]" :value="room[0]">
-              <span class="room-option-left">{{ room[1] }}</span>
-              <span class="room-option-right">{{ room[3] }} F</span>
+              <span class="room-option-name">{{ room[1] }}</span>
+              <span class="room-option-floor">{{ room[3] }} F</span>
+              <span v-if="getRoomDetail(room[0])" :class=" getRoomDetail(room[0]).free > 0 ? 'room-option-free-green' : 'room-option-free'">{{ getRoomDetail(room[0]).free }}&nbsp;座可用</span>
             </el-option>
           </el-select>
         </el-form-item>
@@ -64,6 +65,8 @@ import libraryRestApi from '@/api/library.api'
 import { ipcRenderer } from 'electron'
 
 const emptyMessage = '数据加载失败'
+const maxGrabCount = 45
+const arbitraryGrabCount = 4
 
 export default {
   props: {
@@ -87,9 +90,11 @@ export default {
         battery: false,
         sun: false
       },
+      roomsDetial: [],
       singleLibRooms: [],
       seats: [],
       seatsForSelect: [],
+      seatsSearched: null,
       reserveTime: null,
       checkReserveTime: false,
       grabCount: 0,
@@ -146,6 +151,14 @@ export default {
       this.singleLibRooms = this.libraryInfo.rooms.filter((item) => {
         return item[2] === this.form.library
       })
+      this.singleLibRooms.sort((x, y) => {
+        return parseInt(x[3]) - parseInt(y[3])
+      })
+      libraryRestApi.RoomStats(this.form.library, this.userToken).then((reponse) => {
+        if (reponse.data.status === 'success') {
+          this.roomsDetial = reponse.data.data
+        }
+      }).catch(() => {})
       this.form.room = null
       this.form.seatNum = null
     },
@@ -196,6 +209,14 @@ export default {
         duration: '2000',
         message
       })
+    },
+    getRoomDetail (roomId) {
+      for (let i = 0; i < this.roomsDetial.length; i++) {
+        if (this.roomsDetial[i].roomId === roomId) {
+          return this.roomsDetial[i]
+        }
+      }
+      return null
     },
     oppointmentTimechecked (message) {
       if (message === 'exit') {
@@ -285,15 +306,15 @@ export default {
               // 位置不可用，如果未达抢座上限则继续抢
               this.grabCount += 1
               var newSeatId = this.getNewSeatNum()
-              if (this.grabSeat >= 100) {
+              if (this.grabCount >= maxGrabCount) {
                 this.$store.dispatch('updateTimer', 'fail')
                 this.$message({
                   type: 'error',
                   duration: 0,
                   showClose: true,
-                  message: '抢座失败：达到抢座尝试上限(100)，结束抢座'
+                  message: `抢座失败：达到抢座尝试上限(${maxGrabCount})，结束抢座`
                 })
-                this.windowsNotification('抢座失败', '达到抢座尝试上限(100)，结束抢座')
+                this.windowsNotification('抢座失败', `达到抢座尝试上限(${maxGrabCount})，结束抢座`)
               } else if (newSeatId === -1) {
                 this.$store.dispatch('updateTimer', 'fail')
                 this.$message({
@@ -306,9 +327,9 @@ export default {
               } else if (!this.stopGrab) {
                 this.$store.dispatch('updateTimer', 'working')
                 // 打印信息
-                var seatInTheRoom = this.seats.filter((item) => {
+                var seatInTheRoom = this.seatsSearched === null ? this.seats.filter((item) => {
                   return item.type !== 'empty'
-                })
+                }) : this.seatsSearched
                 for (let index = 0; index < seatInTheRoom.length; index++) {
                   if (seatInTheRoom[index].id === newSeatId) {
                     // console.log('第' + (this.grabCount + 1) + '次尝试抢座(座位号: ' + seatInTheRoom[index].name + ', Id: ' + newSeatId + ')')
@@ -319,9 +340,10 @@ export default {
                 // 结束打印
                 // 开始下一次抢座
                 if (!this.isVip) {
-                  this.sleep(800)
-                } else {
-                  this.sleep(520)
+                  this.sleep(200)
+                }
+                if (this.grabCount === arbitraryGrabCount) {
+                  this.searchSeatsByTime(this.form.library, this.form.room, date, beginTime, endTime, userToken)
                 }
                 this.reserveSeat(beginTime, endTime, newSeatId, date, userToken)
               } else {}
@@ -361,28 +383,31 @@ export default {
     },
     // 获得预定房间内未尝试过的 座位 id 号，全部尝试完之后返回 -1
     getNewSeatNum () {
+      if (this.seatsSearched !== null && this.seatsSearched.length === 0) {
+        return -1
+      }
       var seed = this.form.seatNum
-      var triedRoomIds = this.triedSeatIds
-      var seatInTheRoom = this.seats.filter((item) => {
+      var triedSeatIds = this.triedSeatIds
+      var seatInTheRoom = this.seatsSearched === null ? this.seats.filter((item) => {
         return item.type !== 'empty'
-      })
+      }) : this.seatsSearched
       seatInTheRoom.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
       })
-      var seatInTheRoomBetter = this.seats.filter((item) => {
+      var seatInTheRoomBetter = seatInTheRoom.filter((item) => {
         return item.type !== 'empty' && (this.form.battery ? item.power : true) && (this.form.sun ? item.window : true)
       })
       seatInTheRoomBetter.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
       })
-      var seatInTheRoomPoor = this.seats.filter((item) => {
-        return seatInTheRoom.includes(item) && !seatInTheRoomBetter.includes(item)
+      var seatInTheRoomPoor = seatInTheRoom.filter((item) => {
+        return !seatInTheRoomBetter.includes(item)
       })
       seatInTheRoomPoor.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
       })
       // 判断种子点是否已经尝试过了, 如果没有则返回种子点
-      if (!triedRoomIds.includes(seed)) { return seed }
+      if (!triedSeatIds.includes(seed)) { return seed }
       // 种子点在 seatInTheRoomBetter 中的索引号
       var seedIndex = -1
       for (let index = 0; index < seatInTheRoomBetter.length; index++) {
@@ -393,15 +418,15 @@ export default {
       }
       // 在筛选过的座位中选择位置
       for (let distance = 1; distance < seatInTheRoomBetter.length; distance++) {
-        if (seedIndex - distance >= 0 && !!seatInTheRoomBetter[seedIndex - distance].id && !triedRoomIds.includes(seatInTheRoomBetter[seedIndex - distance].id)) {
+        if (seedIndex - distance >= 0 && !!seatInTheRoomBetter[seedIndex - distance].id && !triedSeatIds.includes(seatInTheRoomBetter[seedIndex - distance].id)) {
           return seatInTheRoomBetter[seedIndex - distance].id
-        } else if (seedIndex + distance < seatInTheRoomBetter.length && !!seatInTheRoomBetter[seedIndex + distance].id && !triedRoomIds.includes(seatInTheRoomBetter[seedIndex + distance].id)) {
+        } else if (seedIndex + distance < seatInTheRoomBetter.length && !!seatInTheRoomBetter[seedIndex + distance].id && !triedSeatIds.includes(seatInTheRoomBetter[seedIndex + distance].id)) {
           return seatInTheRoomBetter[seedIndex + distance].id
         }
       }
       // 在该房间内其他座位中选择位置
       for (let index = 0; index < seatInTheRoomPoor.length; index++) {
-        if (!!seatInTheRoomPoor[index].id && !triedRoomIds.includes(seatInTheRoomPoor[index].id)) {
+        if (!!seatInTheRoomPoor[index].id && !triedSeatIds.includes(seatInTheRoomPoor[index].id)) {
           return seatInTheRoomPoor[index].id
         }
       }
@@ -417,6 +442,20 @@ export default {
     },
     windowsNotification (title, message) {
       ipcRenderer.send('show-window-notify', title, message)
+    },
+    searchSeatsByTime (buildingId, roomId, date, startTime, endTime, token) {
+      libraryRestApi.SearchSeat(buildingId, roomId, date, startTime, endTime, token).then((response) => {
+        if (response.data.status === true) {
+          this.seatsSearched = []
+          for (var key in response.data.data.seats) {
+            if (response.data.data.seats[key].status === 'FREE') {
+              this.seatsSearched.push(response.data.data.seats[key])
+            }
+          }
+        }
+      }).catch(() => {
+        this.seatsSearched = null
+      })
     }
   }
 }
@@ -492,12 +531,24 @@ export default {
     bottom: 0;
   }
 }
-.room-option-left {
-  float: $text-color;
+.room-option-name {
+  color: $text-color;
 }
-.room-option-right {
+.room-option-free {
   float: right;
+  margin: 0 20px;
   color: $text-color-lowlight;
+  font-size: $text-size-small + 1;
+}
+.room-option-free-green {
+  float: right;
+  margin: 0 20px;
+  color: mix($button-green, #000, 70%);
+  font-size: $text-size-small + 1;
+}
+.room-option-floor {
+  float: right;
+  color: mix($button-yellow, #000, 65%);
   font-size: $text-size-small;
 }
 .seat-option-left {
