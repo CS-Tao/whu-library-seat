@@ -5,12 +5,12 @@
       <span class="info"><span class="info-key">Id</span><span class="info-value">{{ userInfo.id }}</span></span>
       <span class="info"><span class="info-key">姓名</span><span class="info-value">{{ userInfo.name }}</span></span>
       <span class="info"><span class="info-key">学号</span><span class="info-value">{{ userInfo.username }}</span></span>
-      <span class="info"><span class="info-key">状态</span><span class="info-value">{{ userInfo.status }}</span></span>
       <span class="info"><span class="info-key">是否签到</span><span class="info-value">{{ userInfo.checkedIn === null?'无数据':(userInfo.checkedIn?'是':'否') }}</span></span>
       <span class="info"><span class="info-key">最近入馆</span><span class="info-value">{{ userInfo.lastIn }}</span></span>
       <span class="info"><span class="info-key">最近出馆</span><span class="info-value">{{ userInfo.lastOut }}</span></span>
       <span class="info"><span class="info-key">最近签到地点</span><span class="info-value">{{ userInfo.lastInBuildingName }}</span></span>
       <span class="info"><span class="info-key">最近登录时间</span><span class="info-value">{{ formatDate(new Date(userInfo.lastLogin)) }}</span></span>
+      <span class="info"><span class="info-key">违约次数</span><span class="info-value">{{ userInfo.violationCount }}&nbsp;次</span></span>
       <!-- <span><span class="info-key"></span><span class="info-value">{{ violationCount }}</span></span> -->
     </div>
   </div>
