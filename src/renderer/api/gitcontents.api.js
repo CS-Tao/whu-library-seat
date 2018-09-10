@@ -1,9 +1,10 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
+import urls from './urls'
 
 var service = axios.create({
   baseURL: 'https://raw.githubusercontent.com/CS-Tao/whu-library-seat',
-  timeout: 5000,
+  timeout: 8000,
   withCredentials: true
 })
 
@@ -33,7 +34,7 @@ export default {
   // 用户验证
   validateUser: () => {
     return service({
-      url: '/user-validation/validation.json',
+      url: urls.gitcontents.validateUser.url(),
       method: 'get',
       params: {
         time: new Date()

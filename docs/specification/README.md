@@ -10,15 +10,15 @@
 
 - Windows
     - 安装包: `whu-library-seat-setup-<version>.exe`
-    - 链接: [v1.1.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.1.2/whu-library-seat-setup-1.1.2.exe)
+    - 链接: [v1.2.0](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.2.0/whu-library-seat-setup-1.2.0.exe)
 
 - Mac OS
     - 安装包: `whu-library-seat-<version>.dmg`
-    - 链接: [v1.1.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.1.2/whu-library-seat-1.1.2.dmg)
+    - 链接: [v1.2.0](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.2.0/whu-library-seat-1.2.0.dmg)
 
 - Linux
     - 安装包: `whu-library-seat-<version>-x86_64.AppImage`
-    - 链接: [v1.1.2](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.1.2/whu-library-seat-1.1.2-x86_64.AppImage)
+    - 链接: [v1.2.0](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.2.0/whu-library-seat-1.2.0-x86_64.AppImage)
 
 ### 安装软件
 
