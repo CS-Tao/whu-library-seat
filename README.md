@@ -7,6 +7,16 @@
 
 >武汉大学图书馆抢座软件
 
+## 使用说明
+
+### 文档地址
+
+[https://home.cs-tao.cc/whu-library-seat/](https://home.cs-tao.cc/whu-library-seat/)
+
+### 软件演示
+
+![软件演示](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/full.gif)
+
 ## 下载和安装
 
 ### 最新版本下载
@@ -17,15 +27,15 @@
 
 - Windows
     - 安装包: `whu-library-seat-setup-<version>.exe`
-    - 链接: [v1.2.0](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.2.0/whu-library-seat-setup-1.2.0.exe)
+    - 链接: [v1.2.1](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.2.1/whu-library-seat-setup-1.2.1.exe)
 
 - Mac OS
     - 安装包: `whu-library-seat-<version>.dmg`
-    - 链接: [v1.2.0](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.2.0/whu-library-seat-1.2.0.dmg)
+    - 链接: [v1.2.1](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.2.1/whu-library-seat-1.2.1.dmg)
 
 - Linux
     - 安装包: `whu-library-seat-<version>-x86_64.AppImage`
-    - 链接: [v1.2.0](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.2.0/whu-library-seat-1.2.0-x86_64.AppImage)
+    - 链接: [v1.2.1](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.2.1/whu-library-seat-1.2.1-x86_64.AppImage)
 
 ### 安装软件
 
@@ -40,16 +50,6 @@
 ### 软件更新
 
 软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮
-
-## 使用说明
-
-### 文档地址
-
-[https://home.cs-tao.cc/whu-library-seat/](https://home.cs-tao.cc/whu-library-seat/)
-
-### 软件演示
-
-![软件演示](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/full.gif)
 
 # 面向开发者
 
