@@ -267,6 +267,7 @@ export default {
       this.triedSeatIds = []
       this.stopGrab = false
       this.grabCount = 0
+      this.seatsSearched = null
       libraryRestApi.Login(this.userAccount, this.userPasswd).then((response) => {
         if (response.data.status === 'success') {
           this.$store.dispatch('setToken', response.data.data.token)
