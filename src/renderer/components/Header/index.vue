@@ -209,8 +209,8 @@ export default {
           this.login()
           return true
         } else {
-          this.$store.dispatch('setToken', null)
-          this.showError('软件用户认证失败')
+          this.login()
+          return true
         }
       }).catch(() => {
         this.login()
