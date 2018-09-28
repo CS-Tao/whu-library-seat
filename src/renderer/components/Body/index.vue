@@ -62,6 +62,7 @@ import userForm from './User'
 import historyForm from './History'
 import timerForm from './Timer'
 import libraryRestApi from '@/api/library.api'
+import usageApi from '@/api/usage.api'
 import { ipcRenderer } from 'electron'
 
 const emptyMessage = '数据加载失败'
@@ -332,6 +333,7 @@ export default {
             duration: 0
           })
           this.windowsNotification('预约成功', '请打开软件查看')
+          usageApi.grabState(this.userAccount, true, 6).then(() => {}).catch(() => {})
         } else {
           if (response.data.code === 1 || response.data.code === '1') {
             // 预约失败，请尽快选择其他时段或座位
@@ -355,6 +357,7 @@ export default {
                   message: `抢座失败：达到抢座尝试上限(${maxGrabCount})，结束抢座`
                 })
                 this.windowsNotification('抢座失败', `达到抢座尝试上限(${maxGrabCount})，结束抢座`)
+                usageApi.grabState(this.userAccount, false, 7).then(() => {}).catch(() => {})
               } else if (newSeatId === -1) {
                 this.$store.dispatch('updateTimer', 'fail')
                 this.$message({
@@ -364,6 +367,7 @@ export default {
                   message: '抢座失败：该房间在指定的时间段内没有空闲位置'
                 })
                 this.windowsNotification('抢座失败', '该房间在指定的时间段内没有空闲位置')
+                usageApi.grabState(this.userAccount, false, 8).then(() => {}).catch(() => {})
               } else if (!this.stopGrab) {
                 this.$store.dispatch('updateTimer', 'working')
                 // 打印信息
@@ -396,6 +400,7 @@ export default {
                 message: response.data.message ? response.data.message : emptyMessage
               })
               this.windowsNotification('抢座失败', response.data.message ? response.data.message : emptyMessage)
+              usageApi.grabState(this.userAccount, false, 9).then(() => {}).catch(() => {})
             }
           } else if (response.data.code === 12 && response.data.code === '12') {
             // 登录失败: 用户名或密码不正确
@@ -407,6 +412,7 @@ export default {
               message: response.data.message ? response.data.message : emptyMessage
             })
             this.windowsNotification('抢座失败', response.data.message ? response.data.message : emptyMessage)
+            usageApi.grabState(this.userAccount, false, 10).then(() => {}).catch(() => {})
           } else {
             // 其他
             this.$store.dispatch('updateTimer', 'fail')
@@ -417,6 +423,7 @@ export default {
               message: response.data.message ? response.data.message : emptyMessage
             })
             this.windowsNotification('抢座失败', response.data.message ? response.data.message : emptyMessage)
+            usageApi.grabState(this.userAccount, false, 11).then(() => {}).catch(() => {})
           }
         }
       }).catch(() => {})
