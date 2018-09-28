@@ -35,7 +35,7 @@ export default {
   validateUser: () => {
     return service({
       url: urls.gitcontents.validateUser.url(),
-      method: 'get',
+      method: urls.gitcontents.validateUser.method,
       params: {
         time: new Date()
       }

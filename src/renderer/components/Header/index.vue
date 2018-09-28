@@ -79,6 +79,7 @@
 import { mapGetters } from 'vuex'
 import settingsForm from './Settings'
 import gitcontentsApi from '@/api/gitcontents.api'
+import usageApi from '@/api/usage.api'
 import libraryRestApi from '@/api/library.api'
 
 const emptyMessage = '数据加载失败'
@@ -196,10 +197,12 @@ export default {
           if (userItem === null) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
+            usageApi.loginState(this.userInfo.account, false, 0).then(() => {}).catch(() => {})
             return false
           } else if (!userItem.status) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
+            usageApi.loginState(this.userInfo.account, false, 1).then(() => {}).catch(() => {})
             return false
           }
           for (let index = 0; index < groups.length; index++) {
@@ -212,10 +215,12 @@ export default {
           if (groupItem === null) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
+            usageApi.loginState(this.userInfo.account, false, 2).then(() => {}).catch(() => {})
             return false
           } else if (!groupItem.status) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
+            usageApi.loginState(this.userInfo.account, false, 3).then(() => {}).catch(() => {})
             return false
           }
           this.login()
@@ -245,6 +250,7 @@ export default {
       libraryRestApi.Login(this.userInfo.account, this.userInfo.passwd).then((response) => {
         if (response.data.status === 'success') {
           this.loadRooms(response.data.data.token)
+          usageApi.loginState(this.userInfo.account, true, 4).then(() => {}).catch(() => {})
         } else {
           this.$store.dispatch('setToken', null)
           this.$message({
@@ -253,6 +259,7 @@ export default {
             showClose: true,
             message: response.data.message ? response.data.message : emptyMessage
           })
+          usageApi.loginState(this.userInfo.account, false, 5).then(() => {}).catch(() => {})
         }
       }).catch(() => {})
     },
