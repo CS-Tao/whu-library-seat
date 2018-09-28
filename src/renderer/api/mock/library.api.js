@@ -602,5 +602,9 @@ export default {
           '23022': {'type': 'empty'}}},
       'message': '',
       'code': '0'}
+  },
+  Stop: config => {
+    console.log('Mock: ' + config.url)
+    return {'status': 'success', 'data': null, 'message': '已终止使用当前预约', 'code': '0'}
   }
 }

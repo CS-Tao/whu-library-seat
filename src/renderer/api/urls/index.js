@@ -107,6 +107,14 @@ const urls = {
       },
       regular: /\/rest\/v2\/history\//,
       method: 'get'
+    },
+    // 终止使用
+    Stop: {
+      url () {
+        return '/rest/v2/stop'
+      },
+      regular: /\/rest\/v2\/stop/,
+      method: 'get'
     }
   }
 }

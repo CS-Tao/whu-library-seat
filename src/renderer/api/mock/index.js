@@ -42,3 +42,6 @@ Mock.mock(urls.library.User.regular, libraryApi.User.method, libraryApi.User)
 
 // 得到预约历史
 Mock.mock(urls.library.History.regular, libraryApi.History.method, libraryApi.History)
+
+// 终止使用
+Mock.mock(urls.library.Stop.regular, libraryApi.Stop.method, libraryApi.Stop)

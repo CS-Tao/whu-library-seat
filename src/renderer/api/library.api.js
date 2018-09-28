@@ -107,5 +107,15 @@ export default {
         token
       }
     })
+  },
+  // 终止使用
+  Stop: (token) => {
+    return request({
+      url: urls.library.Stop.url(),
+      method: urls.library.Stop.method,
+      headers: {
+        token
+      }
+    })
   }
 }

@@ -290,22 +290,38 @@ export default {
           if (response.data.status === 'success') {
             var reservations = response.data.data.reservations
             var reservation = reservations.filter((item) => {
-              return item.stat === 'RESERVE'
+              return item.stat === 'RESERVE' || item.stat === 'CHECK_IN' || item.stat === 'AWAY'
             })
-            if (reservation && reservation.length === 1) {
-              // 取消预约
-              libraryRestApi.Cancel(reservation[0].id, this.userToken).then((response) => {
-                if (response.data.status === 'success') {
-                  this.$message({
-                    type: 'success',
-                    duration: '1000',
-                    message: '取消已有预约'
-                  })
-                }
-                this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
-              }).catch(() => {
-                this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
-              })
+            if (reservation && reservation.length > 0) {
+              if (reservation[0].stat === 'RESERVE') {
+                // 取消当前预约
+                libraryRestApi.Cancel(reservation[0].id, this.userToken).then((response) => {
+                  if (response.data.status === 'success') {
+                    this.$message({
+                      type: 'success',
+                      duration: '1000',
+                      message: '取消已有预约'
+                    })
+                  }
+                  this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
+                }).catch(() => {
+                  this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
+                })
+              } else {
+                // 终止当前使用
+                libraryRestApi.Cancel(reservation[0].id, this.userToken).then((response) => {
+                  if (response.data.status === 'success') {
+                    this.$message({
+                      type: 'success',
+                      duration: '1000',
+                      message: response.data.message ? response.data.message : emptyMessage
+                    })
+                  }
+                  this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
+                }).catch(() => {
+                  this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
+                })
+              }
             } else {
               this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
             }
