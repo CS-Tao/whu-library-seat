@@ -60,7 +60,14 @@
           </el-button>
         </el-form-item>
         <div class="form-item" v-if="!hasToken">
-          <el-button type="primary" class="login-button" @click="validateUser()">登录</el-button>
+          <el-button
+            type="primary"
+            :class="!working?'login-button':'button-disabled'"
+            :icon="working?'el-icon-loading':null"
+            :style="working?'width: 110px;':''"
+            @click="validateUser()">
+            {{btnText}}
+          </el-button>
         </div>
       </div>
     </el-form>
@@ -85,7 +92,8 @@ export default {
       },
       accountLocked: false,
       passwdLocked: false,
-      settingsVisible: false
+      settingsVisible: false,
+      working: false
     }
   },
   components: {
@@ -98,6 +106,9 @@ export default {
       'hasToken',
       'userToken'
     ]),
+    btnText () {
+      return this.working ? '白名单验证' : '登录'
+    },
     isLover () {
       return this.userInfo.account === 2017302590175
     }
@@ -168,6 +179,7 @@ export default {
         this.showWarning('密码不能为空')
         return false
       }
+      this.working = true
       gitcontentsApi.validateUser().then((response) => {
         if (response.data.status === 'success') {
           var users = response.data.data.users
@@ -229,6 +241,7 @@ export default {
 
       this.$store.dispatch('setAccount', this.userInfo.account)
       this.$store.dispatch('setPasswd', this.userInfo.passwd)
+      this.working = false
       libraryRestApi.Login(this.userInfo.account, this.userInfo.passwd).then((response) => {
         if (response.data.status === 'success') {
           this.loadRooms(response.data.data.token)
@@ -350,6 +363,13 @@ export default {
     &:active {
       background: $primary-button-background-click!important;
     }
+  }
+  .button-disabled {
+    margin: 20px 0 60px 0;
+    width: 90px;
+    color: $text-color;
+    background: $disabled-button-background-blur!important;
+    border-color: $disabled-button-border!important;
   }
 }
 .logo {
