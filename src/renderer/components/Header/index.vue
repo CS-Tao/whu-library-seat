@@ -60,7 +60,14 @@
           </el-button>
         </el-form-item>
         <div class="form-item" v-if="!hasToken">
-          <el-button type="primary" class="login-button" @click="validateUser()">登录</el-button>
+          <el-button
+            type="primary"
+            :class="!working?'login-button':'button-disabled'"
+            :icon="working?'el-icon-loading':null"
+            :style="working?'width: 110px;':''"
+            @click="validateUser()">
+            {{btnText}}
+          </el-button>
         </div>
       </div>
     </el-form>
@@ -72,6 +79,7 @@
 import { mapGetters } from 'vuex'
 import settingsForm from './Settings'
 import gitcontentsApi from '@/api/gitcontents.api'
+import usageApi from '@/api/usage.api'
 import libraryRestApi from '@/api/library.api'
 
 const emptyMessage = '数据加载失败'
@@ -85,7 +93,8 @@ export default {
       },
       accountLocked: false,
       passwdLocked: false,
-      settingsVisible: false
+      settingsVisible: false,
+      working: false
     }
   },
   components: {
@@ -98,6 +107,9 @@ export default {
       'hasToken',
       'userToken'
     ]),
+    btnText () {
+      return this.working ? '白名单验证' : '登录'
+    },
     isLover () {
       return this.userInfo.account === 2017302590175
     }
@@ -168,6 +180,7 @@ export default {
         this.showWarning('密码不能为空')
         return false
       }
+      this.working = true
       gitcontentsApi.validateUser().then((response) => {
         if (response.data.status === 'success') {
           var users = response.data.data.users
@@ -184,10 +197,12 @@ export default {
           if (userItem === null) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
+            usageApi.loginState(this.userInfo.account, false, 0).then(() => {}).catch(() => {})
             return false
           } else if (!userItem.status) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
+            usageApi.loginState(this.userInfo.account, false, 1).then(() => {}).catch(() => {})
             return false
           }
           for (let index = 0; index < groups.length; index++) {
@@ -200,10 +215,12 @@ export default {
           if (groupItem === null) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
+            usageApi.loginState(this.userInfo.account, false, 2).then(() => {}).catch(() => {})
             return false
           } else if (!groupItem.status) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
+            usageApi.loginState(this.userInfo.account, false, 3).then(() => {}).catch(() => {})
             return false
           }
           this.login()
@@ -229,9 +246,11 @@ export default {
 
       this.$store.dispatch('setAccount', this.userInfo.account)
       this.$store.dispatch('setPasswd', this.userInfo.passwd)
+      this.working = false
       libraryRestApi.Login(this.userInfo.account, this.userInfo.passwd).then((response) => {
         if (response.data.status === 'success') {
           this.loadRooms(response.data.data.token)
+          usageApi.loginState(this.userInfo.account, true, 4).then(() => {}).catch(() => {})
         } else {
           this.$store.dispatch('setToken', null)
           this.$message({
@@ -240,6 +259,7 @@ export default {
             showClose: true,
             message: response.data.message ? response.data.message : emptyMessage
           })
+          usageApi.loginState(this.userInfo.account, false, 5).then(() => {}).catch(() => {})
         }
       }).catch(() => {})
     },
@@ -350,6 +370,13 @@ export default {
     &:active {
       background: $primary-button-background-click!important;
     }
+  }
+  .button-disabled {
+    margin: 20px 0 60px 0;
+    width: 90px;
+    color: $text-color;
+    background: $disabled-button-background-blur!important;
+    border-color: $disabled-button-border!important;
   }
 }
 .logo {

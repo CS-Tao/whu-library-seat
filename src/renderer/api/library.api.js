@@ -6,7 +6,7 @@ export default {
   Login: (account, passwd) => {
     return request({
       url: urls.library.Login.url(),
-      method: 'get',
+      method: urls.library.Login.method,
       params: {
         username: account,
         password: passwd
@@ -17,7 +17,7 @@ export default {
   FreeFilters: (token) => {
     return request({
       url: urls.library.FreeFilters.url(),
-      method: 'get',
+      method: urls.library.FreeFilters.method,
       headers: {
         token
       }
@@ -27,7 +27,7 @@ export default {
   RoomStats: (libraryId, token) => {
     return request({
       url: urls.library.RoomStats.url(libraryId),
-      method: 'get',
+      method: urls.library.RoomStats.method,
       headers: {
         token
       }
@@ -37,7 +37,7 @@ export default {
   ValidateToken: (token) => {
     return request({
       url: urls.library.ValidateToken.url(),
-      method: 'get',
+      method: urls.library.ValidateToken.method,
       headers: {
         token
       }
@@ -47,7 +47,7 @@ export default {
   LayoutByDate: (roomId, dateStr, token) => {
     return request({
       url: urls.library.LayoutByDate.url(roomId, dateStr),
-      method: 'get',
+      method: urls.library.LayoutByDate.method,
       headers: {
         token
       }
@@ -59,7 +59,7 @@ export default {
   SearchSeat: (buildingId, roomId, dateStr, startTime, endTime, token) => {
     return request({
       url: urls.library.SearchSeat.url(dateStr, startTime, endTime),
-      method: 'post',
+      method: urls.library.SearchSeat.method,
       headers: {
         token
       },
@@ -71,7 +71,7 @@ export default {
   Book: (t, t2, startTime, endTime, seat, date, token) => {
     return request({
       url: urls.library.Book.url(),
-      method: 'post',
+      method: urls.library.Book.method,
       headers: {
         token
       },
@@ -82,7 +82,7 @@ export default {
   Cancel: (id, token) => {
     return request({
       url: urls.library.Cancel.url(id),
-      method: 'get',
+      method: urls.library.Cancel.method,
       headers: {
         token
       }
@@ -92,7 +92,7 @@ export default {
   User: (token) => {
     return request({
       url: urls.library.User.url(),
-      method: 'get',
+      method: urls.library.User.method,
       headers: {
         token
       }
@@ -102,7 +102,17 @@ export default {
   History: (page, count, token) => {
     return request({
       url: urls.library.History.url(page, count),
-      method: 'get',
+      method: urls.library.History.method,
+      headers: {
+        token
+      }
+    })
+  },
+  // 终止使用
+  Stop: (token) => {
+    return request({
+      url: urls.library.Stop.url(),
+      method: urls.library.Stop.method,
       headers: {
         token
       }
