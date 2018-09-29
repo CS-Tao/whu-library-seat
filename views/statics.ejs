@@ -60,7 +60,15 @@
         }).catch((error) => {
           console.log(error);
         });
-        localStorage.homepageAuthForCSTaoOrFriend = null
+        if (localStorage.visitCount !== null && localStorage.visitCount !== undefined && localStorage.visitCount !== 0 && localStorage.visitCount !== 'NaN') {
+          localStorage.visitCount++
+          if (localStorage.visitCount > 20) {
+            localStorage.homepageAuthForCSTaoOrFriend = null
+            localStorage.visitCount = null
+          }
+        } else {
+          localStorage.visitCount = 1
+        }
       },
       data: {
         tableData: []
