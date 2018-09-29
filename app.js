@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginState = require('./routes/loginState');
 var grabState = require('./routes/grabState');
+var staticsData = require('./routes/staticsData');
 
 var app = express();
 
@@ -25,6 +26,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/loginState', loginState);
 app.use('/grabState', grabState);
+app.use('/staticsdata', staticsData);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>武汉大学图书馆抢座软件 - 使用统计</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+    #app {
+      margin: 30px;
+    }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <el-table :data="tableData" style="width: 100%" :border="true" :stripe="true" height="90vh">
+        <el-table-column prop="id" label="事件 Id"></el-table-column>
+        <el-table-column label="状态">
+          <template slot-scope="scope">
+            <i v-if="scope.row.state === 1" class="el-icon-success" style="color: green"></i>
+            <i v-else class="el-icon-error" style="color: red"></i>
+            <span style="margin-left: 5px">{{ scope.row.state === 0 ? '失败' : '成功' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="event" label="事件">
+          <template slot-scope="scope">
+            <i v-if="scope.row.event === 'login'" class="el-icon-mobile-phone" style="color: #909399"></i>
+            <i v-else class="el-icon-bell" style="color: #E6A23C"></i>
+            <span style="margin-left: 5px" :style="{color: scope.row.event === 'login' ? '#909399' : '#E6A23C'}">{{ scope.row.event === 'login' ? '登录' : '抢座' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="code" label="状态码"></el-table-column>
+        <el-table-column width="200" label="日期">
+          <template slot-scope="scope">
+            <i class="el-icon-time"></i>
+            <span style="margin-left: 5px">{{ scope.row.year + '-' + scope.row.month + '-' + scope.row.day + ' ' + scope.row.hour + ':' + scope.row.min + ':' + scope.row.sec }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="account" label="账号" width="180"></el-table-column>
+        <el-table-column label="软件版本">
+          <template slot-scope="scope">
+            <span>{{ 'v' + scope.row.version }}</span>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      mounted () {
+        axios.get('/staticsdata').then((response) => {
+          this.tableData = response.data
+            console.log(response);
+          }).catch((error) => {
+            console.log(error);
+          });
+      },
+      data: {
+        tableData: []
+      }
+    })
+  </script>
+</html>
