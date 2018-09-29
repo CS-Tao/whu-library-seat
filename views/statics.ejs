@@ -57,10 +57,10 @@
       mounted () {
         axios.get('/staticsdata').then((response) => {
           this.tableData = response.data
-            console.log(response);
-          }).catch((error) => {
-            console.log(error);
-          });
+        }).catch((error) => {
+          console.log(error);
+        });
+        localStorage.homepageAuthForCSTaoOrFriend = null
       },
       data: {
         tableData: []
