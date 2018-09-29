@@ -17,7 +17,7 @@
   <body>
     <div id="app">
       <el-table :data="tableData" style="width: 100%" :border="true" :stripe="true" height="90vh">
-        <el-table-column prop="id" label="事件 Id"></el-table-column>
+        <el-table-column prop="id" label="Id"></el-table-column>
         <el-table-column label="状态">
           <template slot-scope="scope">
             <i v-if="scope.row.state === 1" class="el-icon-success" style="color: green"></i>
@@ -36,7 +36,7 @@
         <el-table-column width="200" label="时间">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
-            <span style="margin-left: 5px">{{ scope.row.year + '-' + scope.row.month + '-' + scope.row.day + ' ' + scope.row.hour + ':' + scope.row.min + ':' + scope.row.sec }}</span>
+            <span style="margin-left: 5px">{{ scope.row.year + '-' + fill0(scope.row.month) + '-' + fill0(scope.row.day) + ' ' + fill0(scope.row.hour) + ':' + fill0(scope.row.min) + ':' + fill0(scope.row.sec) }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="account" label="账号" width="180"></el-table-column>
@@ -64,6 +64,12 @@
       },
       data: {
         tableData: []
+      },
+      methods: {
+        fill0 (value) {
+          var str = value > 9 ? '' : '0'
+          return str + value
+        }
       }
     })
   </script>
