@@ -223,7 +223,7 @@ const app = {
         }, 1000)
         timerInfo.timerId = setTimeout(() => {
           param.bookFunc()
-        }, timerInfo.totalTime)
+        }, timerInfo.totalTime + 1)
         timerInfo.status = statusEnum.waiting
         timerInfo.message = getTimeStateByMilliSecond(timerInfo.totalTime)
         commit('SET_TIMER', timerInfo)
