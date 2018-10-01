@@ -17,7 +17,7 @@
   <body>
     <div id="app">
       <el-table :data="tableData" style="width: 100%" :border="true" :stripe="true" height="90vh">
-        <el-table-column width="100" prop="id" label="Id"></el-table-column>
+        <el-table-column width="50" prop="id" label="Id"></el-table-column>
         <el-table-column width="100" label="状态">
           <template slot-scope="scope">
             <i v-if="scope.row.state === 1" class="el-icon-success" style="color: green"></i>
@@ -41,7 +41,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="account" label="账号" width="180"></el-table-column>
-        <el-table-column label="软件版本">
+        <el-table-column width="100" label="软件版本">
           <template slot-scope="scope">
             <span>{{ 'v' + scope.row.version }}</span>
           </template>
