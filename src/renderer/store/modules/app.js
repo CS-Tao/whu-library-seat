@@ -127,7 +127,7 @@ const app = {
     SAVE_SEATINFO: (state, seatInfo) => {
       state.seatInfo = {...seatInfo}
       state.seatInfo.date = seatInfo.date === formatDate(new Date()) ? 0 : 1
-      store.set('date', state.seatInfo.date)
+      store.set('whuSeatDate', state.seatInfo.date)
       store.set('whuSeatLibrary', seatInfo.library)
       store.set('whuSeatRoom', seatInfo.room)
       store.set('whuSeatBeginTime', seatInfo.beginTime)

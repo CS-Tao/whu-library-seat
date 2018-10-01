@@ -375,7 +375,7 @@ export default {
                   message: `抢座失败：达到抢座尝试上限(${maxGrabCount})，结束抢座`
                 })
                 this.windowsNotification('抢座失败', `达到抢座尝试上限(${maxGrabCount})，结束抢座`)
-                usageApi.grabState(this.userAccount, false, 7)
+                usageApi.grabState(this.userAccount, false, 7, '抢座失败', `达到抢座尝试上限(${maxGrabCount})，结束抢座`)
               } else if (newSeatId === -1) {
                 this.$store.dispatch('updateTimer', 'fail')
                 this.$message({
@@ -385,7 +385,7 @@ export default {
                   message: '抢座失败：该房间在指定的时间段内没有空闲位置'
                 })
                 this.windowsNotification('抢座失败', '该房间在指定的时间段内没有空闲位置')
-                usageApi.grabState(this.userAccount, false, 8)
+                usageApi.grabState(this.userAccount, false, 8, '抢座失败：该房间在指定的时间段内没有空闲位置')
               } else if (!this.stopGrab) {
                 this.$store.dispatch('updateTimer', 'working')
                 // 打印信息
@@ -418,7 +418,7 @@ export default {
                 message: response.data.message ? response.data.message : emptyMessage
               })
               this.windowsNotification('抢座失败', response.data.message ? response.data.message : emptyMessage)
-              usageApi.grabState(this.userAccount, false, 9)
+              usageApi.grabState(this.userAccount, false, 9, response.data.message)
             }
           } else if (response.data.code === 12 && response.data.code === '12') {
             // 登录失败: 用户名或密码不正确
@@ -430,7 +430,7 @@ export default {
               message: response.data.message ? response.data.message : emptyMessage
             })
             this.windowsNotification('抢座失败', response.data.message ? response.data.message : emptyMessage)
-            usageApi.grabState(this.userAccount, false, 10)
+            usageApi.grabState(this.userAccount, false, 10, response.data.message)
           } else {
             // 其他
             this.$store.dispatch('updateTimer', 'fail')
@@ -441,7 +441,7 @@ export default {
               message: response.data.message ? response.data.message : emptyMessage
             })
             this.windowsNotification('抢座失败', response.data.message ? response.data.message : emptyMessage)
-            usageApi.grabState(this.userAccount, false, 11)
+            usageApi.grabState(this.userAccount, false, 11, response.data.message)
           }
         }
       }).catch(() => {})
