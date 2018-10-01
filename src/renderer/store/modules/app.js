@@ -61,7 +61,8 @@ const defaultTimerInfo = {
   totalTime: null,
   waitedTime: null,
   intervalId: null,
-  timerId: null
+  timerId: null,
+  loginTimerId: null
 }
 
 function getTimeStateByMilliSecond (milliSecond) {
@@ -189,6 +190,9 @@ const app = {
       if (state.timerInfo.timerId) {
         window.clearTimeout(state.timerInfo.timerId)
       }
+      if (state.timerInfo.loginTimerId) {
+        window.clearTimeout(state.timerInfo.loginTimerId)
+      }
       state.timerInfo = {...defaultTimerInfo}
       // if (status !== null) {
       //   if (status) {
@@ -237,15 +241,30 @@ const app = {
           commit('CANCEL_TIMER', null)
         }
         let timerInfo = Object()
-        timerInfo.totalTime = param.time.getTime() - (new Date()).getTime()
-        if (timerInfo.totalTime < 0) { timerInfo.totalTime = 0 }
         timerInfo.waitedTime = 0
+        timerInfo.totalTime = param.time.getTime() - (new Date()).getTime()
+        if (timerInfo.totalTime < 0) {
+          timerInfo.totalTime = 0
+          timerInfo.timerId = setTimeout(() => {
+            param.bookFunc()
+            // param.loginAndBookFunc()
+          }, timerInfo.totalTime)
+        } else if (timerInfo.totalTime > 5000) {
+          timerInfo.loginTimerId = setTimeout(() => {
+            param.loginFunc()
+          }, timerInfo.totalTime - 5000)
+          timerInfo.timerId = setTimeout(() => {
+            param.bookFunc()
+          }, timerInfo.totalTime)
+        } else {
+          timerInfo.timerId = setTimeout(() => {
+            param.bookFunc()
+            // param.loginAndBookFunc()
+          }, timerInfo.totalTime)
+        }
         timerInfo.intervalId = setInterval(() => {
           commit('UPDATE_TIMER_STATE')
         }, 1000)
-        timerInfo.timerId = setTimeout(() => {
-          param.bookFunc()
-        }, timerInfo.totalTime + 1)
         timerInfo.status = statusEnum.waiting
         timerInfo.message = getTimeStateByMilliSecond(timerInfo.totalTime)
         commit('SET_TIMER', timerInfo)

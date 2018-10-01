@@ -52,7 +52,7 @@
     </el-form>
     <user-form v-if="hasToken&&showMode==='userForm'"></user-form>
     <history-form v-if="hasToken&&showMode==='historyForm'"></history-form>
-    <timer-form v-if="hasToken&&checkReserveTime" v-model="reserveTime" :grabSeat="grabSeat" @btnClick="oppointmentTimechecked($event)"></timer-form>
+    <timer-form v-if="hasToken&&checkReserveTime" v-model="reserveTime" :book-func="grabSeat" :login-func="login" :loginAndBookFunc="loginAndReserveSeat" @btnClick="oppointmentTimechecked($event)"></timer-form>
 	</div>
 </template>
 
@@ -264,7 +264,7 @@ export default {
       this.checkReserveTime = true
     },
     grabSeat () {
-      this.loginAndReserveSeat()
+      this.reserveSeat(this.form.beginTime, this.form.endTime, this.form.seatNum, this.form.date, this.userToken)
     },
     loginAndReserveSeat () {
       this.triedSeatIds = []
@@ -282,8 +282,27 @@ export default {
             showClose: true,
             message: response.data.message ? response.data.message : emptyMessage
           })
+          usageApi.loginState(this.userInfo.account, false, 12, response.data.message)
         }
-      }).catch(() => {})
+      }).catch((error) => {
+        usageApi.loginState(this.userInfo.account, false, 13, error.message)
+      })
+    },
+    login () {
+      libraryRestApi.Login(this.userAccount, this.userPasswd).then((response) => {
+        if (response.data.status === 'success') {
+          this.$store.dispatch('setToken', response.data.data.token)
+          this.$message({
+            type: 'success',
+            duration: '1000',
+            message: '登录成功'
+          })
+        } else {
+          usageApi.loginState(this.userInfo.account, false, 14, response.data.message)
+        }
+      }).catch((error) => {
+        usageApi.loginState(this.userInfo.account, false, 15, error.message)
+      })
     },
     reserveSeat (beginTime, endTime, seatNum, date, userToken, cancelCurrent = false) {
       if (cancelCurrent) {
@@ -448,11 +467,13 @@ export default {
     },
     // 获得预定房间内未尝试过的 座位 id 号，全部尝试完之后返回 -1
     getNewSeatNum () {
+      var seed = this.form.seatNum
+      var triedSeatIds = this.triedSeatIds
+      // 判断种子点是否已经尝试过了, 如果没有则返回种子点
+      if (!triedSeatIds.includes(seed)) { return seed }
       if (this.seatsSearched !== null && this.seatsSearched.length === 0) {
         return -1
       }
-      var seed = this.form.seatNum
-      var triedSeatIds = this.triedSeatIds
       var seatInTheRoom = this.seatsSearched === null ? this.seats.filter((item) => {
         return item.type !== 'empty'
       }) : this.seatsSearched
@@ -471,8 +492,6 @@ export default {
       seatInTheRoomPoor.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
       })
-      // 判断种子点是否已经尝试过了, 如果没有则返回种子点
-      if (!triedSeatIds.includes(seed)) { return seed }
       // 种子点在 seatInTheRoomBetter 中的索引号
       var seedIndex = -1
       for (let index = 0; index < seatInTheRoomBetter.length; index++) {
