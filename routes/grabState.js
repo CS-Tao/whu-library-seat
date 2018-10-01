@@ -11,6 +11,7 @@ router.post('/', function(req, res, next) {
   var state = params.state;
   var code = params.code;
   var version = params.version;
+  var message = params.message ? message : '';
   var time = new Date(params.time);
   var year = time.getFullYear();
   var month = time.getMonth() + 1;
@@ -21,8 +22,8 @@ router.post('/', function(req, res, next) {
   var events = 'grab';
 
   var queryString = `Insert into events \
-    (account, state, year, month, day, hour, min, sec, event, code, version) \
-    values ('${account}', ${state}, ${year}, ${month}, ${day}, ${hour}, ${min}, ${sec}, '${events}', ${code}, '${version}')`;
+    (account, state, year, month, day, hour, min, sec, event, code, version, message) \
+    values ('${account}', ${state}, ${year}, ${month}, ${day}, ${hour}, ${min}, ${sec}, '${events}', ${code}, '${version}', '${message}')`;
 
   connection.query(queryString, function (err, results) {
       if (err) {
