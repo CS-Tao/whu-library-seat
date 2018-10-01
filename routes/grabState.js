@@ -11,7 +11,7 @@ router.post('/', function(req, res, next) {
   var state = params.state;
   var code = params.code;
   var version = params.version;
-  var message = params.message ? message : '';
+  var message = params.message ? params.message : '';
   var time = new Date(params.time);
   var year = time.getFullYear();
   var month = time.getMonth() + 1;
