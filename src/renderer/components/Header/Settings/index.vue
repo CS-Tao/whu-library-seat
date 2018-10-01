@@ -21,6 +21,9 @@
       <el-form-item label="点击窗口的关闭按钮时退出到托盘" label-width="224px" class="form-item" style="margin-top: 15px;text-align: center;">
         <el-switch v-model="settings.backgroundEnable" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </el-form-item>
+      <el-form-item label="提交软件使用数据帮助我改善软件" label-width="224px" class="form-item" style="margin-top: 15px;text-align: center;">
+        <el-switch v-model="settings.usageRecordEnable" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+      </el-form-item>
       <div class="form-item" style="text-align: center;">
         <el-button type="primary" class="save-button" @click="saveSettings()">保存设置</el-button>
         <el-button type="primary" class="cancel-button" @click="restoreSettings()">恢复默认</el-button>
@@ -46,7 +49,8 @@ export default {
         oppointmentTime: null,
         beginTime: null,
         endTime: null,
-        backgroundEnable: true
+        backgroundEnable: false,
+        usageRecordEnable: true
       }
     }
   },

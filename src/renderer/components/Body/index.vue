@@ -108,6 +108,7 @@ export default {
       'userAccount',
       'userPasswd',
       'freeDates',
+      'freeDatesDefault',
       'freeBeginTime',
       'freeEndTime',
       'libraryInfo',
@@ -134,6 +135,7 @@ export default {
   mounted () {
     this.form = {...this.seatInfo}
     this.form.date = this.freeDates.length > 0 ? this.freeDates[0] : null
+    this.form.date = this.freeDatesDefault
     if (this.seatInfo.library !== null) {
       this.form.library = this.seatInfo.library
       this.libraryChanged()
@@ -349,7 +351,7 @@ export default {
             duration: 0
           })
           this.windowsNotification('预约成功', '请打开软件查看')
-          usageApi.grabState(this.userAccount, true, 6).then(() => {}).catch(() => {})
+          usageApi.grabState(this.userAccount, true, 6)
         } else {
           if (response.data.code === 1 || response.data.code === '1') {
             // 预约失败，请尽快选择其他时段或座位
@@ -373,7 +375,7 @@ export default {
                   message: `抢座失败：达到抢座尝试上限(${maxGrabCount})，结束抢座`
                 })
                 this.windowsNotification('抢座失败', `达到抢座尝试上限(${maxGrabCount})，结束抢座`)
-                usageApi.grabState(this.userAccount, false, 7).then(() => {}).catch(() => {})
+                usageApi.grabState(this.userAccount, false, 7)
               } else if (newSeatId === -1) {
                 this.$store.dispatch('updateTimer', 'fail')
                 this.$message({
@@ -383,7 +385,7 @@ export default {
                   message: '抢座失败：该房间在指定的时间段内没有空闲位置'
                 })
                 this.windowsNotification('抢座失败', '该房间在指定的时间段内没有空闲位置')
-                usageApi.grabState(this.userAccount, false, 8).then(() => {}).catch(() => {})
+                usageApi.grabState(this.userAccount, false, 8)
               } else if (!this.stopGrab) {
                 this.$store.dispatch('updateTimer', 'working')
                 // 打印信息
@@ -416,7 +418,7 @@ export default {
                 message: response.data.message ? response.data.message : emptyMessage
               })
               this.windowsNotification('抢座失败', response.data.message ? response.data.message : emptyMessage)
-              usageApi.grabState(this.userAccount, false, 9).then(() => {}).catch(() => {})
+              usageApi.grabState(this.userAccount, false, 9)
             }
           } else if (response.data.code === 12 && response.data.code === '12') {
             // 登录失败: 用户名或密码不正确
@@ -428,7 +430,7 @@ export default {
               message: response.data.message ? response.data.message : emptyMessage
             })
             this.windowsNotification('抢座失败', response.data.message ? response.data.message : emptyMessage)
-            usageApi.grabState(this.userAccount, false, 10).then(() => {}).catch(() => {})
+            usageApi.grabState(this.userAccount, false, 10)
           } else {
             // 其他
             this.$store.dispatch('updateTimer', 'fail')
@@ -439,7 +441,7 @@ export default {
               message: response.data.message ? response.data.message : emptyMessage
             })
             this.windowsNotification('抢座失败', response.data.message ? response.data.message : emptyMessage)
-            usageApi.grabState(this.userAccount, false, 11).then(() => {}).catch(() => {})
+            usageApi.grabState(this.userAccount, false, 11)
           }
         }
       }).catch(() => {})

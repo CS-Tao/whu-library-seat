@@ -197,12 +197,12 @@ export default {
           if (userItem === null) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
-            usageApi.loginState(this.userInfo.account, false, 0).then(() => {}).catch(() => {})
+            usageApi.loginState(this.userInfo.account, false, 0)
             return false
           } else if (!userItem.status) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
-            usageApi.loginState(this.userInfo.account, false, 1).then(() => {}).catch(() => {})
+            usageApi.loginState(this.userInfo.account, false, 1)
             return false
           }
           for (let index = 0; index < groups.length; index++) {
@@ -215,12 +215,12 @@ export default {
           if (groupItem === null) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
-            usageApi.loginState(this.userInfo.account, false, 2).then(() => {}).catch(() => {})
+            usageApi.loginState(this.userInfo.account, false, 2)
             return false
           } else if (!groupItem.status) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
-            usageApi.loginState(this.userInfo.account, false, 3).then(() => {}).catch(() => {})
+            usageApi.loginState(this.userInfo.account, false, 3)
             return false
           }
           this.login()
@@ -250,7 +250,7 @@ export default {
       libraryRestApi.Login(this.userInfo.account, this.userInfo.passwd).then((response) => {
         if (response.data.status === 'success') {
           this.loadRooms(response.data.data.token)
-          usageApi.loginState(this.userInfo.account, true, 4).then(() => {}).catch(() => {})
+          usageApi.loginState(this.userInfo.account, true, 4)
         } else {
           this.$store.dispatch('setToken', null)
           this.$message({
@@ -259,7 +259,7 @@ export default {
             showClose: true,
             message: response.data.message ? response.data.message : emptyMessage
           })
-          usageApi.loginState(this.userInfo.account, false, 5).then(() => {}).catch(() => {})
+          usageApi.loginState(this.userInfo.account, false, 5)
         }
       }).catch(() => {})
     },
