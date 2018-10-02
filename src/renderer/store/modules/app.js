@@ -66,7 +66,7 @@ const defaultTimerInfo = {
 }
 
 function getTimeStateByMilliSecond (milliSecond) {
-  let hours = parseInt((milliSecond % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  let hours = parseInt(milliSecond / (1000 * 60 * 60))
   let minutes = parseInt((milliSecond % (1000 * 60 * 60)) / (1000 * 60))
   let seconds = parseInt((milliSecond % (1000 * 60)) / 1000)
   hours = hours < 0 ? 0 : hours
