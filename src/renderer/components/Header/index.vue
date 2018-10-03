@@ -62,6 +62,7 @@
         <div class="form-item" v-if="!hasToken">
           <el-button
             type="primary"
+            :disabled="working"
             :class="!working?'login-button':'button-disabled'"
             :icon="working?'el-icon-loading':null"
             :style="working?'width: 110px;':''"
@@ -197,12 +198,14 @@ export default {
           if (userItem === null) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
+            this.working = false
             usageApi.loginState(this.userInfo.account, false, 0)
             return false
           } else if (!userItem.status) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
             usageApi.loginState(this.userInfo.account, false, 1, '对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
+            this.working = false
             return false
           }
           for (let index = 0; index < groups.length; index++) {
@@ -216,11 +219,13 @@ export default {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
             usageApi.loginState(this.userInfo.account, false, 2, '对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
+            this.working = false
             return false
           } else if (!groupItem.status) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
             usageApi.loginState(this.userInfo.account, false, 3, '对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
+            this.working = false
             return false
           }
           this.login()
