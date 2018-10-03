@@ -93,8 +93,7 @@ const template = [
         }
       }
     ]
-  },
-  {
+  }, {
     label: '设置',
     submenu: [
       {
@@ -106,15 +105,13 @@ const template = [
           }
         }}
     ]
-  },
-  {
+  }, {
     label: '视图',
     submenu: [
       { role: 'reload', label: '重新加载' },
       { role: 'forcereload', label: '强制重新加载' }
     ]
-  },
-  {
+  }, {
     label: '窗口',
     role: 'window',
     submenu: [
@@ -140,14 +137,29 @@ const template = [
         }
       }
     ]
-  },
-  {
+  }, {
+    label: '权限',
+    submenu: [
+      {
+        label: '申请权限',
+        click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/specification/#申请软件使用权') }
+      },
+      {
+        label: '查看白名单',
+        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json') }
+      }
+    ]
+  }, {
     label: '关于',
     role: 'about',
     submenu: [
       {
         label: '版本 v' + appVersion,
         click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases/tag/v' + appVersion) }
+      },
+      {
+        label: '更新日志',
+        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases') }
       },
       { type: 'separator' },
       {
@@ -157,15 +169,6 @@ const template = [
       {
         label: '项目',
         click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat') }
-      },
-      { type: 'separator' },
-      {
-        label: '申请权限',
-        click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/specification/#申请软件使用权') }
-      },
-      {
-        label: '用户白名单',
-        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json') }
       },
       { type: 'separator' },
       {

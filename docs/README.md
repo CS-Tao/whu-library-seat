@@ -6,8 +6,8 @@ actionLink: /#快速开始
 features:
 - title: 定时抢座
   details: 软件提供了定时抢座的功能，用户可以指定时间开始抢座，也可以通过勾选"√使用当前时间"立即抢座
-- title: 座位筛选
-  details: 用户除了可以根据场馆和房间选择筛选座位之外，还可以根据是否靠窗和是否有电源筛选座位
+- title: 座位更改
+  details: 勾选"√使用当前时间"立即抢座，如果当前已有预约、正在使用、暂离状态的座位，软件会取消当前座位，重新预约
 - title: 错误处理
   details: 当位置已经被别人预约之后，软件会根据用户提供的时间段和房间信息，自动预约距离该位置较近的座位
 footer: Copyright © 2018 CS-Tao
@@ -18,6 +18,10 @@ footer: Copyright © 2018 CS-Tao
 ::: tip
 您可以通过以下步骤快速使用本软件预约座位，查看详细使用说明请移步[用户手册](/specification/)
 :::
+
+#### 下载软件
+
+链接: [https://github.com/CS-Tao/whu-library-seat#稳定版本下载](https://github.com/CS-Tao/whu-library-seat#稳定版本下载)
 
 #### 登录
 

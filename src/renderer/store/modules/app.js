@@ -4,6 +4,22 @@ const store = new Store({
   name: 'whu-library-seat'
 })
 
+function formatDate (date, options) {
+  options = options || {}
+  options.sign = options.sign || 'yyyy-MM-dd'
+  var _complete = function (n) {
+    return (n > 9) ? n : '0' + n
+  }
+  var year = date.getFullYear()
+  var month = _complete(date.getMonth() + 1)
+  var day = _complete(date.getDate())
+  var result = options.sign
+  result = result.replace('yyyy', year)
+  result = result.replace('MM', month)
+  result = result.replace('dd', day)
+  return result
+}
+
 function getTodayTime (hours, minutes, seconds) {
   var today = new Date()
   today.setHours(hours)
@@ -26,7 +42,8 @@ const defaultSettingInfo = {
   oppointmentTime: getTodayTime(22, 45, 0),
   beginTime: getTomorrowTime(8, 0, 0),
   endTime: getTomorrowTime(22, 30, 0),
-  backgroundEnable: false
+  backgroundEnable: true,
+  usageRecordEnable: true
 }
 
 const statusEnum = {
@@ -44,11 +61,12 @@ const defaultTimerInfo = {
   totalTime: null,
   waitedTime: null,
   intervalId: null,
-  timerId: null
+  timerId: null,
+  loginTimerId: null
 }
 
 function getTimeStateByMilliSecond (milliSecond) {
-  let hours = parseInt((milliSecond % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  let hours = parseInt(milliSecond / (1000 * 60 * 60))
   let minutes = parseInt((milliSecond % (1000 * 60 * 60)) / (1000 * 60))
   let seconds = parseInt((milliSecond % (1000 * 60)) / 1000)
   hours = hours < 0 ? 0 : hours
@@ -65,7 +83,7 @@ const app = {
       token: null
     },
     seatInfo: {
-      date: '',
+      date: store.get('whuSeatDate', 0),
       library: store.get('whuSeatLibrary', null),
       room: store.get('whuSeatRoom', null),
       beginTime: store.get('whuSeatBeginTime', null),
@@ -79,7 +97,8 @@ const app = {
       oppointmentTime: new Date(store.get('oppointmentTime', defaultSettingInfo.oppointmentTime)),
       beginTime: new Date(store.get('availableBeginTime', defaultSettingInfo.beginTime)),
       endTime: new Date(store.get('availableEndTime', defaultSettingInfo.endTime)),
-      backgroundEnable: store.get('backgroundEnable', defaultSettingInfo.backgroundEnable)
+      backgroundEnable: store.get('backgroundEnable', defaultSettingInfo.backgroundEnable),
+      usageRecordEnable: store.get('usageRecordEnable', defaultSettingInfo.usageRecordEnable)
     },
     libraryInfo: {
       buildings: [],
@@ -107,7 +126,9 @@ const app = {
       store.set('whuSeatUserPasswd', passwd)
     },
     SAVE_SEATINFO: (state, seatInfo) => {
-      state.seatInfo = seatInfo
+      state.seatInfo = {...seatInfo}
+      state.seatInfo.date = seatInfo.date === formatDate(new Date()) ? 0 : 1
+      store.set('whuSeatDate', state.seatInfo.date)
       store.set('whuSeatLibrary', seatInfo.library)
       store.set('whuSeatRoom', seatInfo.room)
       store.set('whuSeatBeginTime', seatInfo.beginTime)
@@ -123,6 +144,7 @@ const app = {
       store.set('availableBeginTime', settings.beginTime)
       store.set('availableEndTime', settings.endTime)
       store.set('backgroundEnable', settings.backgroundEnable)
+      store.set('usageRecordEnable', settings.usageRecordEnable)
     },
     RESTORE_SETTINGS: (state) => {
       state.settingInfo = {...defaultSettingInfo}
@@ -131,6 +153,7 @@ const app = {
       store.set('availableBeginTime', defaultSettingInfo.beginTime)
       store.set('availableEndTime', defaultSettingInfo.endTime)
       store.set('backgroundEnable', defaultSettingInfo.backgroundEnable)
+      store.set('usageRecordEnable', defaultSettingInfo.usageRecordEnable)
     },
     SAVE_LIBRARY_INFO: (state, data) => {
       state.libraryInfo = data
@@ -166,6 +189,9 @@ const app = {
       }
       if (state.timerInfo.timerId) {
         window.clearTimeout(state.timerInfo.timerId)
+      }
+      if (state.timerInfo.loginTimerId) {
+        window.clearTimeout(state.timerInfo.loginTimerId)
       }
       state.timerInfo = {...defaultTimerInfo}
       // if (status !== null) {
@@ -215,15 +241,30 @@ const app = {
           commit('CANCEL_TIMER', null)
         }
         let timerInfo = Object()
-        timerInfo.totalTime = param.time.getTime() - (new Date()).getTime()
-        if (timerInfo.totalTime < 0) { timerInfo.totalTime = 0 }
         timerInfo.waitedTime = 0
+        timerInfo.totalTime = param.time.getTime() - (new Date()).getTime()
+        if (timerInfo.totalTime < 0) {
+          timerInfo.totalTime = 0
+          timerInfo.timerId = setTimeout(() => {
+            param.bookFunc()
+            // param.loginAndBookFunc()
+          }, timerInfo.totalTime)
+        } else if (timerInfo.totalTime > 5000) {
+          timerInfo.loginTimerId = setTimeout(() => {
+            param.loginFunc()
+          }, timerInfo.totalTime - 5000)
+          timerInfo.timerId = setTimeout(() => {
+            param.bookFunc()
+          }, timerInfo.totalTime)
+        } else {
+          timerInfo.timerId = setTimeout(() => {
+            param.bookFunc()
+            // param.loginAndBookFunc()
+          }, timerInfo.totalTime)
+        }
         timerInfo.intervalId = setInterval(() => {
           commit('UPDATE_TIMER_STATE')
         }, 1000)
-        timerInfo.timerId = setTimeout(() => {
-          param.bookFunc()
-        }, timerInfo.totalTime)
         timerInfo.status = statusEnum.waiting
         timerInfo.message = getTimeStateByMilliSecond(timerInfo.totalTime)
         commit('SET_TIMER', timerInfo)

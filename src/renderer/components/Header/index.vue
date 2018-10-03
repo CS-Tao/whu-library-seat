@@ -62,6 +62,7 @@
         <div class="form-item" v-if="!hasToken">
           <el-button
             type="primary"
+            :disabled="working"
             :class="!working?'login-button':'button-disabled'"
             :icon="working?'el-icon-loading':null"
             :style="working?'width: 110px;':''"
@@ -196,13 +197,15 @@ export default {
           // 用户验证
           if (userItem === null) {
             this.$store.dispatch('setToken', null)
-            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
-            usageApi.loginState(this.userInfo.account, false, 0).then(() => {}).catch(() => {})
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
+            this.working = false
+            usageApi.loginState(this.userInfo.account, false, 0)
             return false
           } else if (!userItem.status) {
             this.$store.dispatch('setToken', null)
-            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
-            usageApi.loginState(this.userInfo.account, false, 1).then(() => {}).catch(() => {})
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
+            usageApi.loginState(this.userInfo.account, false, 1, '对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
+            this.working = false
             return false
           }
           for (let index = 0; index < groups.length; index++) {
@@ -214,13 +217,15 @@ export default {
           // 组验证
           if (groupItem === null) {
             this.$store.dispatch('setToken', null)
-            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
-            usageApi.loginState(this.userInfo.account, false, 2).then(() => {}).catch(() => {})
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
+            usageApi.loginState(this.userInfo.account, false, 2, '对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
+            this.working = false
             return false
           } else if (!groupItem.status) {
             this.$store.dispatch('setToken', null)
-            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [关于] -> [申请权限] 中了解如何获取权限')
-            usageApi.loginState(this.userInfo.account, false, 3).then(() => {}).catch(() => {})
+            this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
+            usageApi.loginState(this.userInfo.account, false, 3, '对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
+            this.working = false
             return false
           }
           this.login()
@@ -250,7 +255,7 @@ export default {
       libraryRestApi.Login(this.userInfo.account, this.userInfo.passwd).then((response) => {
         if (response.data.status === 'success') {
           this.loadRooms(response.data.data.token)
-          usageApi.loginState(this.userInfo.account, true, 4).then(() => {}).catch(() => {})
+          usageApi.loginState(this.userInfo.account, true, 4)
         } else {
           this.$store.dispatch('setToken', null)
           this.$message({
@@ -259,7 +264,7 @@ export default {
             showClose: true,
             message: response.data.message ? response.data.message : emptyMessage
           })
-          usageApi.loginState(this.userInfo.account, false, 5).then(() => {}).catch(() => {})
+          usageApi.loginState(this.userInfo.account, false, 5, response.data.message)
         }
       }).catch(() => {})
     },

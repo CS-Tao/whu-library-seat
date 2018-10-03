@@ -60,7 +60,15 @@ export default {
       type: Date,
       require: true
     },
-    grabSeat: {
+    bookFunc: {
+      type: Function,
+      require: true
+    },
+    loginFunc: {
+      type: Function,
+      require: true
+    },
+    loginAndBookFunc: {
       type: Function,
       require: true
     }
@@ -119,7 +127,9 @@ export default {
       this.$emit('input', this.result)
       this.$emit('btnClick', 'ok')
       this.$store.dispatch('setTimer', {
-        bookFunc: this.grabSeat,
+        bookFunc: this.bookFunc,
+        loginFunc: this.loginFunc,
+        loginAndBookFunc: this.loginAndBookFunc,
         time: this.result
       })
       this.$message({

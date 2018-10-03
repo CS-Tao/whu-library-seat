@@ -55,6 +55,7 @@ const getters = {
   hasToken: state => !!state.app.userInfo.token,
   // time info
   freeDates: state => [formatDate(new Date()), formatDate(getTomorrow())],
+  freeDatesDefault: state => [formatDate(new Date()), formatDate(getTomorrow())][state.app.seatInfo.date],
   freeBeginTime: state => getTimeInterval(),
   freeEndTime: state => getTimeInterval(),
   // seat info

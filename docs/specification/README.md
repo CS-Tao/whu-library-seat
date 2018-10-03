@@ -9,13 +9,13 @@
 #### 稳定版本下载
 
 - Windows
-    - 链接: [v1.3.0](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.3.0/whu-library-seat-setup-1.3.0.exe)
+    - 链接: [whu-library-seat-setup-1.3.1.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.3.1/whu-library-seat-setup-1.3.1.exe)
 
 - Mac OS
-    - 链接: [v1.3.0](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.3.0/whu-library-seat-1.3.0.dmg)
+    - 链接: [whu-library-seat-1.3.1.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.3.1/whu-library-seat-1.3.1.dmg)
 
 - Linux
-    - 链接: [v1.3.0](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.3.0/whu-library-seat-1.3.0-x86_64.AppImage)
+    - 链接: [whu-library-seat-1.3.1-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.3.1/whu-library-seat-1.3.1-x86_64.AppImage)
 
 ### 安装软件
 
