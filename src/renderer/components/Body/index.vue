@@ -264,6 +264,10 @@ export default {
       this.checkReserveTime = true
     },
     grabSeat () {
+      this.triedSeatIds = []
+      this.stopGrab = false
+      this.grabCount = 0
+      this.seatsSearched = null
       this.reserveSeat(this.form.beginTime, this.form.endTime, this.form.seatNum, this.form.date, this.userToken)
     },
     loginAndReserveSeat () {
@@ -330,7 +334,7 @@ export default {
                 })
               } else {
                 // 终止当前使用
-                libraryRestApi.Cancel(reservation[0].id, this.userToken).then((response) => {
+                libraryRestApi.Stop(this.userToken).then((response) => {
                   if (response.data.status === 'success') {
                     this.$message({
                       type: 'success',
@@ -378,7 +382,7 @@ export default {
             if (response.data.message === '预约失败，请尽快选择其他时段或座位' || response.data.message === '参数错误' || response.data.message === '已有1个有效预约，请在使用结束后再次进行选择') {
               // 位置不可用，如果未达抢座上限则继续抢
               this.grabCount += 1
-              var cancelCurrentBool = response.data.message === '已有1个有效预约，请在使用结束后再次进行选择'
+              var cancelCurrentBool = response.data.message === '已有1个有效预约，请在使用结束后再次进行选择' && this.grabCount < 2
               var newSeatId = -1
               if (cancelCurrentBool) {
                 newSeatId = seatNum
