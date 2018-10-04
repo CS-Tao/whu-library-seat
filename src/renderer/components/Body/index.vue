@@ -377,73 +377,61 @@ export default {
           usageApi.grabState(this.userAccount, true, 6)
         } else {
           if (response.data.code === 1 || response.data.code === '1') {
-            // 预约失败，请尽快选择其他时段或座位
-            // 系统可预约时间为 22:45 ~ 23:50
-            if (response.data.message === '预约失败，请尽快选择其他时段或座位' || response.data.message === '参数错误' || response.data.message === '已有1个有效预约，请在使用结束后再次进行选择') {
-              // 位置不可用，如果未达抢座上限则继续抢
-              this.grabCount += 1
-              var cancelCurrentBool = response.data.message === '已有1个有效预约，请在使用结束后再次进行选择' && this.grabCount < 2
-              var newSeatId = -1
-              if (cancelCurrentBool) {
-                newSeatId = seatNum
-              } else {
-                newSeatId = this.getNewSeatNum()
-              }
-              if (this.grabCount >= maxGrabCount) {
-                this.$store.dispatch('updateTimer', 'fail')
-                this.$message({
-                  type: 'error',
-                  duration: 0,
-                  showClose: true,
-                  message: `抢座失败：达到抢座尝试上限(${maxGrabCount})，结束抢座`
-                })
-                this.windowsNotification('抢座失败', `达到抢座尝试上限(${maxGrabCount})，结束抢座`)
-                usageApi.grabState(this.userAccount, false, 7, '抢座失败', `达到抢座尝试上限(${maxGrabCount})，结束抢座`)
-              } else if (newSeatId === -1) {
-                this.$store.dispatch('updateTimer', 'fail')
-                this.$message({
-                  type: 'error',
-                  duration: 0,
-                  showClose: true,
-                  message: '抢座失败：该房间在指定的时间段内没有空闲位置'
-                })
-                this.windowsNotification('抢座失败', '该房间在指定的时间段内没有空闲位置')
-                usageApi.grabState(this.userAccount, false, 8, '抢座失败：该房间在指定的时间段内没有空闲位置')
-              } else if (!this.stopGrab) {
-                this.$store.dispatch('updateTimer', 'working')
-                // 打印信息
-                var seatInTheRoom = this.seatsSearched === null ? this.seats.filter((item) => {
-                  return item.type !== 'empty'
-                }) : this.seatsSearched
-                for (let index = 0; index < seatInTheRoom.length; index++) {
-                  if (seatInTheRoom[index].id === newSeatId) {
-                    // console.log('第' + (this.grabCount + 1) + '次尝试抢座(座位号: ' + seatInTheRoom[index].name + ', Id: ' + newSeatId + ')')
-                    this.$store.dispatch('updateTimer', '尝试 ' + seatInTheRoom[index].name)
-                    break
-                  }
-                }
-                // 结束打印
-                // 开始下一次抢座
-                if (!this.isVip) {
-                  this.sleep(200)
-                }
-                if (this.grabCount === arbitraryGrabCount) {
-                  this.searchSeatsByTime(this.form.library, this.form.room, date, beginTime, endTime, userToken)
-                }
-                this.reserveSeat(beginTime, endTime, newSeatId, date, userToken, cancelCurrentBool)
-              } else {}
+            // 位置不可用，如果未达抢座上限则继续抢
+            this.grabCount += 1
+            var cancelCurrentBool = response.data.message === '已有1个有效预约，请在使用结束后再次进行选择' && this.grabCount < 2
+            var newSeatId = -1
+            if (cancelCurrentBool) {
+              newSeatId = seatNum
             } else {
+              newSeatId = this.getNewSeatNum()
+            }
+            if (this.grabCount >= maxGrabCount) {
               this.$store.dispatch('updateTimer', 'fail')
               this.$message({
                 type: 'error',
                 duration: 0,
                 showClose: true,
-                message: response.data.message ? response.data.message : emptyMessage
+                message: `抢座失败：达到抢座尝试上限(${maxGrabCount})，结束抢座`
               })
-              this.windowsNotification('抢座失败', response.data.message ? response.data.message : emptyMessage)
-              usageApi.grabState(this.userAccount, false, 9, response.data.message)
+              this.windowsNotification('抢座失败', `达到抢座尝试上限(${maxGrabCount})，结束抢座`)
+              usageApi.grabState(this.userAccount, false, 7, '抢座失败', `达到抢座尝试上限(${maxGrabCount})，结束抢座`)
+            } else if (newSeatId === -1) {
+              this.$store.dispatch('updateTimer', 'fail')
+              this.$message({
+                type: 'error',
+                duration: 0,
+                showClose: true,
+                message: '抢座失败：该房间在指定的时间段内没有空闲位置（请确保您要预约的时间无误）'
+              })
+              this.windowsNotification('抢座失败', '该房间在指定的时间段内没有空闲位置（请确保您要预约的时间无误）')
+              usageApi.grabState(this.userAccount, false, 8, '抢座失败：该房间在指定的时间段内没有空闲位置（请确保您要预约的时间无误）')
+            } else if (!this.stopGrab) {
+              this.$store.dispatch('updateTimer', 'working')
+              // 打印信息
+              var seatInTheRoom = this.seatsSearched === null ? this.seats.filter((item) => {
+                return item.type !== 'empty'
+              }) : this.seatsSearched
+              for (let index = 0; index < seatInTheRoom.length; index++) {
+                if (seatInTheRoom[index].id === newSeatId) {
+                  // console.log('第' + (this.grabCount + 1) + '次尝试抢座(座位号: ' + seatInTheRoom[index].name + ', Id: ' + newSeatId + ')')
+                  this.$store.dispatch('updateTimer', '尝试 ' + seatInTheRoom[index].name)
+                  break
+                }
+              }
+              // 结束打印
+              // 开始下一次抢座
+              if (!this.isVip) {
+                this.sleep(200)
+              }
+              if (this.grabCount === arbitraryGrabCount) {
+                this.searchSeatsByTime(this.form.library, this.form.room, date, beginTime, endTime, userToken)
+              }
+              this.reserveSeat(beginTime, endTime, newSeatId, date, userToken, cancelCurrentBool)
+            } else {
+              // 外部终止抢座，即 this.stopGrab === true
             }
-          } else if (response.data.code === 12 && response.data.code === '12') {
+          } else if (response.data.code === 12 || response.data.code === '12') {
             // 登录失败: 用户名或密码不正确
             this.$store.dispatch('updateTimer', 'fail')
             this.$message({
