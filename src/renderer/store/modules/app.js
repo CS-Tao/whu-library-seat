@@ -246,20 +246,24 @@ const app = {
         if (timerInfo.totalTime < 0) {
           timerInfo.totalTime = 0
           timerInfo.timerId = setTimeout(() => {
+            let oppointmentTimeMilli = param.time.getTime()
+            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {}
             param.bookFunc()
-            // param.loginAndBookFunc()
           }, timerInfo.totalTime)
         } else if (timerInfo.totalTime > 5000) {
           timerInfo.loginTimerId = setTimeout(() => {
             param.loginFunc()
           }, timerInfo.totalTime - 5000)
           timerInfo.timerId = setTimeout(() => {
+            let oppointmentTimeMilli = param.time.getTime()
+            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {}
             param.bookFunc()
           }, timerInfo.totalTime)
         } else {
           timerInfo.timerId = setTimeout(() => {
+            let oppointmentTimeMilli = param.time.getTime()
+            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {}
             param.bookFunc()
-            // param.loginAndBookFunc()
           }, timerInfo.totalTime)
         }
         timerInfo.intervalId = setInterval(() => {
