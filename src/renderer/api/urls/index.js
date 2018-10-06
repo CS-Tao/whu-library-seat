@@ -15,7 +15,7 @@ const urls = {
       url () {
         return '/loginState'
       },
-      regular: /\/user-loginState/,
+      regular: /\/loginState/,
       method: 'post'
     },
     // 抢座状态
