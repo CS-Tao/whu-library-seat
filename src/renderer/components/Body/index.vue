@@ -66,7 +66,7 @@ import usageApi from '@/api/usage.api'
 import { ipcRenderer } from 'electron'
 
 const emptyMessage = '数据加载失败'
-const maxGrabCount = 45
+const maxGrabCount = 10
 const arbitraryGrabCount = 4
 
 export default {
@@ -547,7 +547,7 @@ export default {
   }
   .time-input {
     width: 120px!important;
-    margin: 0 5px;
+    margin: 0 3px;
   }
   .num {
     width: 120px;
