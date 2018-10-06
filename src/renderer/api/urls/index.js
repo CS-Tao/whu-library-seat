@@ -7,6 +7,14 @@ const urls = {
       },
       regular: /\/user-validation\/validation.json/,
       method: 'get'
+    },
+    // 公告
+    announce: {
+      url () {
+        return '/user-validation/announce.md'
+      },
+      regular: /\/user-validation\/announce.md/,
+      method: 'get'
     }
   },
   usage: {

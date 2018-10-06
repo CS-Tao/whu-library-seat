@@ -82,6 +82,12 @@ import settingsForm from './Settings'
 import gitcontentsApi from '@/api/gitcontents.api'
 import usageApi from '@/api/usage.api'
 import libraryRestApi from '@/api/library.api'
+import md5 from 'js-md5'
+import Store from 'electron-store'
+
+const store = new Store({
+  name: 'whu-library-seat'
+})
 
 const emptyMessage = '数据加载失败'
 
@@ -106,7 +112,8 @@ export default {
       'userAccount',
       'userPasswd',
       'hasToken',
-      'userToken'
+      'userToken',
+      'announceViewed'
     ]),
     btnText () {
       return this.working ? '白名单验证' : '登录'
@@ -256,6 +263,14 @@ export default {
         if (response.data.status === 'success') {
           this.loadRooms(response.data.data.token)
           usageApi.loginState(this.userInfo.account, true, 4)
+          // 检查公告
+          gitcontentsApi.announce().then((response) => {
+            if (response.status === 200) {
+              if (md5(response.data) !== store.get('announceMd5', '') && this.announceViewed) {
+                this.$store.dispatch('setAnnounceViewed', false)
+              }
+            }
+          }).catch(() => {})
         } else {
           this.$store.dispatch('setToken', null)
           this.$message({

@@ -2,8 +2,22 @@
 @import './flex.scss';
 @import './element-ui.scss';
 
-::-webkit-scrollbar { width:0px }
-
+::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+	background-color: $bg-color-highlight;
+	border-radius: 2px;
+	&-thumb {
+		background-color: $text-color-lowlight;
+		border-radius: 2px;
+	}
+}
+a:-webkit-any-link {
+	color: $button-green;
+}
+ul {
+  padding-left: 25px;
+}
 body {
 	margin: 0;
   	user-select: none;

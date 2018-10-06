@@ -50,6 +50,7 @@
         <el-button type="primary" class="main-button" @click="mainButtonClicked()">定时抢座</el-button>
       </div>
     </el-form>
+    <announce-form v-if="hasToken&&showMode==='announce'"></announce-form>
     <user-form v-if="hasToken&&showMode==='userForm'"></user-form>
     <history-form v-if="hasToken&&showMode==='historyForm'"></history-form>
     <timer-form v-if="hasToken&&checkReserveTime" v-model="reserveTime" :book-func="grabSeat" :login-func="login" :loginAndBookFunc="loginAndReserveSeat" @btnClick="oppointmentTimechecked($event)"></timer-form>
@@ -58,6 +59,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import announceForm from './Announce'
 import userForm from './User'
 import historyForm from './History'
 import timerForm from './Timer'
@@ -77,7 +79,7 @@ export default {
     }
   },
   components: {
-    userForm, historyForm, timerForm
+    announceForm, userForm, historyForm, timerForm
   },
   data () {
     return {

@@ -40,5 +40,15 @@ export default {
         time: new Date()
       }
     })
+  },
+  // 公告
+  announce: () => {
+    return service({
+      url: urls.gitcontents.announce.url(),
+      method: urls.gitcontents.announce.method,
+      params: {
+        time: new Date()
+      }
+    })
   }
 }

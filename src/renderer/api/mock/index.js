@@ -7,6 +7,9 @@ import urls from '../urls'
 // 用户验证
 Mock.mock(urls.gitcontents.validateUser.regular, urls.gitcontents.validateUser.method, gitcontentsApi.validateUser)
 
+// 公告
+Mock.mock(urls.gitcontents.announce.regular, urls.gitcontents.announce.method, gitcontentsApi.announce)
+
 // 登录状态
 Mock.mock(urls.usage.loginState.regular, urls.usage.loginState.method, usageApi.loginState)
 
