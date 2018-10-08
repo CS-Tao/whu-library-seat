@@ -55,9 +55,10 @@ export default {
   data () {
     return {
       // 最新版本
-      newVersion: '1.3.1',
+      newVersion: null,
       // 更新下载完毕
-      updateDownloaded: false
+      updateDownloaded: false,
+      notifyUpdateInfo: false
     }
   },
   computed: {
@@ -90,11 +91,44 @@ export default {
     // 有可用更新
     ipcRenderer.on('update-available', (event, args) => {
       this.newVersion = args.updateInfo.version
+      if (this.notifyUpdateInfo) {
+        if (this.updateAvailable) {
+          this.$message({
+            type: 'success',
+            duration: '4000',
+            showClose: true,
+            dangerouslyUseHTMLString: true,
+            message: `<p style="line-height:20px;">检测到新版本：v${args.updateInfo.version}</p>`
+          })
+        } else {
+          this.$message({
+            type: 'info',
+            duration: '4000',
+            showClose: true,
+            dangerouslyUseHTMLString: true,
+            message: `<p style="line-height:20px;">未检测到新版本</p>`
+          })
+        }
+      }
     })
     // 更新下载完毕
     ipcRenderer.on('update-downloaded', () => {
       this.updateDownloaded = true
       ipcRenderer.send('show-window-notify', '更新下载完毕', '重启更新')
+    })
+    // 点击检测更新菜单响应
+    ipcRenderer.on('check-update-menu-clicked', () => {
+      this.notifyUpdateInfo = true
+      this.newVersion = null
+      this.updateDownloaded = false
+      this.$message({
+        type: 'info',
+        duration: '2000',
+        showClose: true,
+        dangerouslyUseHTMLString: true,
+        message: `<p style="line-height:20px;">正在检查更新</p>`
+      })
+      ipcRenderer.send('check-updates')
     })
 
     ipcRenderer.send('check-updates')

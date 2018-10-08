@@ -161,6 +161,10 @@ const template = [
         label: '更新日志',
         click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases') }
       },
+      {
+        label: '检查更新',
+        click () { mainWindow.webContents.send('check-update-menu-clicked') }
+      },
       { type: 'separator' },
       {
         label: '文档',
