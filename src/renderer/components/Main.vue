@@ -25,8 +25,11 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'hasToken'
+      'hasToken',
+      'announceViewed'
     ])
+  },
+  mounted () {
   },
   methods: {
     footerIconClicked (param) {
@@ -36,8 +39,11 @@ export default {
         this.bodyMode = 'historyForm'
       } else if (param === 'normal') {
         this.bodyMode = 'normal'
+      } else if (param === 'announce') {
+        this.bodyMode = 'announce'
       } else {
-        console.log('参数错误')
+        this.bodyMode = 'normal'
+        console.log('bodyMode', '参数错误')
       }
     }
   }

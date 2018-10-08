@@ -66,7 +66,9 @@ const getters = {
   settingInfo: state => state.app.settingInfo,
   oppointmentTime: state => state.app.settingInfo.oppointmentTime,
   // timer info
-  timerInfo: state => addVarToTimer(state.app.timerInfo)
+  timerInfo: state => addVarToTimer(state.app.timerInfo),
+  // announce info
+  announceViewed: state => state.app.announceViewed
 }
 
 export default getters

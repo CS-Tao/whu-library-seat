@@ -105,7 +105,8 @@ const app = {
       rooms: [],
       dates: []
     },
-    timerInfo: {...defaultTimerInfo}
+    timerInfo: {...defaultTimerInfo},
+    announceViewed: true
   },
   mutations: {
     SET_ACCOUNT: (state, account) => {
@@ -203,6 +204,9 @@ const app = {
       //     state.timerInfo.status = statusEnum.fail
       //   }
       // }
+    },
+    SET_ANNOUNCE_VIEWED: (state, viewed) => {
+      state.announceViewed = viewed
     }
   },
   actions: {
@@ -287,6 +291,9 @@ const app = {
     // status: null 代表中途取消, true 代表预约成功, false 代表预约失败
     cancelTimer ({ commit }, status) {
       commit('CANCEL_TIMER', status)
+    },
+    setAnnounceViewed ({ commit }, viewed) {
+      commit('SET_ANNOUNCE_VIEWED', viewed)
     }
   }
 }

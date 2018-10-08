@@ -237,3 +237,6 @@
 .el-table, .el-table__expanded-cell {
   background-color: $bg-color-1;
 }
+.el-badge__content.is-dot {
+  background: $primary-color;
+}

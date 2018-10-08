@@ -2,8 +2,9 @@
 	<div class="footer" :class="{'footer-unlogin': !hasToken}">
     <div class="warper flex-col" @click="openMainBody()">
       <span style="cursor: default!important;">&nbsp;&nbsp;</span>
+      <el-button v-if="updateAvailable" type="primary" class="el-icon-download update-button" @click="downloadUpdate()">&nbsp;最新版本(v{{newVersion}})</el-button>
       <el-button v-if="updateDownloaded" type="primary" class="el-icon-refresh update-button" @click="quitAndUpdate()">&nbsp;重启更新</el-button>
-      <span class="text">{{!updateDownloaded?'© 2018 CS-Tao':''}}</span>
+      <span class="text">{{!updateDownloaded&&!updateAvailable?'© 2018 CS-Tao':''}}</span>
       <i v-if="!hasToken" class="operation-icon" @click="openSource()">
         <svg class="operation-icon" aria-labelledby="simpleicons-github-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title id="simpleicons-github-icon">GitHub icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
       </i>
@@ -18,6 +19,13 @@
       <span style="cursor: default!important;" v-if="hasToken">&nbsp;&nbsp;</span>
       <i v-if="hasToken" class="toggle-button" @click.stop="openHistoryForm()">
         <svg class="icon" :class="isLover?(historyBtnChecked?'icon-checked-red':'icon-unchecked-red'):(historyBtnChecked?'icon-checked':'icon-unchecked')" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512.001 512.001" style="enable-background:new 0 0 512.001 512.001;" xml:space="preserve"><g><path d="M304.427,147.399H275.38v-29.046c0-10.706-8.68-19.386-19.386-19.386c-10.706,0-19.386,8.68-19.386,19.386V147.4h-29.047 c-10.706,0-19.386,8.68-19.386,19.386s8.68,19.386,19.386,19.386h29.047v29.046c0,10.706,8.68,19.386,19.386,19.386 c10.706,0,19.386-8.68,19.386-19.386v-29.046h29.047c10.706,0,19.386-8.68,19.386-19.386 C323.813,156.079,315.135,147.399,304.427,147.399z"/><path d="M446.704,19.386C446.704,8.68,438.024,0,427.318,0H84.672C73.966,0,65.286,8.68,65.286,19.386 c0,19.634-0.004,395.991-0.004,415.78c0,10.706,8.68,19.386,19.386,19.386h56.06v38.045c0,17.236,20.909,25.888,33.091,13.71 l33.746-33.736l33.735,33.733c12.109,12.114,33.094,3.665,33.094-13.707v-38.045h152.938c10.706,0,19.386-8.68,19.386-19.386 C446.72,423.13,446.704,234.426,446.704,19.386z M104.059,38.773h303.873v256.026H104.059V38.773z M235.623,445.793 l-14.346-14.345c-7.568-7.571-19.842-7.571-27.413-0.003l-14.363,14.357c0-22.535,0-29.22,0-51.734h56.122 C235.623,416.595,235.623,423.285,235.623,445.793z M407.947,415.78H274.395v-21.714h94.993c10.706,0,19.386-8.68,19.386-19.386 c0-10.706-8.68-19.386-19.386-19.386H142.614c-10.706,0-19.386,8.68-19.386,19.386c0,10.071,7.68,18.342,17.501,19.291v21.81 h-36.674v-82.207h303.892V415.78z"/></g></svg>
+      </i>
+      <span style="cursor: default!important;" v-if="hasToken">&nbsp;&nbsp;</span>
+      <i v-if="hasToken" class="toggle-button" @click.stop="openAnnounce()">
+        <el-badge v-if="!announceViewed" is-dot>
+          <svg class="icon" :class="isLover?(announceBtnChecked?'icon-checked-red':'icon-unchecked-red'):(announceBtnChecked?'icon-checked':'icon-unchecked')" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M990.8069 319.537006H767.957262L593.558152 145.180634a95.861102 95.861102 0 1 0-164.042292 0.698053l-173.800779 173.701057H31.697273A31.953701 31.953701 0 0 0 0 351.547691v638.931552a32.09616 32.09616 0 0 0 31.697273 32.010685h959.038398a31.953701 31.953701 0 0 0 31.697273-32.010685v-638.931552a31.953701 31.953701 0 0 0-31.64029-32.010685z m-511.430161-133.242515a95.775626 95.775626 0 0 0 64.6197-0.327657l133.570172 133.570172H346.048748zM127.814802 511.301948H447.323317v63.907401H127.814802z m511.244964 319.480022H127.814802v-63.893155h511.244964v63.893155z m191.707958-127.814802H127.814802v-63.907402h702.967168z m0 0" p-id="2012"></path></svg>
+        </el-badge>
+        <svg v-else class="icon" :class="isLover?(announceBtnChecked?'icon-checked-red':'icon-unchecked-red'):(announceBtnChecked?'icon-checked':'icon-unchecked')" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M990.8069 319.537006H767.957262L593.558152 145.180634a95.861102 95.861102 0 1 0-164.042292 0.698053l-173.800779 173.701057H31.697273A31.953701 31.953701 0 0 0 0 351.547691v638.931552a32.09616 32.09616 0 0 0 31.697273 32.010685h959.038398a31.953701 31.953701 0 0 0 31.697273-32.010685v-638.931552a31.953701 31.953701 0 0 0-31.64029-32.010685z m-511.430161-133.242515a95.775626 95.775626 0 0 0 64.6197-0.327657l133.570172 133.570172H346.048748zM127.814802 511.301948H447.323317v63.907401H127.814802z m511.244964 319.480022H127.814802v-63.893155h511.244964v63.893155z m191.707958-127.814802H127.814802v-63.907402h702.967168z m0 0" p-id="2012"></path></svg>
       </i>
       <span style="cursor: default!important;" v-if="hasToken">&nbsp;&nbsp;&nbsp;</span>
       <i v-if="hasToken" class="operation-icon" @click.stop="logout()">
@@ -35,7 +43,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, remote } from 'electron'
 
 export default {
   props: {
@@ -46,14 +54,22 @@ export default {
   },
   data () {
     return {
-      updateDownloaded: false
+      // 最新版本
+      newVersion: null,
+      // 更新下载完毕
+      updateDownloaded: false,
+      notifyUpdateInfo: false
     }
   },
   computed: {
     ...mapGetters([
       'userAccount',
-      'hasToken'
+      'hasToken',
+      'announceViewed'
     ]),
+    announceBtnChecked () {
+      return this.bodyMode === 'announce'
+    },
     userBtnChecked () {
       return this.bodyMode === 'userForm'
     },
@@ -65,12 +81,56 @@ export default {
     },
     isDeveloper () {
       return this.userAccount === 2015302590039
+    },
+    updateAvailable () {
+      var appVersion = remote.app.getVersion()
+      return this.newVersion !== null && appVersion !== this.newVersion
     }
   },
   mounted () {
+    // 有可用更新
+    ipcRenderer.on('update-available', (event, args) => {
+      this.newVersion = args.updateInfo.version
+      if (this.notifyUpdateInfo) {
+        if (this.updateAvailable) {
+          this.$message({
+            type: 'success',
+            duration: '4000',
+            showClose: true,
+            dangerouslyUseHTMLString: true,
+            message: `<p style="line-height:20px;">检测到新版本：v${args.updateInfo.version}</p>`
+          })
+        } else {
+          this.$message({
+            type: 'info',
+            duration: '4000',
+            showClose: true,
+            dangerouslyUseHTMLString: true,
+            message: `<p style="line-height:20px;">未检测到新版本</p>`
+          })
+        }
+      }
+    })
+    // 更新下载完毕
     ipcRenderer.on('update-downloaded', () => {
       this.updateDownloaded = true
+      ipcRenderer.send('show-window-notify', '更新下载完毕', '重启更新')
     })
+    // 点击检测更新菜单响应
+    ipcRenderer.on('check-update-menu-clicked', () => {
+      this.notifyUpdateInfo = true
+      this.newVersion = null
+      this.updateDownloaded = false
+      this.$message({
+        type: 'info',
+        duration: '2000',
+        showClose: true,
+        dangerouslyUseHTMLString: true,
+        message: `<p style="line-height:20px;">正在检查更新</p>`
+      })
+      ipcRenderer.send('check-updates')
+    })
+
     ipcRenderer.send('check-updates')
   },
   methods: {
@@ -84,6 +144,9 @@ export default {
     openUsageSite () {
       this.$openLink('https://seat-records.cs-tao.cc')
     },
+    openAnnounce () {
+      this.$emit('iconClicked', this.bodyMode !== 'announce' ? 'announce' : 'normal')
+    },
     openUserForm () {
       this.$emit('iconClicked', this.bodyMode !== 'userForm' ? 'user' : 'normal')
     },
@@ -93,7 +156,20 @@ export default {
     openMainBody () {
       this.$emit('iconClicked', 'normal')
     },
+    downloadUpdate () {
+      this.newVersion = null
+      ipcRenderer.send('download-update')
+      let message = '开始下载最新版'
+      this.$message({
+        type: 'info',
+        duration: '3000',
+        showClose: true,
+        dangerouslyUseHTMLString: true,
+        message: '<p style="line-height:20px;">' + message + '</p>'
+      })
+    },
     quitAndUpdate () {
+      this.updateDownloaded = false
       ipcRenderer.send('quit-and-install')
       ipcRenderer.send('exit-app', 0)
     },
