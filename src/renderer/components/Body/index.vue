@@ -434,7 +434,7 @@ export default {
               // 结束打印
               // 开始下一次抢座
               if (!this.isVip) {
-                this.sleep(200)
+                this.sleep(100)
               }
               if (this.grabCount === arbitraryGrabCount) {
                 this.searchSeatsByTime(this.form.library, this.form.room, date, beginTime, endTime, userToken)
