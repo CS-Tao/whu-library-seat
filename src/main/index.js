@@ -161,6 +161,10 @@ const template = [
         label: '更新日志',
         click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases') }
       },
+      {
+        label: '检查更新',
+        click () { mainWindow.webContents.send('check-update-menu-clicked') }
+      },
       { type: 'separator' },
       {
         label: '文档',
@@ -297,17 +301,32 @@ ipcMain.on('show-window-notify', (event, title, message) => {
 
 // 配置自动更新
 
+autoUpdater.autoDownload = false
+autoUpdater.autoInstallOnAppQuit = true
+
 ipcMain.on('check-updates', (event, arg) => {
   // 检查更新
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
+  if (process.env.NODE_ENV === 'production') {
+    autoUpdater.checkForUpdates().then((info) => {
+      mainWindow.webContents.send('update-available', info)
+    })
+  }
+})
+
+ipcMain.on('download-update', (event, arg) => {
+  // 下载更新
+  if (process.env.NODE_ENV === 'production') autoUpdater.downloadUpdate()
 })
 
 ipcMain.on('quit-and-install', (event, arg) => {
   // 退出安装
-  if (process.env.NODE_ENV === 'production') autoUpdater.quitAndInstall()
+  if (process.env.NODE_ENV === 'production') {
+    if (tray) {
+      tray.destroy()
+    }
+    autoUpdater.quitAndInstall()
+  }
 })
-
-autoUpdater.autoInstallOnAppQuit = false
 
 autoUpdater.on('update-downloaded', () => {
   // 更新下载完毕
