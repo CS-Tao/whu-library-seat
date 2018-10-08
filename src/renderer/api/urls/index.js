@@ -7,6 +7,14 @@ const urls = {
       },
       regular: /\/user-validation\/validation.json/,
       method: 'get'
+    },
+    // 公告
+    announce: {
+      url () {
+        return '/user-validation/announce.md'
+      },
+      regular: /\/user-validation\/announce.md/,
+      method: 'get'
     }
   },
   usage: {
@@ -15,7 +23,7 @@ const urls = {
       url () {
         return '/loginState'
       },
-      regular: /\/user-loginState/,
+      regular: /\/loginState/,
       method: 'post'
     },
     // 抢座状态
