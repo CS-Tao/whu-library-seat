@@ -7,6 +7,12 @@
     #app {
       margin: 30px;
     }
+    .el-input {
+      width: 150px;
+    }
+    span {
+      margin-left: 20px;
+    }
     </style>
     <script>
     if (!localStorage.homepageAuthForCSTaoOrFriend || localStorage.homepageAuthForCSTaoOrFriend !== '7f1a65908b05238c21c134c764c89e28') {
@@ -16,37 +22,63 @@
   </head>
   <body>
     <div id="app">
-      <el-table :data="tableData" style="width: 100%" :border="true" :stripe="true" height="90vh">
-        <el-table-column width="50" prop="id" label="Id"></el-table-column>
-        <el-table-column width="100" label="状态">
-          <template slot-scope="scope">
-            <i v-if="scope.row.state === 1" class="el-icon-success" style="color: green"></i>
-            <i v-else class="el-icon-error" style="color: red"></i>
-            <span style="margin-left: 5px">{{ scope.row.state === 0 ? '失败' : '成功' }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column width="100" prop="event" label="事件">
-          <template slot-scope="scope">
-            <i v-if="scope.row.event === 'login'" class="el-icon-mobile-phone" style="color: #909399"></i>
-            <i v-else class="el-icon-bell" style="color: #E6A23C"></i>
-            <span style="margin-left: 5px" :style="{color: scope.row.event === 'login' ? '#909399' : '#E6A23C'}">{{ scope.row.event === 'login' ? '登录' : '抢座' }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column width="100" prop="code" label="事件代码"></el-table-column>
-        <el-table-column width="200" label="时间">
-          <template slot-scope="scope">
-            <i class="el-icon-time"></i>
-            <span style="margin-left: 5px">{{ scope.row.year + '-' + fill0(scope.row.month) + '-' + fill0(scope.row.day) + ' ' + fill0(scope.row.hour) + ':' + fill0(scope.row.min) + ':' + fill0(scope.row.sec) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="account" label="账号" width="180"></el-table-column>
-        <el-table-column width="100" label="软件版本">
-          <template slot-scope="scope">
-            <span>{{ 'v' + scope.row.version }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="message" label="消息"></el-table-column>
-      </el-table>
+      <el-container>
+        <el-header>
+          <span>状态</span>
+          <el-select v-model="selectedStatus">
+            <el-option v-for="item in statusList" :key="item" :label="item === 'All' ? 'All' :(item === 0 ? '失败' : '成功')" :value="item"></el-option>
+          </el-select>
+          <span>事件</span>
+          <el-select v-model="selectedEventType">
+            <el-option v-for="item in eventTypeList" :key="item" :label="item === 'All' ? 'All' :(item === 'login' ? '登录' : '抢座')" :value="item"></el-option>
+          </el-select>
+          <span>事件代码</span>
+          <el-select v-model="selectedEventCode">
+            <el-option v-for="item in eventCodeList" :key="item" :label="item" :value="item"></el-option>
+          </el-select>
+          <span>账号</span>
+          <el-select v-model="selectedAccount" filterable>
+            <el-option v-for="item in accountList" :key="item" :label="item" :value="item"></el-option>
+          </el-select>
+          <span>软件版本</span>
+          <el-select v-model="selectedVersion">
+            <el-option v-for="item in versionList" :key="item" :label="item === 'All' ? 'All' : 'v'+item" :value="item"></el-option>
+          </el-select>
+        </el-header>
+        <el-main>
+          <el-table :data="dataForShow" style="width: 100%" :border="true" :stripe="true" height="72vh">
+            <el-table-column width="50" prop="id" label="Id"></el-table-column>
+            <el-table-column width="100" label="状态">
+              <template slot-scope="scope">
+                <i v-if="scope.row.state === 1" class="el-icon-success" style="color: green"></i>
+                <i v-else class="el-icon-error" style="color: red"></i>
+                <span style="margin-left: 5px">{{ scope.row.state === 0 ? '失败' : '成功' }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="100" prop="event" label="事件">
+              <template slot-scope="scope">
+                <i v-if="scope.row.event === 'login'" class="el-icon-mobile-phone" style="color: #909399"></i>
+                <i v-else class="el-icon-bell" style="color: #E6A23C"></i>
+                <span style="margin-left: 5px" :style="{color: scope.row.event === 'login' ? '#909399' : '#E6A23C'}">{{ scope.row.event === 'login' ? '登录' : '抢座' }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column width="100" prop="code" label="事件代码"></el-table-column>
+            <el-table-column width="200" label="时间">
+              <template slot-scope="scope">
+                <i class="el-icon-time"></i>
+                <span style="margin-left: 5px">{{ scope.row.year + '-' + fill0(scope.row.month) + '-' + fill0(scope.row.day) + ' ' + fill0(scope.row.hour) + ':' + fill0(scope.row.min) + ':' + fill0(scope.row.sec) }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="account" label="账号" width="180"></el-table-column>
+            <el-table-column width="100" label="软件版本">
+              <template slot-scope="scope">
+                <span>{{ 'v' + scope.row.version }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="message" label="消息"></el-table-column>
+          </el-table>
+        </el-main>
+      </el-container>
     </div>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -55,11 +87,46 @@
   <script>
     new Vue({
       el: '#app',
+      data: {
+        tableData: [],
+        selectedAccount: 'All',
+        selectedEventType: 'All',
+        selectedEventCode: 'All',
+        selectedStatus: 'All',
+        selectedVersion: 'All',
+        eventTypeList: ['All'],
+        eventCodeList: ['All'],
+        accountList: ['All'],
+        statusList: ['All'],
+        versionList: ['All']
+      },
       mounted () {
         axios.get('/staticsdata').then((response) => {
           this.tableData = response.data
+          this.eventTypeList = ['All']
+          this.eventCodeList = ['All']
+          this.accountList = ['All']
+          this.statusList = ['All']
+          this.versionList = ['All']
+          this.tableData.forEach((item) => {
+            if (!this.eventCodeList.includes(item.code)) {
+              this.eventCodeList.push(item.code)
+            }
+            if (!this.eventTypeList.includes(item.event)) {
+              this.eventTypeList.push(item.event)
+            }
+            if (!this.accountList.includes(item.account)) {
+              this.accountList.push(item.account)
+            }
+            if (!this.statusList.includes(item.state)) {
+              this.statusList.push(item.state)
+            }
+            if (!this.versionList.includes(item.version)) {
+              this.versionList.push(item.version)
+            }
+          })
         }).catch((error) => {
-          console.log(error);
+          console.log(error)
         });
         if (localStorage.visitCount !== null && localStorage.visitCount !== undefined && localStorage.visitCount !== 0 && localStorage.visitCount !== 'NaN') {
           localStorage.visitCount++
@@ -71,8 +138,16 @@
           localStorage.visitCount = 1
         }
       },
-      data: {
-        tableData: []
+      computed: {
+        dataForShow () {
+          return this.tableData.filter((item) => {
+            return (this.selectedAccount === 'All' || item.account === this.selectedAccount) &&
+              ((this.selectedEventType === 'All' || item.event === this.selectedEventType)) &&
+              ((this.selectedEventCode === 'All' || item.code === this.selectedEventCode)) &&
+              ((this.selectedStatus === 'All' || item.state === this.selectedStatus)) &&
+              ((this.selectedVersion === 'All' || item.version === this.selectedVersion))
+          })
+        }
       },
       methods: {
         fill0 (value) {
