@@ -238,10 +238,12 @@ export default {
           this.login()
           return true
         } else {
+          this.showInfo('白名单加载失败，开启免验证登录')
           this.login()
           return true
         }
       }).catch(() => {
+        this.showInfo('白名单加载失败，开启免验证登录')
         this.login()
         return true
       })
