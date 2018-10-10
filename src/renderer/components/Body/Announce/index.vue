@@ -40,7 +40,7 @@ export default {
     showError (message) {
       this.$message({
         type: 'error',
-        duration: '0',
+        duration: '2000',
         showClose: true,
         dangerouslyUseHTMLString: true,
         message: '<p style="line-height:20px;">' + message + '</p>'

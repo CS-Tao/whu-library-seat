@@ -11,13 +11,15 @@
         <el-table-column prop="stat" label="状态" width="100">
           <template slot-scope="scope">
             <el-button v-if="scope.row.stat === 'RESERVE'" type="primary" class="cancel-button" @click="cancelReserve(scope.$index)">取消预约</el-button>
+            <el-button v-else-if="scope.row.stat === 'CHECK_IN'" type="primary" class="cancel-button" @click="stopUse()">终止使用</el-button>
+            <el-button v-else-if="scope.row.stat === 'AWAY'" type="primary" class="cancel-button" @click="stopUse()">终止使用</el-button>
             <el-tag v-else-if="scope.row.stat === 'CANCEL'" class="tag" type="warning">已取消</el-tag>
             <el-tag v-else-if="scope.row.stat === 'COMPLETE'" class="tag" type="success">已履约</el-tag>
             <el-tag v-else-if="scope.row.stat === 'STOP'" class="tag">结束使用</el-tag>
             <el-tag v-else-if="scope.row.stat === 'MISS'" class="tag" type="danger">失约</el-tag>
             <el-tag v-else-if="scope.row.stat === 'INCOMPLETE'" class="tag" type="danger">早退</el-tag>
-            <el-tag v-else-if="scope.row.stat === 'CHECK_IN'" class="tag" type="success">已签到</el-tag>
-            <el-tag v-else-if="scope.row.stat === 'AWAY'" class="tag">暂离</el-tag>
+            <!-- <el-tag v-else-if="scope.row.stat === 'CHECK_IN'" class="tag" type="success">已签到</el-tag>
+            <el-tag v-else-if="scope.row.stat === 'AWAY'" class="tag">暂离</el-tag> -->
             <el-tag v-else type="info" class="tag">未知状态</el-tag>
           </template>
         </el-table-column>
@@ -80,6 +82,25 @@ export default {
             type: 'success',
             duration: '1000',
             message: '预约已取消'
+          })
+          this.initList()
+        } else {
+          this.$message({
+            type: 'error',
+            duration: '5000',
+            showClose: true,
+            message: response.data.message ? response.data.message : emptyMessage
+          })
+        }
+      }).catch(() => {})
+    },
+    stopUse () {
+      libraryRestApi.Stop(this.userToken).then((response) => {
+        if (response.data.status === 'success') {
+          this.$message({
+            type: 'success',
+            duration: '1000',
+            message: response.data.message ? response.data.message : emptyMessage
           })
           this.initList()
         } else {
