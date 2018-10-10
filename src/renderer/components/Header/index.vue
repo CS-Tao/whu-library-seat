@@ -263,6 +263,7 @@ export default {
       this.working = false
       libraryRestApi.Login(this.userInfo.account, this.userInfo.passwd).then((response) => {
         if (response.data.status === 'success') {
+          this.settingsVisible = false
           this.loadRooms(response.data.data.token)
           usageApi.loginState(this.userInfo.account, true, 4)
           // 检查公告
