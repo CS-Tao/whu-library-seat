@@ -8,10 +8,10 @@
       margin: 30px;
     }
     .el-input {
-      width: 150px;
+      width: 140px;
     }
     span {
-      margin-left: 20px;
+      margin-left: 15px;
     }
     </style>
     <script>
@@ -24,6 +24,10 @@
     <div id="app">
       <el-container>
         <el-header>
+          <span>设备</span>
+          <el-select v-model="selectedDevice">
+            <el-option v-for="item in deviceList" :key="item" :label="item === 'All' ? 'All' :(item === 0 ? '桌面端' : '移动端')" :value="item"></el-option>
+          </el-select>
           <span>状态</span>
           <el-select v-model="selectedStatus">
             <el-option v-for="item in statusList" :key="item" :label="item === 'All' ? 'All' :(item === 0 ? '失败' : '成功')" :value="item"></el-option>
@@ -48,6 +52,13 @@
         <el-main>
           <el-table :data="dataForShow" style="width: 100%" :border="true" :stripe="true" height="72vh">
             <el-table-column width="50" prop="id" label="Id"></el-table-column>
+            <el-table-column width="100" prop="mobile" label="设备">
+              <template slot-scope="scope">
+                <i v-if="(scope.row.mobile === null || scope.row.mobile === 0)" class="el-icon-menu" style="color: #409EFF"></i>
+                <i v-else class="el-icon-mobile-phone" style="color: #909399"></i>
+                <span style="margin-left: 5px" :style="{color: (scope.row.mobile === null || scope.row.mobile === 0) ?  '#409EFF': '#909399'}">{{ (scope.row.mobile === null || scope.row.mobile === 0) ? '桌面端' : '移动端' }}</span>
+              </template>
+            </el-table-column>
             <el-table-column width="100" label="状态">
               <template slot-scope="scope">
                 <i v-if="scope.row.state === 1" class="el-icon-success" style="color: green"></i>
@@ -57,8 +68,8 @@
             </el-table-column>
             <el-table-column width="100" prop="event" label="事件">
               <template slot-scope="scope">
-                <i v-if="scope.row.event === 'login'" class="el-icon-mobile-phone" style="color: #909399"></i>
-                <i v-else class="el-icon-bell" style="color: #E6A23C"></i>
+                <i v-if="scope.row.event === 'login'" class="el-icon-phone" style="color: #909399"></i>
+                <i v-else class="el-icon-phone-outline" style="color: #E6A23C"></i>
                 <span style="margin-left: 5px" :style="{color: scope.row.event === 'login' ? '#909399' : '#E6A23C'}">{{ scope.row.event === 'login' ? '登录' : '抢座' }}</span>
               </template>
             </el-table-column>
@@ -94,11 +105,13 @@
         selectedEventCode: 'All',
         selectedStatus: 'All',
         selectedVersion: 'All',
+        selectedDevice: 'All',
         eventTypeList: ['All'],
         eventCodeList: ['All'],
         accountList: ['All'],
         statusList: ['All'],
-        versionList: ['All']
+        versionList: ['All'],
+        deviceList: ['All']
       },
       mounted () {
         axios.get('/staticsdata').then((response) => {
@@ -109,6 +122,11 @@
           this.statusList = ['All']
           this.versionList = ['All']
           this.tableData.forEach((item) => {
+            if (!this.deviceList.includes(item.mobile)) {
+              if (item.mobile !== null) {
+                this.deviceList.push(item.mobile)
+              }
+            }
             if (!this.eventCodeList.includes(item.code)) {
               this.eventCodeList.push(item.code)
             }
@@ -145,7 +163,8 @@
               ((this.selectedEventType === 'All' || item.event === this.selectedEventType)) &&
               ((this.selectedEventCode === 'All' || item.code === this.selectedEventCode)) &&
               ((this.selectedStatus === 'All' || item.state === this.selectedStatus)) &&
-              ((this.selectedVersion === 'All' || item.version === this.selectedVersion))
+              ((this.selectedVersion === 'All' || item.version === this.selectedVersion)) &&
+              ((this.selectedDevice === 'All' || item.mobile === this.selectedDevice))
           })
         }
       },

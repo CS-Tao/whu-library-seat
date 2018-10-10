@@ -20,10 +20,11 @@ router.post('/', function(req, res, next) {
   var min = time.getMinutes();
   var sec = time.getSeconds();
   var events = 'login';
+  var mobile = params.mobile ? params.mobile: false;
 
   var queryString = `Insert into events \
-    (account, state, year, month, day, hour, min, sec, event, code, version, message) \
-    values ('${account}', ${state}, ${year}, ${month}, ${day}, ${hour}, ${min}, ${sec}, '${events}', ${code}, '${version}', '${message}')`;
+    (account, state, year, month, day, hour, min, sec, event, code, version, message, mobile) \
+    values ('${account}', ${state}, ${year}, ${month}, ${day}, ${hour}, ${min}, ${sec}, '${events}', ${code}, '${version}', '${message}', ${mobile})`;
 
   connection.query(queryString, function (err, results) {
       if (err) {
