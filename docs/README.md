@@ -6,10 +6,16 @@ actionLink: /#快速开始
 features:
 - title: 定时抢座
   details: 软件提供了定时抢座的功能，用户可以指定时间开始抢座，也可以通过勾选"√使用当前时间"立即抢座
-- title: 座位更改
-  details: 勾选"√使用当前时间"立即抢座，如果当前已有预约、正在使用、暂离状态的座位，软件会取消当前座位，重新预约
 - title: 错误处理
   details: 当位置已经被别人预约之后，软件会根据用户提供的时间段和房间信息，自动预约距离该位置较近的座位
+- title: 座位更改
+  details: 勾选"√使用当前时间"立即抢座，如果当前已有预约、正在使用、暂离状态的座位，软件会取消当前座位，重新预约
+- title: 取消预约
+  details: 在预约历史界面，如果您有处于预约的座位，可以点击对应记录后面的取消预约按钮取消座位
+- title: 终止使用
+  details: 在预约历史界面，如果您有处于正在使用或暂离状态的座位，可以点击对应记录后面的终止使用的按钮结束使用该座位
+- title: 开源跨平台
+  details: 本软件为开源跨平台软件，有 WIndows、MacOS、Linux、Android 等版本可供用户下载使用
 footer: Copyright © 2018 CS-Tao
 ---
 
@@ -19,24 +25,26 @@ footer: Copyright © 2018 CS-Tao
 您可以通过以下步骤快速使用本软件预约座位，查看详细使用说明请移步[用户手册](/specification/)
 :::
 
-#### 下载软件
+#### 安装软件
 
-链接: [https://github.com/CS-Tao/whu-library-seat#稳定版本下载](https://github.com/CS-Tao/whu-library-seat#稳定版本下载)
+- 桌面端(Windows/MacOS/Linux)
 
-#### 登录
+  安装包链接: [https://github.com/CS-Tao/whu-library-seat#稳定版本下载](https://github.com/CS-Tao/whu-library-seat#稳定版本下载)
 
-启动软件，输入用户名和密码(点击小锁图标可以记住用户名和密码)，点击`登录`按钮登录到图书馆，如下图所示
+- 移动端(Android)
 
-![登录演示](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/login.gif)
+  安装包链接：[https://github.com/CS-Tao/whu-library-seat-mobile#最新版本下载](https://github.com/CS-Tao/whu-library-seat-mobile#最新版本下载)
 
-#### 快速预约
+  二维码：
 
-登录成功后，在主界面选择必要的参数(点击电源图标和太阳图标可以对座位进行预筛选)，点击`定时抢座`按钮，在弹出的`定时器`界面选择定时抢座的`日期`和`时间`，点击`定时抢座`按钮开始定时抢座，倒计时结束软件便会开始抢座，如下图所示
+  ![安卓版本二维码](https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android-qr.jpg)
 
-![快速预约演示](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/reserve.gif)
+#### 使用演示
 
-#### 取消预约
+> 以桌面端(v1.2.0)为例，移动端相关操作与之一致
 
-登录成功后，点击主界面下方的`预约历史`按钮可以查看预约历史，如果有处于预约状态的条目，点击`取消预约`按钮即可取消预约，如下图所示
+![软件演示](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/full.gif)
 
-![取消预约演示](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/cancel.gif)
+::: warning Copyright © 2018 CS-Tao
+本软件开源，但没有向开发者提供任何源码`许可证`，作者本人保留源代码的所有权利，任何组织和个人不得将本软件或源码用于商业活动
+:::

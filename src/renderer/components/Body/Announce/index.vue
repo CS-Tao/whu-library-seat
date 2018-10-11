@@ -1,6 +1,6 @@
 <template>
 	<div class="flex-row">
-    <div class="warp">
+    <div v-loading="loading" :fullscreen="false" class="warp">
       <vue-markdown class="mark-down" html :source="source"/>
     </div>
 	</div>
@@ -19,6 +19,7 @@ const store = new Store({
 export default {
   data () {
     return {
+      loading: false,
       source: ''
     }
   },
@@ -26,13 +27,16 @@ export default {
     VueMarkdown
   },
   mounted () {
+    this.loading = true
     gitcontentsApi.announce().then((response) => {
+      this.loading = false
       if (response.status === 200) {
         this.source = response.data
         this.$store.dispatch('setAnnounceViewed', true)
         store.set('announceMd5', md5(response.data))
       }
     }).catch(() => {
+      this.loading = false
       this.showError('公告加载失败')
     })
   },
