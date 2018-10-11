@@ -1,6 +1,6 @@
 {
   "name": "whu-library-seat",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "author": "CS-Tao <whucstao@qq.com>",
   "description": "武汉大学图书馆抢座软件",
   "license": null,
@@ -12,6 +12,7 @@
     "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
     "build:docs": "vuepress build docs",
     "dev": "node .electron-vue/dev-runner.js",
+    "dev:docs": "vuepress dev docs",
     "e2e": "npm run pack && mocha test/e2e",
     "lint": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter src test",
     "lint:fix": "eslint --ext .js,.vue -f ./node_modules/eslint-friendly-formatter --fix src test",

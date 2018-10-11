@@ -1,21 +1,27 @@
 ### 下载软件
 
-本软件是针对`武汉大学`图书馆预约系统开发的抢座软件，支持 Windows、Mac OS、Linux 等操作系统
+本软件是针对`武汉大学`图书馆预约系统开发的抢座软件，支持 Windows、Mac OS、Linux、Android 等操作系统
 
-#### 最新版本下载
-
-最新版本(包括预览版): [https://github.com/CS-Tao/whu-library-seat/releases/latest](https://github.com/CS-Tao/whu-library-seat/releases/latest)
-
-#### 稳定版本下载
+#### 桌面端下载
 
 - Windows
-    - 链接: [whu-library-seat-setup-1.4.0.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.0/whu-library-seat-setup-1.4.0.exe)
+    - 链接: [whu-library-seat-setup-1.4.1.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.1/whu-library-seat-setup-1.4.1.exe)
 
 - Mac OS
-    - 链接: [whu-library-seat-1.4.0.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.0/whu-library-seat-1.4.0.dmg)
+    - 链接: [whu-library-seat-1.4.1.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.1/whu-library-seat-1.4.1.dmg)
 
 - Linux
-    - 链接: [whu-library-seat-1.4.0-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.0/whu-library-seat-1.4.0-x86_64.AppImage)
+    - 链接: [whu-library-seat-1.4.1-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.1/whu-library-seat-1.4.1-x86_64.AppImage)
+
+#### 移动端下载
+
+- 移动端(Android)
+
+  安装包链接: [https://github.com/CS-Tao/whu-library-seat-mobile#最新版本下载](https://github.com/CS-Tao/whu-library-seat-mobile#最新版本下载)
+
+  二维码:
+
+  ![安卓版本二维码](https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android-qr.jpg)
 
 ### 安装软件
 
@@ -29,4 +35,8 @@
 
 ### 软件更新
 
-软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮
+- 桌面端
+    软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮
+
+- 移动端(Android)
+    软件启动的时候会自动访问[这个文件](https://github.com/CS-Tao/whu-library-seat/blob/user-validation/last-mobile.json)检查更新，如果有更新，在软件的左下角会出现下载更新的按钮

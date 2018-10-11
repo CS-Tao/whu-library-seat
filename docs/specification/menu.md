@@ -1,3 +1,7 @@
+:::warning 注意
+本页面针对桌面端
+:::
+
 ### 文件
 
 - 退出程序
@@ -38,7 +42,29 @@
 
     将软件隐藏到托盘
 
+### 权限
+
+- 申请权限
+
+    打开[申请软件使用权](https://home.cs-tao.cc/whu-library-seat/specification/#申请软件使用权)
+
+- 查看用户白名单
+
+    打开[用户白名单](https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json)
+
 ### 关于
+
+- 版本 vx.x.x
+
+    显示本软件的版本号，点击可以进入本版本的[更新日志和下载链接](https://github.com/CS-Tao/whu-library-seat/releases/tag/v1.4.0)
+
+- 更新日志
+
+    查看[最新版本的更新日志](https://github.com/CS-Tao/whu-library-seat/releases)
+
+- 检查更新
+
+    检查更新，如果有更新可用，在软件的左下角会出现下载更新的按钮
 
 - 文档
 
@@ -47,14 +73,6 @@
 - 项目
 
     打开[项目地址](https://github.com/CS-Tao/whu-library-seat)
-
-- 申请权限
-
-    打开[申请软件使用权](https://home.cs-tao.cc/whu-library-seat/specification/#申请软件使用权)
-
-- 申请权限
-
-    打开[用户白名单](https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json)
 
 - 问题反馈
 
