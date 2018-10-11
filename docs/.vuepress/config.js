@@ -31,12 +31,12 @@ module.exports = {
         lastUpdated: '上次更新',
         nav: [
           {
-            text: '版权声明',
-            link: '/copyright/'
-          },
-          {
             text: '用户手册',
             link: '/specification/',
+          },
+          {
+            text: '项目说明',
+            link: '/project/'
           }
         ],
         sidebar: {
@@ -45,9 +45,12 @@ module.exports = {
               title: '用户手册',
               children: [
                 ['', '下载安装'],
-                ['settings', '软件设置'],
                 ['menu', '菜单'],
+                ['settings', '软件设置'],
                 ['reservation', '定时预约'],
+                ['cancel', '取消预约'],
+                ['stop', '结束使用'],
+                ['change', '更改位置'],
                 ['others', '其他']
               ]
             }
