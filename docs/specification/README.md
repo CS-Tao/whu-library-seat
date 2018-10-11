@@ -5,13 +5,13 @@
 #### 桌面端下载
 
 - Windows
-    - 安装包链接: [whu-library-seat-setup-1.4.0.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.0/whu-library-seat-setup-1.4.0.exe)
+    - 链接: [whu-library-seat-setup-1.4.1.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.1/whu-library-seat-setup-1.4.1.exe)
 
 - Mac OS
-    - 安装包链接: [whu-library-seat-1.4.0.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.0/whu-library-seat-1.4.0.dmg)
+    - 链接: [whu-library-seat-1.4.1.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.1/whu-library-seat-1.4.1.dmg)
 
 - Linux
-    - 安装包链接: [whu-library-seat-1.4.0-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.0/whu-library-seat-1.4.0-x86_64.AppImage)
+    - 链接: [whu-library-seat-1.4.1-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.1/whu-library-seat-1.4.1-x86_64.AppImage)
 
 #### 移动端下载
 
