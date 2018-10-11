@@ -1,11 +1,13 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/qq2adqaxv6vfj7di/branch/master?svg=true)](https://ci.appveyor.com/project/CS-Tao/whu-library-seat/branch/master)
 [![Build Status](https://travis-ci.com/CS-Tao/whu-library-seat.svg?branch=master)](https://travis-ci.com/CS-Tao/whu-library-seat)
-[![license](https://img.shields.io/badge/license-none-yellow.svg)](https://home.cs-tao.cc/whu-library-seat/copyright/)
+[![license](https://img.shields.io/badge/license-none-yellow.svg)](#版权声明)
 [![feedback](https://img.shields.io/badge/feedback-issues-blue.svg)](https://github.com/CS-Tao/whu-library-seat/issues/new)
 
 # whu-library-seat
 
->武汉大学图书馆抢座软件
+> 武汉大学图书馆抢座软件 - 桌面端
+
+> Android 版本：[https://github.com/CS-Tao/whu-library-seat-mobile](https://github.com/CS-Tao/whu-library-seat-mobile)
 
 ## 使用说明
 
@@ -20,10 +22,6 @@
 ## 下载和安装
 
 ### 最新版本下载
-
-最新版本(包括预览版): [https://github.com/CS-Tao/whu-library-seat/releases/latest](https://github.com/CS-Tao/whu-library-seat/releases/latest)
-
-### 稳定版本下载
 
 - Windows
     - 链接: [whu-library-seat-setup-1.4.1.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.4.1/whu-library-seat-setup-1.4.1.exe)
