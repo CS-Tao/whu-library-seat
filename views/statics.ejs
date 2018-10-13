@@ -88,6 +88,7 @@
             </el-table-column>
             <el-table-column prop="message" label="消息"></el-table-column>
           </el-table>
+          <p>共 {{countOfSelected}} 条数据</p>
         </el-main>
       </el-container>
     </div>
@@ -166,6 +167,9 @@
               ((this.selectedVersion === 'All' || item.version === this.selectedVersion)) &&
               ((this.selectedDevice === 'All' || (item.mobile === this.selectedDevice || item.mobile === null)))
           })
+        },
+        countOfSelected () {
+          return !this.dataForShow ? 0 : this.dataForShow.length
         }
       },
       methods: {
