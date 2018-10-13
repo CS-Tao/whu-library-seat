@@ -165,7 +165,7 @@ export default {
         dangerouslyUseHTMLString: true,
         message: `<el-card shadow="never" style="line-height: 30px;">
                     <p align="center" style="margin-top:20px;">
-                      <img alt="软件二维码.jpg" src="https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android-qr.jpg" width="90%" height="90%">
+                      <img alt="软件二维码.jpg" src="https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android-qr.jpg?${new Date()}" width="90%" height="90%">
                     </p>
                   </el-card>`,
         duration: 0
