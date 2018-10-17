@@ -29,7 +29,7 @@ footer: Copyright © 2018 CS-Tao
 
 - 桌面端(Windows/MacOS/Linux)
 
-  安装包链接: [https://github.com/CS-Tao/whu-library-seat#稳定版本下载](https://github.com/CS-Tao/whu-library-seat#稳定版本下载)
+  安装包链接: [https://github.com/CS-Tao/whu-library-seat#最新版本下载](https://github.com/CS-Tao/whu-library-seat#最新版本下载)
 
 - 移动端(Android)
 
