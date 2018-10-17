@@ -214,7 +214,8 @@ function createWindow () {
   let position = store.get('mainWindowPosition', [size.width - 500, -1])
 
   if (position[0] < 0 || position[0] > size.width || position[1] < 0 || position[1] > size.height) {
-    store.set('mainWindowPosition', [size.width - 500, -1])
+    position = [size.width - 500, -1]
+    store.set('mainWindowPosition', position)
     mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
   } else {
     mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
