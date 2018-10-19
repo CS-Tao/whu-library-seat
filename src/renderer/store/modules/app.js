@@ -245,13 +245,15 @@ const app = {
           commit('CANCEL_TIMER', null)
         }
         let timerInfo = Object()
+        var oppointmentTimeMilli = param.time.getTime()
         timerInfo.waitedTime = 0
-        timerInfo.totalTime = param.time.getTime() - (new Date()).getTime()
+        timerInfo.totalTime = oppointmentTimeMilli - (new Date()).getTime()
         if (timerInfo.totalTime < 0) {
           timerInfo.totalTime = 0
           timerInfo.timerId = setTimeout(() => {
-            let oppointmentTimeMilli = param.time.getTime()
-            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {}
+            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {
+              console.log(new Date())
+            }
             param.bookFunc()
           }, timerInfo.totalTime)
         } else if (timerInfo.totalTime > 5000) {
@@ -259,14 +261,16 @@ const app = {
             param.loginFunc()
           }, timerInfo.totalTime - 5000)
           timerInfo.timerId = setTimeout(() => {
-            let oppointmentTimeMilli = param.time.getTime()
-            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {}
+            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {
+              console.log(new Date())
+            }
             param.bookFunc()
           }, timerInfo.totalTime)
         } else {
           timerInfo.timerId = setTimeout(() => {
-            let oppointmentTimeMilli = param.time.getTime()
-            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {}
+            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {
+              console.log(new Date())
+            }
             param.bookFunc()
           }, timerInfo.totalTime)
         }

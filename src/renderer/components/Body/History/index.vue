@@ -12,7 +12,7 @@
           <template slot-scope="scope">
             <el-button v-if="scope.row.stat === 'RESERVE'" type="primary" class="cancel-button" @click="cancelReserve(scope.$index)">取消预约</el-button>
             <el-button v-else-if="scope.row.stat === 'CHECK_IN'" type="primary" class="cancel-button" @click="stopUse()">终止使用</el-button>
-            <el-button v-else-if="scope.row.stat === 'AWAY'" type="primary" class="cancel-button" @click="stopUse()">终止使用</el-button>
+            <el-button v-else-if="scope.row.stat === 'AWAY'" type="primary" class="cancel-button" @click="stopUse()">释放座位</el-button>
             <el-tag v-else-if="scope.row.stat === 'CANCEL'" class="tag" type="warning">已取消</el-tag>
             <el-tag v-else-if="scope.row.stat === 'COMPLETE'" class="tag" type="success">已履约</el-tag>
             <el-tag v-else-if="scope.row.stat === 'STOP'" class="tag">结束使用</el-tag>
