@@ -196,7 +196,7 @@ export default {
           var userItem = null
           var groupItem = null
           for (let index = 0; index < users.length; index++) {
-            if (users[index].account === this.userInfo.account) {
+            if (users[index].accountMd5 === md5(this.userInfo.account.toString())) {
               userItem = users[index]
               break
             }

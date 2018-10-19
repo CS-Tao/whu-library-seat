@@ -16,22 +16,29 @@ export default {
             'id': 2,
             'name': 'friends',
             'status': true
-          }
-        ],
-        'users': [
+          },
           {
-            'id': 1,
-            'account': 2015302590039,
-            'groupId': 1,
+            'id': 3,
+            'name': 'Badminton team',
             'status': true
           },
           {
-            'id': 1,
-            'account': 2017302590175,
-            'groupId': 1,
+            'id': 4,
+            'name': 'GWModel Lab',
+            'status': true
+          },
+          {
+            'id': 5,
+            'name': 'Others',
+            'status': true
+          },
+          {
+            'id': 6,
+            'name': 'KongXie',
             'status': true
           }
-        ]
+        ],
+        'users': require('./data/users').default
       }
     }
   },
