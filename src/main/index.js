@@ -277,10 +277,6 @@ ipcMain.on('exit-app', (event, arg) => {
 })
 
 ipcMain.on('show-window-notify', (event, title, message) => {
-  if (mainWindow.isVisible()) {
-    mainWindow.show()
-    return
-  }
   notifier.notify(
     {
       appName: 'cc.cs-tao.whu-library-seat',
