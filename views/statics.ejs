@@ -166,7 +166,7 @@
               ((this.selectedStatus === 'All' || item.state === this.selectedStatus)) &&
               ((this.selectedVersion === 'All' || item.version === this.selectedVersion)) &&
               ((this.selectedDevice === 'All' || (item.mobile === this.selectedDevice || item.mobile === null)))
-          }).reverse()
+          })
         },
         countOfSelected () {
           return !this.dataForShow ? 0 : this.dataForShow.length
