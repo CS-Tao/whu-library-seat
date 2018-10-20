@@ -6,7 +6,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   var connection = mysql.createConnection(mysqlConfig.config);
 
-  var queryString = `Select * from events`;
+  var queryString = `select top 200 * from (select * from events order by id desc);`;
 
   connection.query(queryString, (err, results) => {
       if (err) {
