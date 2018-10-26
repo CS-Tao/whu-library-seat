@@ -3,16 +3,16 @@
     <el-form v-show="showMode==='normal'" :model="form" ref="seatForm" label-width="50px" class="flex-row form">
       <div style="margin:auto;text-align:center;">
         <el-form-item label="日期">
-          <el-select v-model="form.date" placeholder="请选择日期" class="input">
+          <el-select v-model="form.date" placeholder="请选择日期" class="input" @change="updateSeatsStatus()">
             <el-option key="0" label="今天" :value="freeDates[0]"><span>今天&nbsp;&nbsp;{{freeDates[0]}}</span></el-option>
             <el-option key="1" label="明天" :value="freeDates[1]"><span>明天&nbsp;&nbsp;{{freeDates[1]}}</span></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="时间">
-          <el-select v-model="form.beginTime" placeholder="开始时间" class="time-input">
+          <el-select v-model="form.beginTime" placeholder="开始时间" class="time-input" @change="updateSeatsStatus()">
             <el-option v-for="time in freeBeginTime" :key="time.time" :label="time.label" :value="time.time"></el-option>
           </el-select>
-          <el-select v-model="form.endTime" placeholder="结束时间" class="time-input">
+          <el-select v-model="form.endTime" placeholder="结束时间" class="time-input" @change="updateSeatsStatus()">
             <el-option v-for="time in freeEndTime" :key="time.time" :label="time.label" :value="time.time"></el-option>
           </el-select>
         </el-form-item>
@@ -26,14 +26,14 @@
             <el-option v-for="room in singleLibRooms" :key="room[0]" :label="room[1]" :value="room[0]">
               <span class="room-option-name">{{ room[1] }}</span>
               <span class="room-option-floor">{{ room[3] }} F</span>
-              <span v-if="getRoomDetail(room[0])" :class=" getRoomDetail(room[0]).free > 0 ? 'room-option-free-green' : 'room-option-free'">{{ getRoomDetail(room[0]).free }}&nbsp;座可用</span>
+              <span v-if="getRoomDetail(room[0])" :class=" getRoomDetail(room[0]).free > 0 ? 'room-option-free-green' : 'room-option-free'">{{ getRoomDetail(room[0]).free }}&nbsp;座空闲</span>
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="位置" :inline="true" style="flex-col">
           <el-select v-model="form.seatNum" placeholder="座位号" class="num">
             <el-option v-for="n in seatsForSelect.length" :key="n-1" :label="seatsForSelect[n-1].name" :value="seatsForSelect[n-1].id">
-              <span class="seat-option-left" :style="{color: seatsForSelect[n-1].status!=='FREE'?'red':null}">{{ seatsForSelect[n-1].name }}</span>
+              <span class="seat-option-left" :style="{color: getSeatColor(seatsForSelect[n-1].id)}">{{ seatsForSelect[n-1].name }}</span>
               <span class="seat-option-right">
                 <svg class="seat-flag" :class="{'seat-flag-computer':seatsForSelect[n-1].computer}" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M750.81728 870.23616 273.18272 870.23616c-18.80064 0-34.11968 34.11968-34.11968 34.11968l0 34.11968 545.87392 0 0-34.11968C784.93696 885.5552 769.61792 870.23616 750.81728 870.23616z"></path><path d="M853.17632 85.52448 170.82368 85.52448c-56.50432 0-102.35904 45.85472-102.35904 102.35904l0 477.65504c0 56.50432 45.85472 102.35904 102.35904 102.35904l238.81728 0 0 34.11968c0 18.80064 15.31904 34.11968 34.11968 34.11968l136.47872 0c18.80064 0 34.11968-17.59232 34.11968-34.11968 0-7.12704 0-20.84864 0-34.11968l238.81728 0c56.50432 0 102.35904-45.83424 102.35904-102.35904L955.53536 187.88352C955.53536 131.3792 909.68064 85.52448 853.17632 85.52448zM170.82368 631.41888c-18.80064 0-34.11968-15.31904-34.11968-34.11968L136.704 187.88352c0-18.80064 15.31904-34.11968 34.11968-34.11968l682.35264 0c18.80064 0 34.11968 15.31904 34.11968 34.11968l0 409.41568c0 18.80064-15.31904 34.11968-34.11968 34.11968L170.82368 631.41888zM853.13536 735.0272c-19.49696 0-35.30752-15.83104-35.30752-35.38944 0-19.51744 15.83104-35.38944 35.30752-35.38944 19.5584 0 35.38944 15.85152 35.38944 35.38944C888.5248 719.19616 872.69376 735.0272 853.13536 735.0272z"></path></svg>
                 <svg class="seat-flag" :class="{'seat-flag-power':seatsForSelect[n-1].power}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 313.585 313.585" style="enable-background:new 0 0 313.585 313.585;" xml:space="preserve"><g><path d="M260.287,69.487c3.541,0,6.427,2.879,6.427,6.427v26.511v12.854h12.854h14.737c3.541,0,6.427,2.879,6.427,6.427v70.168 c0,3.541-2.886,6.427-6.427,6.427h-14.737h-12.854v12.854v26.511c0,3.541-2.886,6.427-6.427,6.427H19.281 c-3.554,0-6.427-2.886-6.427-6.427V75.914c0-3.548,2.873-6.427,6.427-6.427H260.287 M260.287,56.633H19.281 C8.631,56.633,0,65.271,0,75.914v161.757c0,10.636,8.631,19.281,19.281,19.281h241.006c10.636,0,19.281-8.644,19.281-19.281V211.16 h14.737c10.636,0,19.28-8.644,19.28-19.281v-70.175c0-10.643-8.644-19.281-19.28-19.281h-14.737V75.914 C279.567,65.271,270.93,56.633,260.287,56.633L260.287,56.633z M44.454,99.475H78.69v114.616H44.454 C44.454,214.091,44.454,99.475,44.454,99.475z M96.422,99.475h34.236v114.616H96.422V99.475z M148.376,99.475h34.236v114.629 h-34.236V99.475z"/></g></svg>
@@ -98,6 +98,7 @@ export default {
       singleLibRooms: [],
       seats: [],
       seatsForSelect: [],
+      seatsForSelectIsAvailable: null,
       seatsSearched: null,
       reserveTime: null,
       checkReserveTime: false,
@@ -135,6 +136,11 @@ export default {
       return this.userAccount === 2015302590039 || this.userAccount === 2017302590175
     }
   },
+  watch: {
+    seats () {
+      this.updateSeatsStatus()
+    }
+  },
   mounted () {
     this.form = {...this.seatInfo}
     this.form.date = this.freeDates.length > 0 ? this.freeDates[0] : null
@@ -160,9 +166,9 @@ export default {
       this.singleLibRooms.sort((x, y) => {
         return parseInt(x[3]) - parseInt(y[3])
       })
-      libraryRestApi.RoomStats(this.form.library, this.userToken).then((reponse) => {
-        if (reponse.data.status === 'success') {
-          this.roomsDetial = reponse.data.data
+      libraryRestApi.RoomStats(this.form.library, this.userToken).then((response) => {
+        if (response.data.status === 'success') {
+          this.roomsDetial = response.data.data
         }
       }).catch(() => {})
       this.form.room = null
@@ -170,9 +176,9 @@ export default {
     },
     roomChanged () {
       if (this.form.room === null || this.form.date === null) { return }
+      this.seats = []
       libraryRestApi.LayoutByDate(this.form.room, this.form.date, this.userToken).then((response) => {
         if (response.data.status === 'success') {
-          this.seats = []
           for (var key in response.data.data.layout) {
             this.seats.push(response.data.data.layout[key])
           }
@@ -547,6 +553,48 @@ export default {
       }).catch(() => {
         this.seatsSearched = null
       })
+    },
+    updateSeatsStatus () {
+      this.seatsForSelectIsAvailable = null
+      if (this.form.library === null ||
+        this.form.room === null ||
+        this.form.date === null ||
+        this.form.beginTime === null ||
+        this.form.endTime === null) {
+        return
+      }
+      libraryRestApi.SearchSeat(
+        this.form.library,
+        this.form.room,
+        this.form.date,
+        this.form.beginTime,
+        this.form.endTime,
+        this.userToken).then((response) => {
+        if (response.data.status) {
+          this.seatsForSelectIsAvailable = []
+          if (response.data.data.seats) {
+            for (var key in response.data.data.seats) {
+              if (response.data.data.seats[key].status === 'FREE') {
+                this.seatsForSelectIsAvailable.push(response.data.data.seats[key].id)
+              }
+            }
+          }
+        } else {
+          this.seatsForSelectIsAvailable = null
+        }
+      }).catch(() => {
+        this.seatsForSelectIsAvailable = null
+      })
+    },
+    getSeatColor (seatId) {
+      if (this.seatsForSelectIsAvailable === null) {
+        // 数据未获取
+        return null
+      } else if (this.seatsForSelectIsAvailable.length === 0 || !this.seatsForSelectIsAvailable.includes(seatId)) {
+        return 'red'
+      } else {
+        return 'rgb(0, 204, 0)'
+      }
     }
   }
 }
