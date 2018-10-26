@@ -1,7 +1,7 @@
 'use strict'
 
 import { autoUpdater } from 'electron-updater'
-import { app, BrowserWindow, Menu, Tray, ipcMain, screen } from 'electron'
+import { app, BrowserWindow, Menu, Tray, ipcMain, screen, session } from 'electron'
 import path from 'path'
 import Store from 'electron-store'
 import notifier from 'node-notifier'
@@ -220,6 +220,16 @@ function createWindow () {
   } else {
     mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
   }
+
+  session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders['User-Agent'] = null
+    details.requestHeaders['Accept'] = null
+    details.requestHeaders['Accept-Encoding'] = null
+    details.requestHeaders['Accept-Language'] = null
+    details.requestHeaders['Referer'] = null
+    details.requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+    callback({ cancel: false, requestHeaders: details.requestHeaders }) // eslint-disable-line
+  })
 
   mainWindow.loadURL(winURL)
 
