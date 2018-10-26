@@ -1,4 +1,4 @@
-### 公告 (2018-10-25 11:50)
+### 公告 (2018-10-27 00:00)
 
 - 本软件为图书馆抢座软件移动版，是原桌面端软件的衍生版本，布局和样式可能和一些设备不太兼容，最新版为 v1.2.0，桌面端最新版为 v1.5.0
 
@@ -20,7 +20,7 @@
 #### 欢迎打赏，金额随意~
 
 <p align="center"><img alt="支付宝二维码.jpg" src="https://home.cs-tao.cc/blog/img/alipayimg.jpg" width="70%" height="70%"><br/><span style="color:rgb(0, 204, 0)">支付宝扫一扫</span></p>
-<br/>
+
 <p align="center"><img alt="微信二维码.jpg" src="https://home.cs-tao.cc/blog/img/wechatimg.jpg" width="70%" height="70%"><br/><span style="color:rgb(0, 204, 0)">微信扫一扫</span></p>
 
 #### 祝您使用愉快，学习进步😉

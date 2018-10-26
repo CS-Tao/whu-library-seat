@@ -1,4 +1,4 @@
-### 公告 (2018-10-25 11:50)
+### 公告 (2018-10-27 00:00)
 
 - 本软件的最新版本是 v1.5.0，点击菜单: `关于 > 更新日志`可以查看。移动端最新版为 v1.2.0
 
@@ -22,7 +22,7 @@
 #### 欢迎打赏，金额随意~
 
 <p align="center"><img alt="支付宝二维码.jpg" src="https://home.cs-tao.cc/blog/img/alipayimg.jpg" width="70%" height="70%"><br/><span style="color:rgb(0, 204, 0)">支付宝扫一扫</span></p>
-<br/>
+
 <p align="center"><img alt="微信二维码.jpg" src="https://home.cs-tao.cc/blog/img/wechatimg.jpg" width="70%" height="70%"><br/><span style="color:rgb(0, 204, 0)">微信扫一扫</span></p>
 
 #### 祝您使用愉快，学习进步😉
