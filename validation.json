@@ -3,7 +3,7 @@
 	"code": "0",
 	"message": "",
 	"meta": {
-		"description": "本文件只针对安卓版v1.2.0、桌面版v1.5.0及之后的版本，对老版本不再提供用户认证支持",
+		"description": "本文件已对学号启用md5加密，只针对安卓版v1.2.0、桌面版v1.5.0及其之后的版本，对老版本不再提供用户认证支持",
 		"encryptor": "https://www.cmd5.com/"
 	},
 	"data": {
