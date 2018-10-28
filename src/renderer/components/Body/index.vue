@@ -441,7 +441,9 @@ export default {
               // 结束打印
               // 开始下一次抢座
               if (!this.isVip) {
-                this.sleep(100)
+                this.sleep(200)
+              } else {
+                this.sleep(120)
               }
               if (this.grabCount === arbitraryGrabCount) {
                 this.searchSeatsByTime(this.form.library, this.form.room, date, beginTime, endTime, userToken)
@@ -475,6 +477,7 @@ export default {
           }
         }
       }).catch((error) => {
+        this.$store.dispatch('updateTimer', 'fail')
         usageApi.grabState(this.userAccount, false, 20, `预约出现异常：${error.message}`)
       })
     },
