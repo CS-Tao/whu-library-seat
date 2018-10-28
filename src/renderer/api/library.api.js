@@ -1,5 +1,6 @@
 import request from './config'
 import urls from './urls'
+import Mock from 'mockjs'
 
 export default {
   // 登录
@@ -7,6 +8,9 @@ export default {
     return request({
       url: urls.library.Login.url(),
       method: urls.library.Login.method,
+      headers: {
+        token: Mock.mock(/[A-Z\d]{18}/)
+      },
       params: {
         username: account,
         password: passwd
