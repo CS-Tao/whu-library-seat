@@ -24,19 +24,21 @@
 ### 最新版本下载
 
 - Windows
-    - 链接: [whu-library-seat-setup-1.5.0.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.5.0/whu-library-seat-setup-1.5.0.exe)
+    - 链接: [whu-library-seat-setup-1.6.0.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.6.0/whu-library-seat-setup-1.6.0.exe)
 
 - Mac OS
-    - 链接: [whu-library-seat-1.5.0.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.5.0/whu-library-seat-1.5.0.dmg)
+    - 链接: [whu-library-seat-1.6.0.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.6.0/whu-library-seat-1.6.0.dmg)
 
 - Linux
-    - 链接: [whu-library-seat-1.5.0-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.5.0/whu-library-seat-1.5.0-x86_64.AppImage)
+    - 链接: [whu-library-seat-1.6.0-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.6.0/whu-library-seat-1.6.0-x86_64.AppImage)
 
 ### 安装软件
 
 运行安装包即可
 
 ### 申请软件使用权
+
+> 不再对桌面版本低于 v1.5.0、安卓版本低于 v1.2.0 的软件提供用户认证支持
 
 在您登录之前，软件会检查您的学号是否被记录在[这个文件](https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json)中，只有被记录在这个文件中的学号(经过加密)才能使用本软件，如果您的学号(经过加密)没有被记录，您可以通过邮件[联系我](http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=whucstao@qq.com)(请在邮件中注明学号、院系和姓名)
 
