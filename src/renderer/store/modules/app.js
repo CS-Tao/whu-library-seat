@@ -256,10 +256,10 @@ const app = {
             }
             param.bookFunc()
           }, timerInfo.totalTime)
-        } else if (timerInfo.totalTime > 5000) {
+        } else if (timerInfo.totalTime > 8000) {
           timerInfo.loginTimerId = setTimeout(() => {
             param.loginFunc()
-          }, timerInfo.totalTime - 5000)
+          }, timerInfo.totalTime - 8000)
           timerInfo.timerId = setTimeout(() => {
             while (oppointmentTimeMilli - (new Date()).getTime() > 0) {
               console.log(new Date())
