@@ -209,7 +209,10 @@ export default {
       this.seatsForSelect.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
       })
-      if (this.form.library && this.form.library === this.seatInfo.library && this.form.room && this.form.room === this.seatInfo.room) {
+      let cachedSeatExist = this.seatsForSelect.findIndex((item) => {
+        return item.id === this.seatInfo.seatNum
+      }) !== -1
+      if (this.form.library && this.form.library === this.seatInfo.library && this.form.room && this.form.room === this.seatInfo.room && cachedSeatExist) {
         this.form.seatNum = this.seatInfo.seatNum
       } else {
         this.form.seatNum = null
