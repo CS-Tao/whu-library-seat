@@ -512,13 +512,9 @@ export default {
         return parseInt(x.name) - parseInt(y.name)
       })
       // 种子点在 seatInTheRoomBetter 中的索引号
-      var seedIndex = -1
-      for (let index = 0; index < seatInTheRoomBetter.length; index++) {
-        if (seatInTheRoomBetter[index].id === seed) {
-          seedIndex = index
-          break
-        }
-      }
+      var seedIndex = seatInTheRoomBetter.findIndex((item) => {
+        return item.id === seed
+      })
       // 在筛选过的座位中选择位置
       for (let distance = 1; distance < seatInTheRoomBetter.length; distance++) {
         if (seedIndex - distance >= 0 && !!seatInTheRoomBetter[seedIndex - distance].id && !triedSeatIds.includes(seatInTheRoomBetter[seedIndex - distance].id)) {
