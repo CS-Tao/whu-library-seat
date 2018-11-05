@@ -615,13 +615,13 @@ export default {
     margin: 0 3px;
   }
   .num {
-    width: 130px;
+    width: 140px;
     flex: 1;
     float: left;
     margin: 0 5px;
   }
   .toggle-button {
-    margin: 0 5px 0 5px;
+    margin: 0 3px 0 3px;
     padding: 0;
     float: right;
     color: $text-color;
@@ -645,12 +645,12 @@ export default {
     }
     .sun-checked {
       width: 26px;
-      margin: 2px 20px 2px 8px;
+      margin: 2px 16px 2px 8px;
       fill: $button-yellow;
     }
     .sun-unchecked {
       width: 26px;
-      margin: 2px 20px 2px 8px;
+      margin: 2px 16px 2px 8px;
       fill: $text-color;
     }
   }

@@ -101,7 +101,7 @@ $warp-padding: 20px;
   }
   .info {
     display: block;
-    margin: 10px 0;
+    margin: 8px 0;
     .info-key {
       left: 0;
       color: $text-color;
