@@ -293,8 +293,8 @@ ipcMain.on('show-window-notify', (event, title, message) => {
       title: title,
       subTitle: title,
       message: message,
-      icon: path.join(__static, '/toast.png'),
-      sound: true,
+      icon: './static/toast.png',
+      sound: false,
       wait: true
     },
     () => {}
