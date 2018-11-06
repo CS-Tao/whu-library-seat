@@ -1,7 +1,7 @@
 <template>
   <div class="flex-row">
     <div v-loading="loading" :fullscreen="false" class="warp">
-      <el-table class="table" height="320" :data="reservations" border>
+      <el-table class="table" height="350" :data="reservations" border>
         <el-table-column label="场馆">
           <template slot-scope="scope">
             <span style="display:block;">{{ scope.row.loc }}</span>
@@ -125,7 +125,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
 $warp-width: 300px;
-$warp-height: 320px;
+$warp-height: 350px;
 $warp-padding: 10px;
 .warp {
   cursor: default!important;
