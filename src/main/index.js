@@ -155,11 +155,11 @@ const template = [
     submenu: [
       {
         label: '版本 v' + appVersion,
-        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases/tag/v' + appVersion) }
+        enabled: false
       },
       {
         label: '更新日志',
-        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases') }
+        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases/tag/v' + appVersion) }
       },
       {
         label: '检查更新',
@@ -293,7 +293,11 @@ ipcMain.on('show-window-notify', (event, title, message) => {
       title: title,
       subTitle: title,
       message: message,
-      icon: './static/toast.png',
+      icon: process.env.NODE_ENV !== 'production'
+        ? path.join(__static, 'toast.png')
+        : (process.platform === 'darwin'
+          ? './Contents/Resources/static/toast.png'
+          : './resources/static/toast.png'),
       sound: false,
       wait: true
     },
@@ -316,6 +320,8 @@ ipcMain.on('check-updates', (event, arg) => {
   if (process.env.NODE_ENV === 'production') {
     autoUpdater.checkForUpdates().then((info) => {
       mainWindow.webContents.send('update-available', info)
+    }).catch((error) => {
+      mainWindow.webContents.send('check-update-error', error)
     })
   }
 })
@@ -337,5 +343,10 @@ ipcMain.on('quit-and-install', (event, arg) => {
 
 autoUpdater.on('update-downloaded', () => {
   // 更新下载完毕
+  mainWindow.webContents.send('update-downloaded')
+})
+
+autoUpdater.on('update-downloaded', () => {
+  // 更新出现错误
   mainWindow.webContents.send('update-downloaded')
 })

@@ -115,6 +115,7 @@ export default {
     ...mapGetters([
       'userAccount',
       'userPasswd',
+      'settingInfo',
       'freeDates',
       'freeDatesDefault',
       'freeBeginTime',
@@ -280,8 +281,8 @@ export default {
       this.checkReserveTime = true
     },
     checkLibraryIsOpen () {
-      if (this.form.date === this.freeDates[1]) {
-        // 如果预约明天的，先判断是否开放
+      if (this.settingInfo.checkOpenEnable && this.form.date === this.freeDates[1]) {
+        // 如果用户启用开放检测，且预约明天的，先判断是否开放
         this.triedSeatIds = []
         this.stopGrab = false
         this.grabCount = 0
@@ -504,9 +505,9 @@ export default {
                 type: 'error',
                 duration: 0,
                 showClose: true,
-                message: '抢座失败：该房间在指定的时间段内没有空闲位置（请确保您要预约的时间无误）'
+                message: '抢座失败：该房间在指定的时间段内没有空闲位置'
               })
-              this.windowsNotification('抢座失败', '该房间在指定的时间段内没有空闲位置（请确保您要预约的时间无误）')
+              this.windowsNotification('抢座失败', '该房间在指定的时间段内没有空闲位置')
               usageApi.grabState(this.userAccount, false, 8, `抢座失败：该房间在指定的时间段内没有空闲位置(${date} ${beginTime}-${endTime})`)
             } else if (!this.stopGrab) {
               this.$store.dispatch('updateTimer', 'working')
