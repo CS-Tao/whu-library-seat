@@ -62,10 +62,10 @@
         <div class="form-item" v-if="!hasToken">
           <el-button
             type="primary"
-            :disabled="working"
-            :class="!working?'login-button':'button-disabled'"
-            :icon="working?'el-icon-loading':null"
-            :style="working?'width: 110px;':''"
+            :disabled="workMode !== 'none'"
+            :class="workMode === 'none'?'login-button':'button-disabled'"
+            :icon="workMode !== 'none'?'el-icon-loading':null"
+            :style="workMode !== 'none'?'width: 110px;':''"
             @click="validateUser()">
             {{btnText}}
           </el-button>
@@ -101,7 +101,7 @@ export default {
       accountLocked: false,
       passwdLocked: false,
       settingsVisible: false,
-      working: false
+      workMode: 'none'
     }
   },
   components: {
@@ -116,7 +116,7 @@ export default {
       'announceViewed'
     ]),
     btnText () {
-      return this.working ? '白名单验证' : '登录'
+      return this.workMode === 'none' ? '登录' : (this.workMode === 'validation' ? '用户验证' : '正在登录')
     },
     isLover () {
       return this.userInfo.account === 2017302590175
@@ -188,7 +188,7 @@ export default {
         this.showWarning('密码不能为空')
         return false
       }
-      this.working = true
+      this.workMode = 'validation'
       gitcontentsApi.validateUser().then((response) => {
         if (response.data.status === 'success') {
           var users = response.data.data.users
@@ -205,14 +205,14 @@ export default {
           if (userItem === null) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
-            this.working = false
+            this.workMode = 'none'
             usageApi.loginState(this.userInfo.account, false, 0)
             return false
           } else if (!userItem.status) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
             usageApi.loginState(this.userInfo.account, false, 1, '对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
-            this.working = false
+            this.workMode = 'none'
             return false
           }
           for (let index = 0; index < groups.length; index++) {
@@ -226,13 +226,13 @@ export default {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
             usageApi.loginState(this.userInfo.account, false, 2, '对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
-            this.working = false
+            this.workMode = 'none'
             return false
           } else if (!groupItem.status) {
             this.$store.dispatch('setToken', null)
             this.showError('对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
             usageApi.loginState(this.userInfo.account, false, 3, '对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限')
-            this.working = false
+            this.workMode = 'none'
             return false
           }
           this.login()
@@ -260,7 +260,7 @@ export default {
 
       this.$store.dispatch('setAccount', this.userInfo.account)
       this.$store.dispatch('setPasswd', this.userInfo.passwd)
-      this.working = false
+      this.workMode = 'login'
       libraryRestApi.Login(this.userInfo.account, this.userInfo.passwd).then((response) => {
         if (response.data.status === 'success') {
           this.settingsVisible = false
@@ -284,7 +284,10 @@ export default {
           })
           usageApi.loginState(this.userInfo.account, false, 5, response.data.message)
         }
-      }).catch(() => {})
+        this.workMode = 'none'
+      }).catch(() => {
+        this.workMode = 'none'
+      })
     },
     // 载入房间信息 && 验证 token
     loadRooms (token) {

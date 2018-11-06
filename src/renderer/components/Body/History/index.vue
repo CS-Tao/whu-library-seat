@@ -1,6 +1,6 @@
 <template>
   <div class="flex-row">
-    <div class="warp">
+    <div v-loading="loading" :fullscreen="false" class="warp">
       <el-table class="table" height="320" :data="reservations" border>
         <el-table-column label="场馆">
           <template slot-scope="scope">
@@ -37,6 +37,7 @@ const emptyMessage = '数据加载失败'
 export default {
   data () {
     return {
+      loading: false,
       reservations: []
     }
   },
@@ -51,6 +52,7 @@ export default {
   },
   methods: {
     initList () {
+      this.loading = true
       libraryRestApi.History(1, 50, this.userToken).then((response) => {
         if (response.data.status === 'success') {
           this.reservations = response.data.data.reservations
@@ -62,7 +64,10 @@ export default {
             message: response.data.message ? response.data.message : emptyMessage
           })
         }
-      }).catch(() => {})
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
     },
     cancelReserve (index) {
       if (!this.reservations[index].id) {

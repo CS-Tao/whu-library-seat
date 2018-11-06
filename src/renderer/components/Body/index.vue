@@ -209,7 +209,10 @@ export default {
       this.seatsForSelect.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
       })
-      if (this.form.library && this.form.library === this.seatInfo.library && this.form.room && this.form.room === this.seatInfo.room) {
+      let cachedSeatExist = this.seatsForSelect.findIndex((item) => {
+        return item.id === this.seatInfo.seatNum
+      }) !== -1
+      if (this.form.library && this.form.library === this.seatInfo.library && this.form.room && this.form.room === this.seatInfo.room && cachedSeatExist) {
         this.form.seatNum = this.seatInfo.seatNum
       } else {
         this.form.seatNum = null
@@ -509,13 +512,9 @@ export default {
         return parseInt(x.name) - parseInt(y.name)
       })
       // 种子点在 seatInTheRoomBetter 中的索引号
-      var seedIndex = -1
-      for (let index = 0; index < seatInTheRoomBetter.length; index++) {
-        if (seatInTheRoomBetter[index].id === seed) {
-          seedIndex = index
-          break
-        }
-      }
+      var seedIndex = seatInTheRoomBetter.findIndex((item) => {
+        return item.id === seed
+      })
       // 在筛选过的座位中选择位置
       for (let distance = 1; distance < seatInTheRoomBetter.length; distance++) {
         if (seedIndex - distance >= 0 && !!seatInTheRoomBetter[seedIndex - distance].id && !triedSeatIds.includes(seatInTheRoomBetter[seedIndex - distance].id)) {
@@ -616,13 +615,13 @@ export default {
     margin: 0 3px;
   }
   .num {
-    width: 130px;
+    width: 140px;
     flex: 1;
     float: left;
     margin: 0 5px;
   }
   .toggle-button {
-    margin: 0 5px 0 5px;
+    margin: 0 3px 0 3px;
     padding: 0;
     float: right;
     color: $text-color;
@@ -646,12 +645,12 @@ export default {
     }
     .sun-checked {
       width: 26px;
-      margin: 2px 20px 2px 8px;
+      margin: 2px 16px 2px 8px;
       fill: $button-yellow;
     }
     .sun-unchecked {
       width: 26px;
-      margin: 2px 20px 2px 8px;
+      margin: 2px 16px 2px 8px;
       fill: $text-color;
     }
   }
