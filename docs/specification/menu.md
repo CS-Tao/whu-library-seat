@@ -56,11 +56,11 @@
 
 - 版本 vx.x.x
 
-    显示本软件的版本号，点击可以进入本版本的[更新日志和下载链接](https://github.com/CS-Tao/whu-library-seat/releases/tag/v1.4.0)
+    显示当前版本号
 
 - 更新日志
 
-    查看[最新版本的更新日志](https://github.com/CS-Tao/whu-library-seat/releases)
+    显示本软件的版本号，点击可以进入本版本的[更新日志和下载链接](https://github.com/CS-Tao/whu-library-seat/releases/tag/v1.4.0)
 
 - 检查更新
 

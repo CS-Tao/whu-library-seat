@@ -345,8 +345,3 @@ autoUpdater.on('update-downloaded', () => {
   // 更新下载完毕
   mainWindow.webContents.send('update-downloaded')
 })
-
-autoUpdater.on('update-downloaded', () => {
-  // 更新出现错误
-  mainWindow.webContents.send('update-downloaded')
-})
