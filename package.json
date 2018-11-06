@@ -32,6 +32,9 @@
     "files": [
       "dist/electron/**/*"
     ],
+    "extraResources": [
+      "static"
+    ],
     "dmg": {
       "contents": [
         {
