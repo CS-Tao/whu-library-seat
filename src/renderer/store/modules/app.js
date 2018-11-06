@@ -255,21 +255,22 @@ const app = {
     // 参数为 {bookFunc: callback, time: millisecond}
     // 应当在 bookFunc 所有的异步函数执行完成之后手动执行 Action: cancelTimer()
     setTimer ({ commit, state }, param) {
-      const loginInAdvanceMili = 20000
-      const checkInAdvanceMili = 10000
       if (param) {
+        const loginInAdvanceMili = 20000
+        const checkInAdvanceMili = 10000
         if (state.timerInfo.state !== statusEnum.unset) {
           commit('CANCEL_TIMER', null)
         }
-        let timerInfo = Object()
+        var timerInfo = Object()
         var oppointmentTimeMilli = param.time.getTime()
+        var isToday = param.isToday
         timerInfo.waitedTime = 0
         timerInfo.totalTime = oppointmentTimeMilli - (new Date()).getTime()
         if (timerInfo.totalTime <= 0) {
           // 时间差小于等于 0 立即预约
           timerInfo.totalTime = 0
           timerInfo.timerId = setTimeout(() => {
-            if (state.settingInfo.checkOpenEnable) {
+            if (state.settingInfo.checkOpenEnable && !isToday) {
               commit('UPDATE_TIMER_STATE', statusEnum.checking)
             }
             param.checkOpenAndBookFunc()
@@ -277,14 +278,14 @@ const app = {
         } else if (timerInfo.totalTime < checkInAdvanceMili) {
           // 时间差大于 0，小于提前检查是否开放的时间差，定时直接预约
           timerInfo.timerId = setTimeout(() => {
-            if (state.settingInfo.checkOpenEnable) {
+            if (state.settingInfo.checkOpenEnable && !isToday) {
               commit('UPDATE_TIMER_STATE', statusEnum.checking)
             }
             param.checkOpenAndBookFunc()
           }, timerInfo.totalTime)
         } else if (timerInfo.totalTime < loginInAdvanceMili) {
           // 时间差小于登录时间差，大于检测开放时间差，定时(提前 checkInAdvanceMili 毫秒)先检测是否开放，再预约
-          if (state.settingInfo.checkOpenEnable) {
+          if (state.settingInfo.checkOpenEnable && !isToday) {
             // 启用开放检测
             timerInfo.timerId = setTimeout(() => {
               param.checkOpenAndBookFunc()
@@ -301,7 +302,7 @@ const app = {
           }
         } else {
           // 时间差大于登录时间差，定时(提前 loginInAdvanceMili 毫秒)登录，再(提前 checkInAdvanceMili 毫秒)检查是否开放，再预约
-          if (state.settingInfo.checkOpenEnable) {
+          if (state.settingInfo.checkOpenEnable && !isToday) {
             // 启用开放检测
             timerInfo.loginTimerId = setTimeout(() => {
               param.loginFunc()

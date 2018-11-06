@@ -75,6 +75,10 @@ export default {
     checkOpenAndBookFunc: {
       type: Function,
       require: true
+    },
+    isToday: {
+      type: Boolean,
+      require: true
     }
   },
   components: {
@@ -135,6 +139,7 @@ export default {
         loginFunc: this.loginFunc,
         loginAndBookFunc: this.loginAndBookFunc,
         checkOpenAndBookFunc: this.checkOpenAndBookFunc,
+        isToday: this.isToday,
         time: this.result
       })
       this.$message({

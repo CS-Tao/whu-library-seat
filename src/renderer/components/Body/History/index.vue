@@ -2,7 +2,7 @@
   <div class="flex-row">
     <div v-loading="loading" :fullscreen="false" class="warp">
       <el-table class="table" height="350" :data="reservations" border>
-        <el-table-column label="场馆">
+        <el-table-column label="位置和时间">
           <template slot-scope="scope">
             <span style="display:block;">{{ scope.row.loc }}</span>
             <span style="font-size:10px;font-family:'Times New Roman'!important;">{{ scope.row.date }}&nbsp;&nbsp;&nbsp;&nbsp;{{ scope.row.begin }} 到 {{ scope.row.end }}</span>
@@ -124,7 +124,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
-$warp-width: 300px;
+$warp-width: 316px;
 $warp-height: 350px;
 $warp-padding: 10px;
 .warp {
