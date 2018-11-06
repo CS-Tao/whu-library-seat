@@ -119,6 +119,18 @@ export default {
       this.updateDownloaded = true
       ipcRenderer.send('show-window-notify', '更新下载完毕', '重启更新')
     })
+    // 检查更新出现错误
+    ipcRenderer.on('check-update-error', (event, error) => {
+      if (this.notifyUpdateInfo) {
+        this.$message({
+          type: 'info',
+          duration: '4000',
+          showClose: true,
+          dangerouslyUseHTMLString: true,
+          message: `<p style="line-height:20px;">未检测到新版本或无法连接服务器</p>`
+        })
+      }
+    })
     // 点击检测更新菜单响应
     ipcRenderer.on('check-update-menu-clicked', () => {
       this.notifyUpdateInfo = true

@@ -32,8 +32,8 @@
             :disabled="!timerInfo.complete"
             type="primary"
             :class="timerInfo.complete?'save-button':'button-disabled'"
-            :icon="timerInfo.status === 'working'?'el-icon-loading':null"
-            :style="timerInfo.status === 'working'?'width: 100px;':'width: 80px;'"
+            :icon="(timerInfo.status === 'working' || timerInfo.status === 'checking')?'el-icon-loading':null"
+            :style="(timerInfo.status === 'working' || timerInfo.status === 'checking')?'width: 100px;':'width: 80px;'"
             @click="okBtnClicked()">
             {{timerInfo.message}}
           </el-button>
@@ -69,6 +69,10 @@ export default {
       require: true
     },
     loginAndBookFunc: {
+      type: Function,
+      require: true
+    },
+    checkOpenAndBookFunc: {
       type: Function,
       require: true
     }
@@ -130,6 +134,7 @@ export default {
         bookFunc: this.bookFunc,
         loginFunc: this.loginFunc,
         loginAndBookFunc: this.loginAndBookFunc,
+        checkOpenAndBookFunc: this.checkOpenAndBookFunc,
         time: this.result
       })
       this.$message({
@@ -146,7 +151,7 @@ export default {
         this.$store.dispatch('updateTimer', 'unset')
         this.$message({
           type: 'info',
-          duration: 1000,
+          duration: 1500,
           showClose: true,
           message: '已取消定时器'
         })

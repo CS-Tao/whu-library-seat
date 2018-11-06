@@ -42,6 +42,7 @@ const defaultSettingInfo = {
   oppointmentTime: getTodayTime(22, 45, 0),
   beginTime: getTomorrowTime(8, 0, 0),
   endTime: getTomorrowTime(22, 30, 0),
+  checkOpenEnable: true,
   backgroundEnable: true,
   usageRecordEnable: true
 }
@@ -49,20 +50,22 @@ const defaultSettingInfo = {
 const statusEnum = {
   unset: 'unset',
   waiting: 'waiting',
+  checking: 'checking',
   working: 'working',
   success: 'success',
   fail: 'fail'
 }
 
 const defaultTimerInfo = {
-  // status: unset、waiting、working、success、fail
+  // status: unset、waiting、checking、working、success、fail
   status: statusEnum.unset,
   message: '定时抢座',
   totalTime: null,
   waitedTime: null,
   intervalId: null,
   timerId: null,
-  loginTimerId: null
+  loginTimerId: null,
+  lastTimerId: null
 }
 
 function getTimeStateByMilliSecond (milliSecond) {
@@ -97,6 +100,7 @@ const app = {
       oppointmentTime: new Date(store.get('oppointmentTime', defaultSettingInfo.oppointmentTime)),
       beginTime: new Date(store.get('availableBeginTime', defaultSettingInfo.beginTime)),
       endTime: new Date(store.get('availableEndTime', defaultSettingInfo.endTime)),
+      checkOpenEnable: store.get('checkOpenEnable', defaultSettingInfo.checkOpenEnable),
       backgroundEnable: store.get('backgroundEnable', defaultSettingInfo.backgroundEnable),
       usageRecordEnable: store.get('usageRecordEnable', defaultSettingInfo.usageRecordEnable)
     },
@@ -144,6 +148,7 @@ const app = {
       store.set('oppointmentTime', settings.oppointmentTime)
       store.set('availableBeginTime', settings.beginTime)
       store.set('availableEndTime', settings.endTime)
+      store.set('checkOpenEnable', settings.checkOpenEnable)
       store.set('backgroundEnable', settings.backgroundEnable)
       store.set('usageRecordEnable', settings.usageRecordEnable)
     },
@@ -153,6 +158,7 @@ const app = {
       store.set('oppointmentTime', defaultSettingInfo.oppointmentTime)
       store.set('availableBeginTime', defaultSettingInfo.beginTime)
       store.set('availableEndTime', defaultSettingInfo.endTime)
+      store.set('checkOpenEnable', defaultSettingInfo.checkOpenEnable)
       store.set('backgroundEnable', defaultSettingInfo.backgroundEnable)
       store.set('usageRecordEnable', defaultSettingInfo.usageRecordEnable)
     },
@@ -166,12 +172,18 @@ const app = {
       state.timerInfo.status = status
       if (status === statusEnum.waiting) {
         state.timerInfo.waitedTime += 1000
-        state.timerInfo.message = getTimeStateByMilliSecond(state.timerInfo.totalTime - state.timerInfo.waitedTime)
+        let timeDeduct = state.timerInfo.totalTime - state.timerInfo.waitedTime
+        state.timerInfo.message = getTimeStateByMilliSecond(timeDeduct)
       } else if (status === statusEnum.working) {
         if (state.timerInfo.intervalId) {
           window.clearTimeout(state.timerInfo.intervalId)
         }
         state.timerInfo.message = '正在抢座'
+      } else if (status === statusEnum.checking) {
+        if (state.timerInfo.intervalId) {
+          window.clearTimeout(state.timerInfo.intervalId)
+        }
+        state.timerInfo.message = '正在检测'
       } else if (status === statusEnum.success) {
         state.timerInfo.message = '抢座成功'
       } else if (status === statusEnum.fail) {
@@ -193,6 +205,9 @@ const app = {
       }
       if (state.timerInfo.loginTimerId) {
         window.clearTimeout(state.timerInfo.loginTimerId)
+      }
+      if (state.timerInfo.lastTimerId) {
+        window.clearTimeout(state.timerInfo.lastTimerId)
       }
       state.timerInfo = {...defaultTimerInfo}
       // if (status !== null) {
@@ -240,6 +255,8 @@ const app = {
     // 参数为 {bookFunc: callback, time: millisecond}
     // 应当在 bookFunc 所有的异步函数执行完成之后手动执行 Action: cancelTimer()
     setTimer ({ commit, state }, param) {
+      const loginInAdvanceMili = 20000
+      const checkInAdvanceMili = 10000
       if (param) {
         if (state.timerInfo.state !== statusEnum.unset) {
           commit('CANCEL_TIMER', null)
@@ -248,31 +265,63 @@ const app = {
         var oppointmentTimeMilli = param.time.getTime()
         timerInfo.waitedTime = 0
         timerInfo.totalTime = oppointmentTimeMilli - (new Date()).getTime()
-        if (timerInfo.totalTime < 0) {
+        if (timerInfo.totalTime <= 0) {
+          // 时间差小于等于 0 立即预约
           timerInfo.totalTime = 0
           timerInfo.timerId = setTimeout(() => {
-            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {
-              console.log(new Date())
+            if (state.settingInfo.checkOpenEnable) {
+              commit('UPDATE_TIMER_STATE', statusEnum.checking)
             }
-            param.bookFunc()
+            param.checkOpenAndBookFunc()
           }, timerInfo.totalTime)
-        } else if (timerInfo.totalTime > 8000) {
-          timerInfo.loginTimerId = setTimeout(() => {
-            param.loginFunc()
-          }, timerInfo.totalTime - 8000)
+        } else if (timerInfo.totalTime < checkInAdvanceMili) {
+          // 时间差大于 0，小于提前检查是否开放的时间差，定时直接预约
           timerInfo.timerId = setTimeout(() => {
-            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {
-              console.log(new Date())
+            if (state.settingInfo.checkOpenEnable) {
+              commit('UPDATE_TIMER_STATE', statusEnum.checking)
             }
-            param.bookFunc()
+            param.checkOpenAndBookFunc()
           }, timerInfo.totalTime)
+        } else if (timerInfo.totalTime < loginInAdvanceMili) {
+          // 时间差小于登录时间差，大于检测开放时间差，定时(提前 checkInAdvanceMili 毫秒)先检测是否开放，再预约
+          if (state.settingInfo.checkOpenEnable) {
+            // 启用开放检测
+            timerInfo.timerId = setTimeout(() => {
+              param.checkOpenAndBookFunc()
+            }, timerInfo.totalTime - checkInAdvanceMili)
+            timerInfo.lastTimerId = setTimeout(() => {
+              // 如果定时完毕还未开放则修改按钮文字
+              if (state.timerInfo.status === statusEnum.waiting) { commit('UPDATE_TIMER_STATE', statusEnum.checking) }
+            }, timerInfo.totalTime)
+          } else {
+            // 关闭开放检测
+            timerInfo.timerId = setTimeout(() => {
+              param.checkOpenAndBookFunc()
+            }, timerInfo.totalTime)
+          }
         } else {
-          timerInfo.timerId = setTimeout(() => {
-            while (oppointmentTimeMilli - (new Date()).getTime() > 0) {
-              console.log(new Date())
-            }
-            param.bookFunc()
-          }, timerInfo.totalTime)
+          // 时间差大于登录时间差，定时(提前 loginInAdvanceMili 毫秒)登录，再(提前 checkInAdvanceMili 毫秒)检查是否开放，再预约
+          if (state.settingInfo.checkOpenEnable) {
+            // 启用开放检测
+            timerInfo.loginTimerId = setTimeout(() => {
+              param.loginFunc()
+            }, timerInfo.totalTime - loginInAdvanceMili)
+            timerInfo.timerId = setTimeout(() => {
+              param.checkOpenAndBookFunc()
+            }, timerInfo.totalTime - checkInAdvanceMili)
+            timerInfo.lastTimerId = setTimeout(() => {
+              // 如果定时完毕还未开放则修改按钮文字
+              if (state.timerInfo.status === statusEnum.waiting) { commit('UPDATE_TIMER_STATE', statusEnum.checking) }
+            }, timerInfo.totalTime)
+          } else {
+            // 关闭开放检测
+            timerInfo.loginTimerId = setTimeout(() => {
+              param.loginFunc()
+            }, timerInfo.totalTime - checkInAdvanceMili) // 使用 checkInAdvanceMili 替代 loginInAdvanceMili
+            timerInfo.timerId = setTimeout(() => {
+              param.checkOpenAndBookFunc()
+            }, timerInfo.totalTime)
+          }
         }
         timerInfo.intervalId = setInterval(() => {
           commit('UPDATE_TIMER_STATE')

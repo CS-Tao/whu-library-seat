@@ -39,7 +39,7 @@ function addVarToTimer (timerInfo) {
   } else {
     timerInfo.restTime = null
   }
-  if (timerInfo.status === 'working' || timerInfo.status === 'waiting') {
+  if (timerInfo.status === 'working' || timerInfo.status === 'waiting' || timerInfo.status === 'checking') {
     timerInfo.complete = false
   } else {
     timerInfo.complete = true

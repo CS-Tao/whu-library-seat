@@ -18,7 +18,10 @@
       <el-form-item label="预约时间" class="form-item">
         <time-picker class="input" v-model="settings.oppointmentTime"></time-picker>
       </el-form-item>
-      <el-form-item label="点击窗口的关闭按钮时退出到托盘" label-width="224px" class="form-item" style="margin-top: 15px;text-align: center;">
+      <el-form-item label="预约明天座位前检测系统是否开放" label-width="224px" class="form-item" style="margin-top: 15px;text-align: center;">
+        <el-switch v-model="settings.checkOpenEnable" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+      </el-form-item>
+      <el-form-item label="点击窗口的关闭按钮时退出到托盘" label-width="224px" class="form-item" style="margin-top: 10px;text-align: center;">
         <el-switch v-model="settings.backgroundEnable" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </el-form-item>
       <el-form-item label="提交软件使用数据帮助我改善软件" label-width="224px" class="form-item" style="margin-top: 10px;text-align: center;">
@@ -49,7 +52,8 @@ export default {
         oppointmentTime: null,
         beginTime: null,
         endTime: null,
-        backgroundEnable: false,
+        checkOpenEnable: true,
+        backgroundEnable: true,
         usageRecordEnable: true
       }
     }
