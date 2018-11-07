@@ -221,13 +221,16 @@ function createWindow () {
     mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
   }
 
+  const baseLibUrl = store.get('baseUrl', 'https://seat.lib.whu.edu.cn:8443')
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    details.requestHeaders['User-Agent'] = null
-    details.requestHeaders['Accept'] = null
-    details.requestHeaders['Accept-Encoding'] = null
-    details.requestHeaders['Accept-Language'] = null
-    details.requestHeaders['Referer'] = null
-    details.requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+    if (details.url && details.url.indexOf(baseLibUrl) !== -1) {
+      details.requestHeaders['User-Agent'] = null
+      details.requestHeaders['Accept'] = null
+      details.requestHeaders['Accept-Encoding'] = null
+      details.requestHeaders['Accept-Language'] = null
+      details.requestHeaders['Referer'] = null
+      details.requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+    }
     callback({ cancel: false, requestHeaders: details.requestHeaders }) // eslint-disable-line
   })
 
