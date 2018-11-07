@@ -317,6 +317,8 @@ ipcMain.on('show-window-notify', (event, title, message) => {
 
 autoUpdater.autoDownload = false
 autoUpdater.autoInstallOnAppQuit = true
+autoUpdater.allowPrerelease = true
+autoUpdater.allowDowngrade = true
 
 ipcMain.on('check-updates', (event, arg) => {
   // 检查更新
