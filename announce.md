@@ -1,4 +1,4 @@
-### 公告 (2018-11-06 23:00)
+### 公告 (2018-11-07 21:30)
 
 #### 功能说明(桌面端 v1.7.0, 移动端 v1.4.1)
 
@@ -37,12 +37,12 @@
 
 #### 手机扫一扫下载安卓版
 
-<p align="center"><img alt="安卓版本二维码.jpg" src="https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android-qr.jpg" width="70%" height="70%"></p>
+<p align="center"><img alt="安卓版本二维码.jpg" src="https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android.png" width="90%" height="90%"></p>
 
 #### 欢迎打赏，金额随意~
 
-<p align="center"><img alt="支付宝二维码.jpg" src="https://home.cs-tao.cc/blog/img/alipayimg.jpg" width="70%" height="70%"><br/><span style="color:rgb(0, 204, 0)">支付宝扫一扫</span></p>
+<p align="center"><img alt="支付宝二维码.jpg" src="https://home.cs-tao.cc/blog/img/alipayimg.jpg" width="90%" height="90%"><br/><span style="color:rgb(0, 204, 0)">支付宝扫一扫</span></p>
 
-<p align="center"><img alt="微信二维码.jpg" src="https://home.cs-tao.cc/blog/img/wechatimg.jpg" width="70%" height="70%"><br/><span style="color:rgb(0, 204, 0)">微信扫一扫</span></p>
+<p align="center"><img alt="微信二维码.jpg" src="https://home.cs-tao.cc/blog/img/wechatimg.jpg" width="90%" height="90%"><br/><span style="color:rgb(0, 204, 0)">微信扫一扫</span></p>
 
 #### 祝您使用愉快，学习进步😉

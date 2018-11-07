@@ -1,4 +1,4 @@
-### 公告 (2018-11-06 23:00)
+### 公告 (2018-11-07 21:30)
 
 <a target="_blank" href="https://github.com/CS-Tao/whu-library-seat-mobile/releases/tag/v1.4.1">移动端 v1.4.1 更新日志</a>
 
@@ -37,7 +37,7 @@
 
 #### 扫一扫即可安装
 
-<p align="center"><img alt="软件二维码.jpg" src="https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android-qr.jpg" width="70%" height="70%"></p>
+<p align="center"><img alt="软件二维码.jpg" src="https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android.png" width="70%" height="70%"></p>
 
 #### 欢迎打赏，金额随意~
 
