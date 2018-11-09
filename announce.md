@@ -1,6 +1,6 @@
-### 公告 (2018-11-07 21:30)
+### 公告 (2018-11-09 11:30)
 
-#### 功能说明(桌面端 v1.7.0, 移动端 v1.4.1)
+#### 功能说明(桌面端 v1.7.0, 移动端 v1.5.0)
 
 - 定时抢座：选好时间位置，点击定时抢座的按钮，设置开始抢座的时间
 
@@ -10,7 +10,7 @@
 
 - 取消预约/终止使用/释放座位：切换到预约历史页面查看
 
-#### 其他说明(桌面端 v1.7.0, 移动端 v1.4.1)
+#### 其他说明(桌面端 v1.7.0, 移动端 v1.5.0)
 
 - "房间"的下拉列表中，"n 座空闲"表示当前有 n 个座位可以使用，但并不确定每个座位可供预约的时间
 
@@ -22,7 +22,7 @@
 
 #### 关于本软件
 
-- 本软件的最新版本是 v1.7.0，点击菜单: `关于 > 更新日志`可以查看。移动端最新版为 v1.4.1
+- 本软件的最新版本是 v1.7.0，点击菜单: `关于 > 更新日志`可以查看。移动端最新版为 v1.5.0
 
 - 短时间内向图书馆后台发送大量请求会被图书馆暂时性封号(30min)，请节制使用本软件
 
@@ -37,12 +37,12 @@
 
 #### 手机扫一扫下载安卓版
 
-<p align="center"><img alt="安卓版本二维码.jpg" src="https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android.png" width="90%" height="90%"></p>
+<p align="center"><img alt="安卓版本二维码.jpg" src="https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android.png" width="80%" height="80%"></p>
 
 #### 欢迎打赏，金额随意~
 
-<p align="center"><img alt="支付宝二维码.jpg" src="https://home.cs-tao.cc/blog/img/alipayimg.jpg" width="90%" height="90%"><br/><span style="color:rgb(0, 204, 0)">支付宝扫一扫</span></p>
+<p align="center"><img alt="支付宝二维码.jpg" src="https://home.cs-tao.cc/blog/img/alipayimg.jpg" width="80%" height="80%"><br/><span style="color:rgb(0, 204, 0)">支付宝扫一扫</span></p>
 
-<p align="center"><img alt="微信二维码.jpg" src="https://home.cs-tao.cc/blog/img/wechatimg.jpg" width="90%" height="90%"><br/><span style="color:rgb(0, 204, 0)">微信扫一扫</span></p>
+<p align="center"><img alt="微信二维码.jpg" src="https://home.cs-tao.cc/blog/img/wechatimg.jpg" width="80%" height="80%"><br/><span style="color:rgb(0, 204, 0)">微信扫一扫</span></p>
 
 #### 祝您使用愉快，学习进步😉
