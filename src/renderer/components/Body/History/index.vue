@@ -1,8 +1,8 @@
 <template>
   <div class="flex-row">
-    <div class="warp">
-      <el-table class="table" height="320" :data="reservations" border>
-        <el-table-column label="场馆">
+    <div v-loading="loading" :fullscreen="false" class="warp">
+      <el-table class="table" height="350" :data="reservations" border>
+        <el-table-column label="位置和时间">
           <template slot-scope="scope">
             <span style="display:block;">{{ scope.row.loc }}</span>
             <span style="font-size:10px;font-family:'Times New Roman'!important;">{{ scope.row.date }}&nbsp;&nbsp;&nbsp;&nbsp;{{ scope.row.begin }} 到 {{ scope.row.end }}</span>
@@ -37,6 +37,7 @@ const emptyMessage = '数据加载失败'
 export default {
   data () {
     return {
+      loading: false,
       reservations: []
     }
   },
@@ -51,6 +52,7 @@ export default {
   },
   methods: {
     initList () {
+      this.loading = true
       libraryRestApi.History(1, 50, this.userToken).then((response) => {
         if (response.data.status === 'success') {
           this.reservations = response.data.data.reservations
@@ -62,7 +64,10 @@ export default {
             message: response.data.message ? response.data.message : emptyMessage
           })
         }
-      }).catch(() => {})
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
     },
     cancelReserve (index) {
       if (!this.reservations[index].id) {
@@ -119,8 +124,8 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
-$warp-width: 300px;
-$warp-height: 320px;
+$warp-width: 316px;
+$warp-height: 350px;
 $warp-padding: 10px;
 .warp {
   cursor: default!important;

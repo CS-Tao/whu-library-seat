@@ -54,7 +54,7 @@
     <announce-form v-if="hasToken&&showMode==='announce'"></announce-form>
     <user-form v-if="hasToken&&showMode==='userForm'"></user-form>
     <history-form v-if="hasToken&&showMode==='historyForm'"></history-form>
-    <timer-form v-if="hasToken&&checkReserveTime" v-model="reserveTime" :book-func="grabSeat" :login-func="login" :loginAndBookFunc="loginAndReserveSeat" @btnClick="oppointmentTimechecked($event)"></timer-form>
+    <timer-form v-if="hasToken&&checkReserveTime" v-model="reserveTime" :book-func="grabSeat" :check-open-and-book-func="checkLibraryIsOpen" :login-func="login" :loginAndBookFunc="loginAndReserveSeat" :is-today="form.date===freeDates[0]" @btnClick="oppointmentTimechecked($event)"></timer-form>
 	</div>
 </template>
 
@@ -69,6 +69,8 @@ import usageApi from '@/api/usage.api'
 import { ipcRenderer } from 'electron'
 
 const emptyMessage = '数据加载失败'
+const maxOpenCheckCount = 20
+const openCheckInterval = 1000
 const maxGrabCount = 10
 const arbitraryGrabCount = 4
 
@@ -103,6 +105,8 @@ export default {
       reserveTime: null,
       checkReserveTime: false,
       grabCount: 0,
+      openCheckCount: 0,
+      openCheckMessaggeHandle: null,
       triedSeatIds: [],
       stopGrab: false
     }
@@ -111,6 +115,7 @@ export default {
     ...mapGetters([
       'userAccount',
       'userPasswd',
+      'settingInfo',
       'freeDates',
       'freeDatesDefault',
       'freeBeginTime',
@@ -209,7 +214,10 @@ export default {
       this.seatsForSelect.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
       })
-      if (this.form.library && this.form.library === this.seatInfo.library && this.form.room && this.form.room === this.seatInfo.room) {
+      let cachedSeatExist = this.seatsForSelect.findIndex((item) => {
+        return item.id === this.seatInfo.seatNum
+      }) !== -1
+      if (this.form.library && this.form.library === this.seatInfo.library && this.form.room && this.form.room === this.seatInfo.room && cachedSeatExist) {
         this.form.seatNum = this.seatInfo.seatNum
       } else {
         this.form.seatNum = null
@@ -272,6 +280,83 @@ export default {
       // 打开定时器
       this.checkReserveTime = true
     },
+    checkLibraryIsOpen () {
+      if (this.settingInfo.checkOpenEnable && this.form.date === this.freeDates[1]) {
+        // 如果用户启用开放检测，且预约明天的，先判断是否开放
+        this.triedSeatIds = []
+        this.stopGrab = false
+        this.grabCount = 0
+        this.seatsSearched = null
+        var haveStartedGrab = false // 防止多次抢座
+        this.openCheckMessaggeHandle = this.$message({
+          type: 'info',
+          duration: '0',
+          showClose: true,
+          message: `正在 (提前) 检测是否可以预约明天的座位，最多检测 ${maxOpenCheckCount} 次，最长耗时 ${(openCheckInterval / 1000) * maxOpenCheckCount}s，请稍后...`
+        })
+        var checkOpenTimerId = setInterval(() => {
+          this.openCheckCount += 1
+          // 外部终止
+          if (this.stopGrab) {
+            this.triedSeatIds = []
+            this.stopGrab = false
+            this.grabCount = 0
+            this.seatsSearched = null
+            this.openCheckCount = 0
+            if (this.openCheckMessaggeHandle) {
+              this.openCheckMessaggeHandle.close()
+              this.openCheckMessaggeHandle = null
+            }
+            if (checkOpenTimerId) {
+              window.clearTimeout(checkOpenTimerId)
+            }
+            return
+          }
+          if (this.openCheckCount > maxOpenCheckCount) {
+            this.openCheckCount = 0
+            if (this.openCheckMessaggeHandle) {
+              this.openCheckMessaggeHandle.close()
+              this.openCheckMessaggeHandle = null
+            }
+            if (checkOpenTimerId) {
+              window.clearTimeout(checkOpenTimerId)
+            }
+            this.$store.dispatch('updateTimer', 'fail')
+            let message = `已到达检测次数上限 (${maxOpenCheckCount})：当前不能预约明天的座位。如果是定时抢座，请确保您的系统时间和网络时间相差不会过大。`
+            this.$message({
+              type: 'error',
+              duration: '0',
+              showClose: true,
+              message
+            })
+            this.windowsNotification(`预约失败`, `系统还未开放该时间段 (可能是您的系统时间有误)`)
+            usageApi.grabState(this.userAccount, false, 22, message)
+            return
+          }
+          libraryRestApi.FreeFilters(this.userToken).then((response) => {
+            if (response.data.status === 'success') {
+              if (response.data.data.dates && response.data.data.dates.length > 1) {
+                this.openCheckCount = 0
+                if (this.openCheckMessaggeHandle) {
+                  this.openCheckMessaggeHandle.close()
+                  this.openCheckMessaggeHandle = null
+                }
+                if (checkOpenTimerId) {
+                  window.clearTimeout(checkOpenTimerId)
+                }
+                if (!haveStartedGrab) {
+                  haveStartedGrab = true
+                  this.grabSeat()
+                }
+              }
+            }
+          })
+        }, openCheckInterval)
+      } else {
+        // 如果预约今天的，直接开始抢
+        this.grabSeat()
+      }
+    },
     grabSeat () {
       this.triedSeatIds = []
       this.stopGrab = false
@@ -308,7 +393,7 @@ export default {
           this.$message({
             type: 'success',
             duration: '1000',
-            message: '登录成功'
+            message: '(提前) 登录成功'
           })
         } else {
           usageApi.loginState(this.userInfo.account, false, 14, response.data.message)
@@ -391,7 +476,7 @@ export default {
               '<br/>位置：' + response.data.data.location + '</el-card>',
             duration: 0
           })
-          this.windowsNotification('预约成功', '请打开软件查看')
+          this.windowsNotification(`预约成功 ${response.data.data.onDate} - ${response.data.data.begin} - ${response.data.data.end}`, `位置：${response.data.data.location}`)
           usageApi.grabState(this.userAccount, true, 6)
         } else {
           if (response.data.code === 1 || response.data.code === '1') {
@@ -421,9 +506,9 @@ export default {
                 type: 'error',
                 duration: 0,
                 showClose: true,
-                message: '抢座失败：该房间在指定的时间段内没有空闲位置（请确保您要预约的时间无误）'
+                message: '抢座失败：该房间在指定的时间段内没有空闲位置'
               })
-              this.windowsNotification('抢座失败', '该房间在指定的时间段内没有空闲位置（请确保您要预约的时间无误）')
+              this.windowsNotification('抢座失败', '该房间在指定的时间段内没有空闲位置')
               usageApi.grabState(this.userAccount, false, 8, `抢座失败：该房间在指定的时间段内没有空闲位置(${date} ${beginTime}-${endTime})`)
             } else if (!this.stopGrab) {
               this.$store.dispatch('updateTimer', 'working')
@@ -509,13 +594,9 @@ export default {
         return parseInt(x.name) - parseInt(y.name)
       })
       // 种子点在 seatInTheRoomBetter 中的索引号
-      var seedIndex = -1
-      for (let index = 0; index < seatInTheRoomBetter.length; index++) {
-        if (seatInTheRoomBetter[index].id === seed) {
-          seedIndex = index
-          break
-        }
-      }
+      var seedIndex = seatInTheRoomBetter.findIndex((item) => {
+        return item.id === seed
+      })
       // 在筛选过的座位中选择位置
       for (let distance = 1; distance < seatInTheRoomBetter.length; distance++) {
         if (seedIndex - distance >= 0 && !!seatInTheRoomBetter[seedIndex - distance].id && !triedSeatIds.includes(seatInTheRoomBetter[seedIndex - distance].id)) {
@@ -616,13 +697,13 @@ export default {
     margin: 0 3px;
   }
   .num {
-    width: 130px;
+    width: 140px;
     flex: 1;
     float: left;
     margin: 0 5px;
   }
   .toggle-button {
-    margin: 0 5px 0 5px;
+    margin: 0 3px 0 3px;
     padding: 0;
     float: right;
     color: $text-color;
@@ -646,12 +727,12 @@ export default {
     }
     .sun-checked {
       width: 26px;
-      margin: 2px 20px 2px 8px;
+      margin: 2px 16px 2px 8px;
       fill: $button-yellow;
     }
     .sun-unchecked {
       width: 26px;
-      margin: 2px 20px 2px 8px;
+      margin: 2px 16px 2px 8px;
       fill: $text-color;
     }
   }

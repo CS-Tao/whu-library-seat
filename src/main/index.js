@@ -155,11 +155,11 @@ const template = [
     submenu: [
       {
         label: '版本 v' + appVersion,
-        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases/tag/v' + appVersion) }
+        enabled: false
       },
       {
         label: '更新日志',
-        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases') }
+        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases/tag/v' + appVersion) }
       },
       {
         label: '检查更新',
@@ -221,13 +221,16 @@ function createWindow () {
     mainWindow.setPosition(position[0], position[1] === -1 ? mainWindow.getPosition()[1] : position[1])
   }
 
+  const baseLibUrl = store.get('baseUrl', 'https://seat.lib.whu.edu.cn:8443')
   session.defaultSession.webRequest.onBeforeSendHeaders((details, callback) => {
-    details.requestHeaders['User-Agent'] = null
-    details.requestHeaders['Accept'] = null
-    details.requestHeaders['Accept-Encoding'] = null
-    details.requestHeaders['Accept-Language'] = null
-    details.requestHeaders['Referer'] = null
-    details.requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+    if (details.url && details.url.indexOf(baseLibUrl) !== -1) {
+      details.requestHeaders['User-Agent'] = null
+      details.requestHeaders['Accept'] = null
+      details.requestHeaders['Accept-Encoding'] = null
+      details.requestHeaders['Accept-Language'] = null
+      details.requestHeaders['Referer'] = null
+      details.requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+    }
     callback({ cancel: false, requestHeaders: details.requestHeaders }) // eslint-disable-line
   })
 
@@ -293,8 +296,12 @@ ipcMain.on('show-window-notify', (event, title, message) => {
       title: title,
       subTitle: title,
       message: message,
-      icon: path.join(__static, '/toast.png'),
-      sound: true,
+      icon: process.env.NODE_ENV !== 'production'
+        ? path.join(__static, 'toast.png')
+        : (process.platform === 'darwin'
+          ? './Contents/Resources/static/toast.png'
+          : './resources/static/toast.png'),
+      sound: false,
       wait: true
     },
     () => {}
@@ -310,12 +317,16 @@ ipcMain.on('show-window-notify', (event, title, message) => {
 
 autoUpdater.autoDownload = false
 autoUpdater.autoInstallOnAppQuit = true
+autoUpdater.allowPrerelease = true
+autoUpdater.allowDowngrade = true
 
 ipcMain.on('check-updates', (event, arg) => {
   // 检查更新
   if (process.env.NODE_ENV === 'production') {
     autoUpdater.checkForUpdates().then((info) => {
       mainWindow.webContents.send('update-available', info)
+    }).catch((error) => {
+      mainWindow.webContents.send('check-update-error', error)
     })
   }
 })

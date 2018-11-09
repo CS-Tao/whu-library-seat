@@ -41,7 +41,7 @@ footer: Copyright © 2018 CS-Tao
 
 #### 使用演示
 
-> 以桌面端(v1.2.0)为例，移动端相关操作与之一致
+> 以桌面端为例，移动端相关操作与之一致
 
 ![软件演示](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/full.gif)
 

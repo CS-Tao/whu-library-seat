@@ -1,6 +1,6 @@
 <template>
 	<div class="flex-row">
-    <div class="warp">
+    <div v-loading="loading" :fullscreen="false" class="warp">
       <span class="title">用户信息</span>
       <span class="info"><span class="info-key">Id</span><span class="info-value">{{ userInfo.id }}</span></span>
       <span class="info"><span class="info-key">姓名</span><span class="info-value">{{ userInfo.name }}</span></span>
@@ -11,7 +11,6 @@
       <span class="info"><span class="info-key">最近签到地点</span><span class="info-value">{{ userInfo.lastInBuildingName }}</span></span>
       <span class="info"><span class="info-key">最近登录时间</span><span class="info-value">{{ formatDate(new Date(userInfo.lastLogin)) }}</span></span>
       <span class="info"><span class="info-key">违约次数</span><span class="info-value">{{ userInfo.violationCount }}&nbsp;次</span></span>
-      <!-- <span><span class="info-key"></span><span class="info-value">{{ violationCount }}</span></span> -->
     </div>
   </div>
 </template>
@@ -37,7 +36,8 @@ export default {
         lastOut: '无数据',
         lastInBuildingName: '无数据',
         violationCount: '无数据'
-      }
+      },
+      loading: false
     }
   },
   computed: {
@@ -46,6 +46,7 @@ export default {
     ])
   },
   mounted () {
+    this.loading = true
     libraryRestApi.User(this.userToken).then((response) => {
       if (response.data.status === 'success') {
         this.userInfo = response.data.data
@@ -57,7 +58,10 @@ export default {
           message: response.data.message ? response.data.message : emptyMessage
         })
       }
-    }).catch(() => {})
+      this.loading = false
+    }).catch(() => {
+      this.loading = false
+    })
   },
   methods: {
     formatDate (time) {
@@ -75,7 +79,7 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
-$warp-width: 280px;
+$warp-width: 296px;
 $warp-height: 300px;
 $warp-padding: 20px;
 .warp {
@@ -97,7 +101,7 @@ $warp-padding: 20px;
   }
   .info {
     display: block;
-    margin: 10px 0;
+    margin: 8px 0;
     .info-key {
       left: 0;
       color: $text-color;

@@ -138,9 +138,25 @@
 }
 .el-message--success {
   background-color: $bg-color-1;
+  .el-message__content {
+    line-height: 1.3;
+  }
+}
+.el-message--info {
+  .el-message__content {
+    line-height: 1.3;
+  }
 }
 .el-message--warning {
   background-color: $bg-color-1;
+  .el-message__content {
+    line-height: 1.3;
+  }
+}
+.el-message--error {
+  .el-message__content {
+    line-height: 1.3;
+  }
 }
 .heart-message { 
   background-color: $bg-color-highlight; 

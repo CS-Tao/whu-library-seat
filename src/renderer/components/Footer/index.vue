@@ -47,6 +47,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { ipcRenderer, remote } from 'electron'
+import androidQrCode from '@/assets/last-android.png'
 
 export default {
   props: {
@@ -109,7 +110,7 @@ export default {
             duration: '4000',
             showClose: true,
             dangerouslyUseHTMLString: true,
-            message: `<p style="line-height:20px;">未检测到新版本</p>`
+            message: `<p style="line-height:20px;">当前已是最新版本</p>`
           })
         }
       }
@@ -117,7 +118,19 @@ export default {
     // 更新下载完毕
     ipcRenderer.on('update-downloaded', () => {
       this.updateDownloaded = true
-      ipcRenderer.send('show-window-notify', '更新下载完毕', '重启更新')
+      ipcRenderer.send('show-window-notify', '更新下载完毕', '请重启更新')
+    })
+    // 检查更新出现错误
+    ipcRenderer.on('check-update-error', (event, error) => {
+      if (this.notifyUpdateInfo) {
+        this.$message({
+          type: 'info',
+          duration: '4000',
+          showClose: true,
+          dangerouslyUseHTMLString: true,
+          message: `<p style="line-height:20px;">未检测到新版本或无法连接服务器</p>`
+        })
+      }
     })
     // 点击检测更新菜单响应
     ipcRenderer.on('check-update-menu-clicked', () => {
@@ -165,7 +178,7 @@ export default {
         dangerouslyUseHTMLString: true,
         message: `<el-card shadow="never" style="line-height: 30px;">
                     <p align="center" style="margin-top:20px;">
-                      <img alt="软件二维码.jpg" src="https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android-qr.jpg?${new Date()}" width="90%" height="90%">
+                      <img alt="安卓版二维码.jpg" src="${androidQrCode}" width="90%" height="90%">
                     </p>
                   </el-card>`,
         duration: 0

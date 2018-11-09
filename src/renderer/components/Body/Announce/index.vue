@@ -56,8 +56,8 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
-$warp-width: 280px;
-$warp-height: 300px;
+$warp-width: 296px;
+$warp-height: 330px;
 $warp-padding: 20px;
 .warp {
   width: $warp-width;

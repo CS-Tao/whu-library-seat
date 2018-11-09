@@ -1,6 +1,6 @@
 {
   "name": "whu-library-seat",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "author": "CS-Tao <whucstao@qq.com>",
   "description": "武汉大学图书馆抢座软件",
   "license": null,
@@ -32,6 +32,9 @@
     "files": [
       "dist/electron/**/*"
     ],
+    "extraResources": [
+      "static"
+    ],
     "dmg": {
       "contents": [
         {
@@ -51,12 +54,7 @@
       "icon": "build/icons/icon.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico",
-      "target": "nsis"
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "icon": "build/icons/icon.ico"
     },
     "linux": {
       "icon": "build/icons"
