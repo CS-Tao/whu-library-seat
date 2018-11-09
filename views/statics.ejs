@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <style>
     #app {
-      margin: 30px;
+      margin: 0;
     }
     .el-input {
       width: 140px;
@@ -23,7 +23,7 @@
   <body>
     <div id="app">
       <el-container>
-        <el-header>
+        <el-header height="10vh" style="margin: 0;padding-top: 2.5vh;white-space: nowrap;overflow: auto;">
           <span>设备</span>
           <el-select v-model="selectedDevice">
             <el-option v-for="item in deviceList" :key="item" :label="item === 'All' ? 'All' :(item === 0 ? '桌面端' : '移动端')" :value="item"></el-option>
@@ -49,8 +49,8 @@
             <el-option v-for="item in versionList" :key="item" :label="item === 'All' ? 'All' : 'v'+item" :value="item"></el-option>
           </el-select>
         </el-header>
-        <el-main>
-          <el-table :data="dataForShow" style="width: 100%" :border="true" :stripe="true" height="72vh">
+        <el-main style="margin: 0">
+          <el-table :data="dataForShow" :border="true" :stripe="true" height="72vh">
             <el-table-column width="50" prop="id" label="Id"></el-table-column>
             <el-table-column width="100" prop="mobile" label="设备">
               <template slot-scope="scope">
@@ -88,7 +88,7 @@
             </el-table-column>
             <el-table-column prop="message" label="消息"></el-table-column>
           </el-table>
-          <p>共 {{countOfSelected}} 条数据</p>
+          <p style="height: 4vh;margin: 0; padding: 2vh 0;">共 {{countOfSelected}} 条数据</p>
         </el-main>
       </el-container>
     </div>
