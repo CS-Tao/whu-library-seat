@@ -329,6 +329,7 @@ export default {
               showClose: true,
               message
             })
+            this.windowsNotification(`预约失败`, `系统还未开放该时间段 (可能是您的系统时间有误)`)
             usageApi.grabState(this.userAccount, false, 22, message)
             return
           }
