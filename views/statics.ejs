@@ -7,11 +7,54 @@
     #app {
       margin: 0;
     }
+    #heatmap-wraper {
+      width: max-content;
+      box-sizing: border-box;
+      margin: 10px 0 30px 0;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      padding-bottom: 8px !important;
+      padding-top: 8px !important;
+      border: 1px solid #e1e4e8!important;
+      border-color: #d1d5da !important;
+    }
+    #heatmap {
+    }
+    #data-list {
+      box-sizing: border-box;
+      margin: 0 0 10px 0;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      padding-bottom: 8px !important;
+      padding-top: 8px !important;
+      border: 1px solid #e1e4e8!important;
+      border-color: #d1d5da !important;
+    }
+    #data-list-header {
+      margin: 10px 20px 0 20px;
+      white-space: nowrap;
+      overflow: auto;
+      padding-bottom: 8px !important;
+      padding-top: 8px !important;
+      border: 1px solid #e1e4e8!important;
+      border-color: #d1d5da !important;
+    }
+    .el-table {
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      padding-bottom: 8px !important;
+      padding-top: 8px !important;
+      border: 1px solid #e1e4e8!important;
+      border-color: #d1d5da !important;
+    }
     .el-input {
       width: 140px;
     }
     span {
       margin-left: 15px;
+    }
+    .el-main {
+      padding-bottom: 0;
     }
     </style>
     <script>
@@ -22,8 +65,8 @@
   </head>
   <body>
     <div id="app">
-      <el-container>
-        <el-header height="10vh" style="margin: 0;padding-top: 2.5vh;white-space: nowrap;overflow: auto;">
+      <el-container id="data-list">
+        <el-header id="data-list-header">
           <span>设备</span>
           <el-select v-model="selectedDevice">
             <el-option v-for="item in deviceList" :key="item" :label="item === 'All' ? 'All' :(item === 0 ? '桌面端' : '移动端')" :value="item"></el-option>
@@ -50,6 +93,9 @@
           </el-select>
         </el-header>
         <el-main style="margin: 0">
+          <div id="heatmap-wraper">
+            <div id="heatmap"></div>
+          </div>
           <el-table :data="dataForShow" :border="true" :stripe="true" height="72vh">
             <el-table-column width="50" prop="id" label="Id"></el-table-column>
             <el-table-column width="100" prop="mobile" label="设备">
@@ -88,7 +134,7 @@
             </el-table-column>
             <el-table-column prop="message" label="消息"></el-table-column>
           </el-table>
-          <p style="height: 4vh;margin: 0; padding: 2vh 0;">共 {{countOfSelected}} 条数据</p>
+          <p>共 {{countOfSelected}} 条数据</p>
         </el-main>
       </el-container>
     </div>
@@ -96,6 +142,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/frappe-charts@1.1.0"></script>
   <script>
     new Vue({
       el: '#app',
@@ -147,9 +194,29 @@
         }).catch((error) => {
           console.log(error)
         });
+        axios.get('/yeardata').then((response) => {
+          let now = new Date()
+          let heatmap = new frappe.Chart("#heatmap", {
+            type: 'heatmap',
+            title: "Successful reservation count",
+            data: {
+              dataPoints: response.data,
+              start: new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
+              end: now
+            },
+            countLabel: '',
+            discreteDomains: 0,
+            colors: ['#ebedf0', '#c0ddf9', '#73b3f3', '#3886e1', '#17459e'],
+            // Set of five incremental colors,
+            // preferably with a low-saturation color for zero data;
+            // def: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127']
+          });
+        }).catch((error) => {
+          console.log(error)
+        });
         if (localStorage.visitCount !== null && localStorage.visitCount !== undefined && localStorage.visitCount !== 0 && localStorage.visitCount !== 'NaN') {
           localStorage.visitCount++
-          if (localStorage.visitCount > 20) {
+          if (localStorage.visitCount > 1000) {
             localStorage.homepageAuthForCSTaoOrFriend = null
             localStorage.visitCount = null
           }
