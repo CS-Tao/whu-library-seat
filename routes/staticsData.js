@@ -1,5 +1,6 @@
 var express = require('express');
 var mysql = require("mysql");
+var md5 = require('js-md5')
 var mysqlConfig = require("./mysql.conf");
 var router = express.Router();
 
@@ -14,6 +15,9 @@ router.get('/', function(req, res, next) {
         res.json([]);
         return;
       } else {
+        for (let i = 0; i< results.length; i++) {
+          results[i].account = md5(results[i].account)
+        }
         res.json(results);
       }
   });

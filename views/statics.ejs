@@ -60,9 +60,9 @@
     }
     </style>
     <script>
-    if (!localStorage.homepageAuthForCSTaoOrFriend || localStorage.homepageAuthForCSTaoOrFriend !== '7f1a65908b05238c21c134c764c89e28') {
-      window.location = '/auth/index.html'
-    }
+    // if (!localStorage.homepageAuthForCSTaoOrFriend || localStorage.homepageAuthForCSTaoOrFriend !== '7f1a65908b05238c21c134c764c89e28') {
+    //   window.location = '/auth/index.html'
+    // }
     </script>
   </head>
   <body>
@@ -114,21 +114,21 @@
                 <span style="margin-left: 5px">{{ scope.row.state === 0 ? '失败' : '成功' }}</span>
               </template>
             </el-table-column>
-            <el-table-column width="100" prop="event" label="事件">
+            <el-table-column width="90" prop="event" label="事件">
               <template slot-scope="scope">
                 <i v-if="scope.row.event === 'login'" class="el-icon-phone" style="color: #909399"></i>
                 <i v-else class="el-icon-phone-outline" style="color: #E6A23C"></i>
                 <span style="margin-left: 5px" :style="{color: scope.row.event === 'login' ? '#909399' : '#E6A23C'}">{{ scope.row.event === 'login' ? '登录' : '抢座' }}</span>
               </template>
             </el-table-column>
-            <el-table-column width="100" prop="code" label="事件代码"></el-table-column>
+            <el-table-column width="60" prop="code" label="Code"></el-table-column>
             <el-table-column width="200" label="时间">
               <template slot-scope="scope">
                 <i class="el-icon-time"></i>
                 <span style="margin-left: 5px">{{ scope.row.year + '-' + fill0(scope.row.month) + '-' + fill0(scope.row.day) + ' ' + fill0(scope.row.hour) + ':' + fill0(scope.row.min) + ':' + fill0(scope.row.sec) }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="account" label="账号" width="180"></el-table-column>
+            <el-table-column prop="account" label="账号 (加密)" width="250"></el-table-column>
             <el-table-column width="100" label="软件版本">
               <template slot-scope="scope">
                 <span>{{ 'v' + scope.row.version }}</span>
@@ -216,15 +216,15 @@
         }).catch((error) => {
           console.log(error)
         });
-        if (localStorage.visitCount !== null && localStorage.visitCount !== undefined && localStorage.visitCount !== 0 && localStorage.visitCount !== 'NaN') {
-          localStorage.visitCount++
-          if (localStorage.visitCount > 1000) {
-            localStorage.homepageAuthForCSTaoOrFriend = null
-            localStorage.visitCount = null
-          }
-        } else {
-          localStorage.visitCount = 1
-        }
+        // if (localStorage.visitCount !== null && localStorage.visitCount !== undefined && localStorage.visitCount !== 0 && localStorage.visitCount !== 'NaN') {
+        //   localStorage.visitCount++
+        //   if (localStorage.visitCount > 1000) {
+        //     localStorage.homepageAuthForCSTaoOrFriend = null
+        //     localStorage.visitCount = null
+        //   }
+        // } else {
+        //   localStorage.visitCount = 1
+        // }
       },
       computed: {
         dataForShow () {
