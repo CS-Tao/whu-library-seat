@@ -1,13 +1,12 @@
 var express = require('express');
 var mysql = require("mysql");
-var md5 = require('js-md5');
 var mysqlConfig = require("./mysql.conf");
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
   var connection = mysql.createConnection(mysqlConfig.config);
 
-  var queryString = `select * from (select * from events where code !=12 order by id desc limit 200) as temp order by id asc;`;
+  var queryString = `SELECT year, month, day, mobile, count(*) as 'count' FROM events where (code=4 || code = 6) group by year, month, day, mobile;`;
 
   connection.query(queryString, (err, results) => {
       if (err) {
@@ -15,9 +14,6 @@ router.get('/', function(req, res, next) {
         res.json([]);
         return;
       } else {
-        for (let i = 0; i< results.length; i++) {
-          results[i].account = md5(results[i].account)
-        }
         res.json(results);
       }
   });

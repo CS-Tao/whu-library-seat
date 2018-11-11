@@ -7,10 +7,9 @@
     #app {
       margin: 0;
     }
-    #heatmap-wraper {
-      width: max-content;
+    .chart-wrapper {
       box-sizing: border-box;
-      margin: 10px 0 30px 0;
+      margin: 10px 0 20px 0;
       border-top-left-radius: 3px;
       border-top-right-radius: 3px;
       padding-bottom: 8px !important;
@@ -19,6 +18,10 @@
       border-color: #d1d5da !important;
     }
     #heatmap {
+    }
+    #hourline {
+    }
+    #deviceline {
     }
     #data-list {
       box-sizing: border-box;
@@ -67,6 +70,15 @@
   </head>
   <body>
     <div id="app">
+      <div class="chart-wrapper">
+        <div id="heatmap"></div>
+      </div>
+      <div class="chart-wrapper">
+        <div id="hourline"></div>
+      </div>
+      <div class="chart-wrapper">
+        <div id="deviceline"></div>
+      </div>
       <el-container id="data-list">
         <el-header id="data-list-header">
           <span>设备</span>
@@ -95,9 +107,6 @@
           </el-select>
         </el-header>
         <el-main style="margin: 0">
-          <div id="heatmap-wraper">
-            <div id="heatmap"></div>
-          </div>
           <el-table :data="dataForShow" :border="true" :stripe="true" height="72vh">
             <el-table-column width="50" prop="id" label="Id"></el-table-column>
             <el-table-column width="100" prop="mobile" label="设备">
@@ -200,7 +209,7 @@
           let now = new Date()
           let heatmap = new frappe.Chart("#heatmap", {
             type: 'heatmap',
-            title: "Successful reservation count",
+            title: "Successful reservation count in last year",
             data: {
               dataPoints: response.data,
               start: new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
@@ -216,15 +225,108 @@
         }).catch((error) => {
           console.log(error)
         });
-        // if (localStorage.visitCount !== null && localStorage.visitCount !== undefined && localStorage.visitCount !== 0 && localStorage.visitCount !== 'NaN') {
-        //   localStorage.visitCount++
-        //   if (localStorage.visitCount > 1000) {
-        //     localStorage.homepageAuthForCSTaoOrFriend = null
-        //     localStorage.visitCount = null
-        //   }
-        // } else {
-        //   localStorage.visitCount = 1
-        // }
+        axios.get('/dayData').then((response) => {
+          let labels = []
+          let loginData = []
+          let grabData = []
+          for (let i = 0; i < 24; i++) {
+            labels.push(i.toString())
+            loginData.push(0)
+            grabData.push(0)
+          }
+          for (let i = 0; i < response.data.length; i++) {
+            if (response.data[i].code === 4) {
+              loginData[response.data[i].hour] = response.data[i].avg
+            } else if (response.data[i].code === 6) {
+              grabData[response.data[i].hour] = response.data[i].avg
+            }
+          }
+          let chart = new frappe.Chart("#hourline", {
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  name: "Login", chartType: 'line',
+                  values: loginData
+                },
+                {
+                  name: "Grabing", chartType: 'line',
+                  values: grabData
+                }
+              ]
+            },
+            title: "Average usage count in a day",
+            type: 'line',
+            colors: ['light-blue', '#ffa3ef'],
+            tooltipOptions: {
+              formatTooltipX: d => (d + '').toUpperCase(),
+              formatTooltipY: d => d.toFixed(1) + ' times',
+            }
+          });
+        }).catch((error) => {
+          console.log(error)
+        });
+        axios.get('/deviceData').then((response) => {
+          let maxLength = 100
+          if (response.data.length > maxLength) {
+            response.data = response.data.slice(response.data.length - maxLength + 1, response.data.length)
+          }
+          let labels = []
+          let labelsForShow = []
+          let mobileData = []
+          let desktopData = []
+          for (let i = 0; i < response.data.length; i++) {
+            let dateFormated = `${response.data[i].year}-${response.data[i].month}-${response.data[i].day}`
+            if (!labels.includes(dateFormated)) {
+              labels.push(dateFormated)
+              labelsForShow.push(labels.length)
+            }
+          }
+          for (let i = 0; i < labels.length; i++) {
+            let mobileInTheDay = response.data.filter(item => {
+              let dateFormated = `${item.year}-${item.month}-${item.day}`
+              return dateFormated === labels[i] && item.mobile === 1
+            })
+            let desktopInTheDay = response.data.filter(item => {
+              let dateFormated = `${item.year}-${item.month}-${item.day}`
+              return dateFormated === labels[i] && item.mobile !== 1
+            })
+            if (mobileInTheDay && mobileInTheDay.length !== 0) {
+              mobileData.push(mobileInTheDay[0].count)
+            } else {
+              mobileData.push(0)
+            }
+            if (desktopInTheDay && desktopInTheDay.length !== 0) {
+              desktopData.push(desktopInTheDay[0].count)
+            } else {
+              desktopData.push(0)
+            }
+          }
+          let chart = new frappe.Chart( "#deviceline", {
+            data: {
+              labels: labelsForShow,
+              datasets: [
+                {
+                  name: "Desktop", chartType: 'bar',
+                  values: desktopData
+                },
+                {
+                  name: "Mobile", chartType: 'bar',
+                  values: mobileData
+                }
+              ]
+            },
+            title: "Usages by devices in recent days",
+            type: 'bar',
+            colors: ['#7cd6fd', '#28a745'],
+            tooltipOptions: {
+              formatTooltipX: d => labels[parseInt(d) - 1],
+              formatTooltipY: d => d === undefined ? 0 : d + ' times',
+            }
+          });
+        }).catch((error) => {
+          console.log(error)
+        });
       },
       computed: {
         dataForShow () {
