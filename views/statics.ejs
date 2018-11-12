@@ -9,6 +9,7 @@
     }
     .chart-wrapper {
       box-sizing: border-box;
+      text-align: right;
       margin: 10px 0 20px 0;
       border-top-left-radius: 3px;
       border-top-right-radius: 3px;
@@ -16,6 +17,34 @@
       padding-top: 8px !important;
       border: 1px solid #e1e4e8!important;
       border-color: #d1d5da !important;
+    }
+    .export-btn {
+      -webkit-appearance: button;
+      cursor: pointer;
+      display: inline-block;
+      margin: 10px 20px;
+      right: 0;
+      padding: 0.25rem 0.5rem;
+      font-weight: 400;
+      color: #8d99a6;
+      background: transparent;
+      background-image: none;
+      border: 1px solid #8d99a6;
+      user-select: none;
+      white-space: nowrap;
+      vertical-align: middle;
+      text-align: center;
+      border-radius: 0.2rem;
+      font-size: 0.875rem;
+      text-decoration: none;
+      outline: none;
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    }
+    .export-btn:hover {
+      color: #fff;
+      background-color: #8d99a6;
+      border-color: #8d99a6;
+      text-decoration: none;
     }
     #heatmap {
     }
@@ -72,12 +101,15 @@
     <div id="app">
       <div class="chart-wrapper">
         <div id="heatmap"></div>
+        <button v-if="heatmap" class="export-btn" @click="heatmap.export()">Export</button>
       </div>
       <div class="chart-wrapper">
         <div id="hourline"></div>
+        <button v-if="hourline" class="export-btn" @click="hourline.export()">Export</button>
       </div>
       <div class="chart-wrapper">
         <div id="deviceline"></div>
+        <button v-if="deviceline" class="export-btn" @click="deviceline.export()">Export</button>
       </div>
       <el-container id="data-list">
         <el-header id="data-list-header">
@@ -158,6 +190,9 @@
     new Vue({
       el: '#app',
       data: {
+        heatmap: null,
+        hourline: null,
+        deviceline: null,
         tableData: [],
         selectedAccount: 'All',
         selectedEventType: 'All',
@@ -207,7 +242,7 @@
         });
         axios.get('/yeardata').then((response) => {
           let now = new Date()
-          let heatmap = new frappe.Chart("#heatmap", {
+          this.heatmap = new frappe.Chart("#heatmap", {
             type: 'heatmap',
             title: "Successful reservation count in last year",
             data: {
@@ -241,7 +276,7 @@
               grabData[response.data[i].hour] = response.data[i].avg
             }
           }
-          let chart = new frappe.Chart("#hourline", {
+          this.hourline = new frappe.Chart("#hourline", {
             data: {
               labels: labels,
               datasets: [
@@ -302,7 +337,7 @@
               desktopData.push(0)
             }
           }
-          let chart = new frappe.Chart( "#deviceline", {
+          this.deviceline = new frappe.Chart( "#deviceline", {
             data: {
               labels: labelsForShow,
               datasets: [
