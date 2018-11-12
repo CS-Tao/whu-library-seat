@@ -107,7 +107,7 @@
           </el-select>
         </el-header>
         <el-main style="margin: 0">
-          <el-table :data="dataForShow" :border="true" :stripe="true" height="72vh">
+          <el-table :data="dataForShow" :border="true" :stripe="true">
             <el-table-column width="50" prop="id" label="Id"></el-table-column>
             <el-table-column width="100" prop="mobile" label="设备">
               <template slot-scope="scope">
@@ -330,7 +330,7 @@
       },
       computed: {
         dataForShow () {
-          return this.tableData.filter((item) => {
+          let tempData = this.tableData.filter((item) => {
             return (this.selectedAccount === 'All' || item.account === this.selectedAccount) &&
               ((this.selectedEventType === 'All' || item.event === this.selectedEventType)) &&
               ((this.selectedEventCode === 'All' || item.code === this.selectedEventCode)) &&
@@ -338,6 +338,8 @@
               ((this.selectedVersion === 'All' || item.version === this.selectedVersion)) &&
               ((this.selectedDevice === 'All' || (item.mobile === this.selectedDevice || item.mobile === null)))
           })
+          tempData.sort((x, y) => y.id - x.id)
+          return tempData
         },
         countOfSelected () {
           return !this.dataForShow ? 0 : this.dataForShow.length
