@@ -99,19 +99,19 @@
   </head>
   <body>
     <div id="app">
-      <div class="chart-wrapper">
+      <div :class="heatmap?'chart-wrapper':null">
         <div id="heatmap"></div>
         <button v-if="heatmap" class="export-btn" @click="heatmap.export()">Export</button>
       </div>
-      <div class="chart-wrapper">
+      <div :class="hourline?'chart-wrapper':null">
         <div id="hourline"></div>
         <button v-if="hourline" class="export-btn" @click="hourline.export()">Export</button>
       </div>
-      <div class="chart-wrapper">
+      <div :class="deviceline?'chart-wrapper':null">
         <div id="deviceline"></div>
         <button v-if="deviceline" class="export-btn" @click="deviceline.export()">Export</button>
       </div>
-      <el-container id="data-list">
+      <el-container id="data-list" v-show="dataForShow">
         <el-header id="data-list-header">
           <span>设备</span>
           <el-select v-model="selectedDevice">
