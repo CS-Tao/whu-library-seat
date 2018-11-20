@@ -251,6 +251,12 @@ export default {
         this.showWarning('请选择日期')
         return
       }
+      let today = this.formatDate(new Date())
+      let tomorrow = this.formatDate(this.getTomorrow())
+      if (this.freeDates[0] !== today || this.freeDates[1] !== tomorrow || !this.freeDates.includes(this.form.date)) {
+        this.showWarning('日期已刷新，请重新选择日期')
+        return
+      }
       if (this.form.beginTime === null) {
         this.showWarning('请选择开始时间')
         return
@@ -712,6 +718,26 @@ export default {
           break
       }
       return str
+    },
+    formatDate (date, options) {
+      options = options || {}
+      options.sign = options.sign || 'yyyy-MM-dd'
+      var _complete = function (n) {
+        return (n > 9) ? n : '0' + n
+      }
+      var year = date.getFullYear()
+      var month = _complete(date.getMonth() + 1)
+      var day = _complete(date.getDate())
+      var result = options.sign
+      result = result.replace('yyyy', year)
+      result = result.replace('MM', month)
+      result = result.replace('dd', day)
+      return result
+    },
+    getTomorrow () {
+      var tomorrow = new Date()
+      tomorrow.setDate(tomorrow.getDate() + 1)
+      return tomorrow
     }
   }
 }
