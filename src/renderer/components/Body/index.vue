@@ -483,7 +483,12 @@ export default {
             // 位置不可用，如果未达抢座上限则继续抢
             usageApi.grabState(this.userAccount, false, 12, `位置不可用，如果未达抢座上限则继续抢(${seatNum}:${this.grabCount}/${maxGrabCount})：${response.data.message}`)
             this.grabCount += 1
-            var cancelCurrentBool = response.data.message === '已有1个有效预约，请在使用结束后再次进行选择' && this.grabCount < 2
+            var haveReservation = response.data.message.indexOf('已有') !== -1 &&
+              response.data.message.indexOf('预约') !== -1 &&
+              response.data.message.indexOf('再') !== -1 &&
+              response.data.message.indexOf('结束') !== -1
+            var cancelCurrentBool = haveReservation && this.grabCount < 2
+            // var cancelCurrentBool = response.data.message === '已有1个有效预约，请在使用结束后再次进行选择' && this.grabCount < 2
             var newSeatId = -1
             if (cancelCurrentBool) {
               newSeatId = seatNum
