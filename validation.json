@@ -529,6 +529,13 @@
 				"accountMd5": "4eb0d90d40bcc2254aef9cea1f7ee22a",
 				"groupId": 5,
 				"status": true
+			},
+			{
+				"id": 71,
+				"account": 71,
+				"accountMd5": "d1ee30e175b0170a6c1d7c5a3d280aef",
+				"groupId": 6,
+				"status": true
 			}
 		]
 	}
