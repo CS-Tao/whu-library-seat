@@ -1,25 +1,3 @@
-function formatDate (date, options) {
-  options = options || {}
-  options.sign = options.sign || 'yyyy-MM-dd'
-  var _complete = function (n) {
-    return (n > 9) ? n : '0' + n
-  }
-  var year = date.getFullYear()
-  var month = _complete(date.getMonth() + 1)
-  var day = _complete(date.getDate())
-  var result = options.sign
-  result = result.replace('yyyy', year)
-  result = result.replace('MM', month)
-  result = result.replace('dd', day)
-  return result
-}
-
-function getTomorrow () {
-  var tomorrow = new Date()
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  return tomorrow
-}
-
 function getTimeInterval (beginTime = 0, count = 48, interval = 30) {
   var timeArray = []
   for (var i = 0; i < count; i++) {
@@ -54,8 +32,8 @@ const getters = {
   userToken: state => state.app.userInfo.token,
   hasToken: state => !!state.app.userInfo.token,
   // time info
-  freeDates: state => [formatDate(new Date()), formatDate(getTomorrow())],
-  freeDatesDefault: state => [formatDate(new Date()), formatDate(getTomorrow())][state.app.seatInfo.date],
+  freeDates: state => state.app.freeDates,
+  freeDatesDefault: state => state.app.freeDates[state.app.seatInfo.date],
   freeBeginTime: state => getTimeInterval(),
   freeEndTime: state => getTimeInterval(),
   // seat info
