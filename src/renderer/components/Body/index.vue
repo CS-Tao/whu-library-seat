@@ -3,9 +3,9 @@
     <el-form v-show="showMode==='normal'" :model="form" ref="seatForm" label-width="50px" class="flex-row form">
       <div style="margin:auto;text-align:center;">
         <el-form-item label="日期">
-          <el-select v-model="form.date" placeholder="请选择日期" class="input" @change="updateSeatsStatus()">
-            <el-option key="0" label="今天" :value="freeDates[0]"><span>{{'今天 / ' + freeDates[0] + ' / ' + getWeekDay(freeDates[0])}}</span></el-option>
-            <el-option key="1" label="明天" :value="freeDates[1]"><span>{{'明天 / ' + freeDates[1] + ' / ' + getWeekDay(freeDates[1])}}</span></el-option>
+          <el-select v-model="form.date" placeholder="请选择日期" class="input" @focus="$store.dispatch('updateFreeDates')" @change="updateSeatsStatus()">
+            <el-option key="0" :label="'今天' + ' - ' + getWeekDay(freeDates[0])" :value="freeDates[0]"><span>{{'今天 / ' + freeDates[0] + ' / ' + getWeekDay(freeDates[0])}}</span></el-option>
+            <el-option key="1" :label="'明天' + ' - ' + getWeekDay(freeDates[1])" :value="freeDates[1]"><span>{{'明天 / ' + freeDates[1] + ' / ' + getWeekDay(freeDates[1])}}</span></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="时间">
@@ -686,7 +686,7 @@ export default {
       }
     },
     getWeekDay (dateStr) {
-      var str = '周'
+      var str = '星期'
       var week = new Date(dateStr).getDay()
       switch (week) {
         case 0 :
