@@ -60,6 +60,7 @@ $warp-width: 296px;
 $warp-height: 330px;
 $warp-padding: 20px;
 .warp {
+  font-size: $text-size-normal + 2;
   width: $warp-width;
   height: $warp-height;
   margin: $layout-header-h ($layout-width - $warp-width)/2 - $warp-padding $layout-footer-h ($layout-width - $warp-width)/2 - $warp-padding;

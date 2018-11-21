@@ -17,12 +17,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="场馆">
-          <el-select v-model="form.library" placeholder="请选择场馆" class="input" @change="libraryChanged()">
+          <el-select v-model="form.library" placeholder="请选择场馆" no-data-text="数据加载失败，请重新登录" class="input" @change="libraryChanged()">
             <el-option v-for="library in libraryInfo.buildings" :key="library[0]" :label="library[1]" :value="library[0]"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="房间">
-          <el-select v-model="form.room" placeholder="请选择房间" class="input" @change="roomChanged()">
+          <el-select v-model="form.room" placeholder="请选择房间" no-data-text="数据加载失败，请重新登录" class="input" @change="roomChanged()">
             <el-option v-for="room in singleLibRooms" :key="room[0]" :label="room[1]" :value="room[0]">
               <span class="room-option-name">{{ room[1] }}</span>
               <span class="room-option-floor">{{ room[3] }} F</span>
@@ -31,7 +31,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="位置" :inline="true" style="flex-col">
-          <el-select v-model="form.seatNum" placeholder="座位号" class="num">
+          <el-select v-model="form.seatNum" placeholder="座位号"
+            :no-data-text="seatSelectNoDataMessage"
+            class="num">
             <el-option v-for="n in seatsForSelect.length" :key="n-1" :label="seatsForSelect[n-1].name" :value="seatsForSelect[n-1].id">
               <span class="seat-option-left" :style="{color: getSeatColor(seatsForSelect[n-1].id)}">{{ seatsForSelect[n-1].name }}</span>
               <span class="seat-option-right">
@@ -139,6 +141,25 @@ export default {
     },
     isVip () {
       return this.userAccount === 2015302590039 || this.userAccount === 2017302590175
+    },
+    seatSelectNoDataMessage () {
+      var message = '无数据'
+      if (!this.seats.length || this.seats.length === 0) {
+        if (this.form.room === null) {
+          message = '无数据，请选择房间'
+        } else {
+          message = '数据加载失败，请重新选择房间'
+        }
+      } else if (this.form.battery || this.form.sun) {
+        message = `没有筛选到${(this.form.battery && this.form.sun)
+          ? '有电源且靠窗'
+          : this.form.battery
+            ? '有电源'
+            : '靠窗'}的位置`
+      } else {
+        message = '无数据'
+      }
+      return `  ${message}  `
     }
   },
   watch: {
@@ -153,10 +174,6 @@ export default {
     if (this.seatInfo.library !== null) {
       this.form.library = this.seatInfo.library
       this.libraryChanged()
-      if (this.seatInfo.room !== null) {
-        this.form.room = this.seatInfo.room
-        this.roomChanged()
-      }
     }
   },
   methods: {
@@ -171,17 +188,23 @@ export default {
       this.singleLibRooms.sort((x, y) => {
         return parseInt(x[3]) - parseInt(y[3])
       })
+      this.form.room = null
+      this.form.seatNum = null
+      // 提取缓存
+      if (this.seatInfo.room !== null && this.seatInfo.library === this.form.library) {
+        this.form.room = this.seatInfo.room
+        this.roomChanged()
+      }
+      // 异步更新房间内可用座位数
       libraryRestApi.RoomStats(this.form.library, this.userToken).then((response) => {
         if (response.data.status === 'success') {
           this.roomsDetial = response.data.data
         }
       }).catch(() => {})
-      this.form.room = null
-      this.form.seatNum = null
     },
     roomChanged () {
-      if (this.form.room === null || this.form.date === null) { return }
       this.seats = []
+      if (this.form.room === null || this.form.date === null) { return }
       libraryRestApi.LayoutByDate(this.form.room, this.form.date, this.userToken).then((response) => {
         if (response.data.status === 'success') {
           for (var key in response.data.data.layout) {
@@ -197,7 +220,9 @@ export default {
           })
           this.filterSeats()
         }
-      }).catch(() => {})
+      }).catch(() => {
+        this.filterSeats()
+      })
     },
     chargerButtonClicked () {
       this.form.battery = !this.form.battery
@@ -209,7 +234,7 @@ export default {
     },
     filterSeats () {
       this.seatsForSelect = this.seats.filter((item) => {
-        return item.type !== 'empty' && (this.form.battery ? item.power : true) && (this.form.sun ? item.window : true)
+        return item.type === 'seat' && (this.form.battery ? item.power : true) && (this.form.sun ? item.window : true)
       })
       this.seatsForSelect.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
@@ -525,7 +550,7 @@ export default {
               this.$store.dispatch('updateTimer', 'working')
               // 打印信息
               var seatInTheRoom = this.seatsSearched === null ? this.seats.filter((item) => {
-                return item.type !== 'empty'
+                return item.type === 'seat'
               }) : this.seatsSearched
               for (let index = 0; index < seatInTheRoom.length; index++) {
                 if (seatInTheRoom[index].id === newSeatId) {
@@ -587,13 +612,13 @@ export default {
         return -1
       }
       var seatInTheRoom = this.seatsSearched === null ? this.seats.filter((item) => {
-        return item.type !== 'empty'
+        return item.type === 'seat'
       }) : this.seatsSearched
       seatInTheRoom.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
       })
       var seatInTheRoomBetter = seatInTheRoom.filter((item) => {
-        return item.type !== 'empty' && (this.form.battery ? item.power : true) && (this.form.sun ? item.window : true)
+        return item.type === 'seat' && (this.form.battery ? item.power : true) && (this.form.sun ? item.window : true)
       })
       seatInTheRoomBetter.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
