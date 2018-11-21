@@ -4,6 +4,10 @@ import usageApi from './usage.api'
 import libraryApi from './library.api'
 import urls from '../urls'
 
+Mock.setup({
+  timeout: '500-1000'
+})
+
 // 用户验证
 Mock.mock(urls.gitcontents.validateUser.regular, urls.gitcontents.validateUser.method, gitcontentsApi.validateUser)
 
