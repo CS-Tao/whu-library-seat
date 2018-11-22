@@ -133,15 +133,12 @@ $warp-padding: 10px;
   height: $warp-height;
   margin: $layout-header-h ($layout-width - $warp-width)/2 - $warp-padding $layout-footer-h ($layout-width - $warp-width)/2 - $warp-padding;
   padding: $warp-padding;
-  border: 1px solid $text-color;
-  border-radius: 4px;
+  border: 1px solid $text-color-middlelight;
 	::-webkit-scrollbar {
     width: 5px;
     background-color: $bg-color-highlight;
-    border-radius: 2px;
     &-thumb {
       background-color: $text-color-lowlight;
-      border-radius: 2px;
     }
 	}
   .table {
