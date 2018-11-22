@@ -49,6 +49,7 @@ const defaultSettingInfo = {
   beginTime: getTomorrowTime(8, 0, 0),
   endTime: getTomorrowTime(22, 30, 0),
   checkOpenEnable: true,
+  checkOpenPreMili: 10000,
   backgroundEnable: true,
   usageRecordEnable: true
 }
@@ -107,6 +108,7 @@ const app = {
       beginTime: new Date(store.get('availableBeginTime', defaultSettingInfo.beginTime)),
       endTime: new Date(store.get('availableEndTime', defaultSettingInfo.endTime)),
       checkOpenEnable: store.get('checkOpenEnable', defaultSettingInfo.checkOpenEnable),
+      checkOpenPreMili: store.get('checkOpenPreMili', defaultSettingInfo.checkOpenPreMili),
       backgroundEnable: store.get('backgroundEnable', defaultSettingInfo.backgroundEnable),
       usageRecordEnable: store.get('usageRecordEnable', defaultSettingInfo.usageRecordEnable)
     },
@@ -156,6 +158,7 @@ const app = {
       store.set('availableBeginTime', settings.beginTime)
       store.set('availableEndTime', settings.endTime)
       store.set('checkOpenEnable', settings.checkOpenEnable)
+      store.set('checkOpenPreMili', settings.checkOpenPreMili)
       store.set('backgroundEnable', settings.backgroundEnable)
       store.set('usageRecordEnable', settings.usageRecordEnable)
     },
@@ -166,6 +169,7 @@ const app = {
       store.set('availableBeginTime', defaultSettingInfo.beginTime)
       store.set('availableEndTime', defaultSettingInfo.endTime)
       store.set('checkOpenEnable', defaultSettingInfo.checkOpenEnable)
+      store.set('checkOpenPreMili', defaultSettingInfo.checkOpenPreMili)
       store.set('backgroundEnable', defaultSettingInfo.backgroundEnable)
       store.set('usageRecordEnable', defaultSettingInfo.usageRecordEnable)
     },
@@ -266,8 +270,8 @@ const app = {
     // 应当在 bookFunc 所有的异步函数执行完成之后手动执行 Action: cancelTimer()
     setTimer ({ commit, state }, param) {
       if (param) {
-        const loginInAdvanceMili = 20000
-        const checkInAdvanceMili = 10000
+        const checkInAdvanceMili = state.settingInfo.checkOpenPreMili
+        const loginInAdvanceMili = checkInAdvanceMili + 10000
         if (state.timerInfo.state !== statusEnum.unset) {
           commit('CANCEL_TIMER', null)
         }
