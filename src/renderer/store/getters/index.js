@@ -28,7 +28,15 @@ function addVarToTimer (timerInfo) {
 const getters = {
   // auth info
   authInfo: state => state.githubAuth.authInfo,
-  authFormVisible: state => state.githubAuth.authInfo.formVisible && !state.app.userInfo.token,
+  authFormVisible: state =>
+    ((!state.githubAuth.authInfo.useListForAuth &&
+    (!state.githubAuth.authInfo.githubAuthToken ||
+      !state.githubAuth.authInfo.haveStaredRepo)) ||
+      state.githubAuth.formVisible) &&
+    !state.app.userInfo.token,
+  githubUserIconUrl: state => (state.githubAuth.authInfo.githubUserInfo &&
+    state.githubAuth.authInfo.githubUserInfo.avatar_url)
+    ? state.githubAuth.authInfo.githubUserInfo.avatar_url : null,
   // user info
   userAccount: state => state.app.userInfo.account,
   userPasswd: state => state.app.userInfo.passwd,

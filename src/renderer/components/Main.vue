@@ -29,7 +29,8 @@ export default {
       'announceViewed'
     ])
   },
-  mounted () {
+  beforeMount () {
+    this.$store.dispatch('checkIfAuthed')
   },
   methods: {
     footerIconClicked (param) {

@@ -12,7 +12,7 @@
       label-width="50px"
       class="flex-row">
       <div style="margin:auto;">
-        <div class="form-item" :style="{'margin-bottom': !authFormVisible ? '40px': '20px'}" v-if="!hasToken">
+        <div class="form-item" :style="{'margin-bottom': !authFormVisible ? '40px': '10px'}" v-if="!hasToken">
           <svg v-if="!authFormVisible" version="1.1" class="logo" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512.004 512.004" style="enable-background:new 0 0 512.004 512.004;" xml:space="preserve"><g>
             <path d="M291.057,242.811c1.51,2.953,4.514,4.659,7.62,4.659c1.297,0,2.628-0.299,3.866-0.93 c0.503-0.256,50.731-25.771,75.503-33.596c4.489-1.425,6.98-6.221,5.555-10.709c-1.417-4.489-6.178-6.989-10.709-5.572 c-26.095,8.252-75.981,33.596-78.097,34.671C290.596,233.467,288.924,238.605,291.057,242.811z"/>
             <path d="M298.677,145.071c1.297,0,2.628-0.299,3.866-0.93c0.503-0.256,50.731-25.771,75.503-33.596 c4.489-1.425,6.98-6.221,5.555-10.709c-1.417-4.489-6.178-6.989-10.709-5.572c-26.095,8.252-75.981,33.596-78.097,34.671 c-4.198,2.133-5.871,7.27-3.738,11.477C292.567,143.364,295.571,145.071,298.677,145.071z"/>
@@ -253,6 +253,10 @@ export default {
     },
     validateUser () {
       return new Promise((resolve, reject) => {
+        if (this.authInfo.githubAuthToken && this.authInfo.haveStaredRepo) {
+          resolve()
+          return true
+        }
         if (this.userInfo.account === null || this.userInfo.account === '') {
           this.showWarning('学号不能为空')
           reject(Error('学号不能为空'))

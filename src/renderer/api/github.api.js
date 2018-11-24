@@ -7,20 +7,24 @@ var service = axios.create({
 })
 
 export default {
-  // GitHub 授权
-  login: () => {
-    const authToken = ''
+  // GitHub 登录
+  loginGithub: () => {
     return service({
       url: '/',
-      method: 'post',
+      method: 'post'
+    })
+  },
+  getUserInfo: (token) => {
+    return service({
+      url: '/user',
+      method: 'get',
       headers: {
-        Authorization: `Bearer ${authToken}`
+        Authorization: `token ${token}`
       }
     })
   },
-  // GitHub 授权
-  checkStared: () => {
-    const authToken = ''
+  // 检查是否点星
+  checkStared: (authToken) => {
     const query = `query {
       viewer { id login }
       repository(owner:"CS-Tao", name:"whu-library-seat") {
@@ -43,8 +47,7 @@ export default {
     })
   },
   // 点星
-  starRepo: () => {
-    const authToken = ''
+  starRepo: (authToken) => {
     const query = `mutation {
       addStar (input: {starrableId: "MDEwOlJlcG9zaXRvcnkxNDE3NzU1ODY="}) {
         starrable {
