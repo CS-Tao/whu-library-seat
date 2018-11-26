@@ -393,6 +393,24 @@ export default {
                   this.grabSeat()
                 }
               }
+            } else {
+              this.openCheckCount = 0
+              if (this.openCheckMessaggeHandle) {
+                this.openCheckMessaggeHandle.close()
+                this.openCheckMessaggeHandle = null
+              }
+              if (checkOpenTimerId) {
+                window.clearTimeout(checkOpenTimerId)
+              }
+              if (!haveStartedGrab) {
+                haveStartedGrab = true
+                this.$message({
+                  type: 'error',
+                  duration: '0',
+                  showClose: true,
+                  message: response.data.message ? response.data.message : emptyMessage
+                })
+              }
             }
           })
         }, this.openCheckInterval)
