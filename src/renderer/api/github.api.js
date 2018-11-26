@@ -7,13 +7,6 @@ var service = axios.create({
 })
 
 export default {
-  // GitHub 登录
-  loginGithub: () => {
-    return service({
-      url: '/',
-      method: 'post'
-    })
-  },
   getUserInfo: (token) => {
     return service({
       url: '/user',
