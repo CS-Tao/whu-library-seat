@@ -394,6 +394,7 @@ export default {
                 }
               }
             } else {
+              this.$store.dispatch('updateTimer', 'fail')
               this.openCheckCount = 0
               if (this.openCheckMessaggeHandle) {
                 this.openCheckMessaggeHandle.close()
