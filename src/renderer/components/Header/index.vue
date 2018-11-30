@@ -25,7 +25,8 @@
             <path d="M206.748,260.766c-52.693-12.356-112.572,3.379-115.089,4.062c-4.548,1.22-7.253,5.897-6.033,10.453 c1.024,3.814,4.471,6.332,8.235,6.332c0.734,0,1.476-0.102,2.219-0.299c0.572-0.162,58.223-15.326,106.778-3.934 c4.565,1.067,9.182-1.775,10.257-6.366C214.189,266.432,211.339,261.841,206.748,260.766z"/>
             <path d="M206.748,363.166c-52.693-12.365-112.572,3.388-115.089,4.062c-4.548,1.22-7.253,5.897-6.033,10.453 c1.024,3.814,4.471,6.332,8.235,6.332c0.734,0,1.476-0.102,2.219-0.299c0.572-0.162,58.223-15.326,106.778-3.934 c4.565,1.058,9.182-1.775,10.257-6.366C214.189,368.832,211.339,364.241,206.748,363.166z"/><path d="M206.748,311.966c-52.693-12.365-112.572,3.379-115.089,4.062c-4.548,1.22-7.253,5.897-6.033,10.453 c1.024,3.814,4.471,6.332,8.235,6.332c0.734,0,1.476-0.102,2.219-0.299c0.572-0.162,58.223-15.326,106.778-3.934 c4.565,1.067,9.182-1.775,10.257-6.366C214.189,317.632,211.339,313.041,206.748,311.966z"/></g>
           </svg>
-          <svg v-else class="logo-locked" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+          <img v-else-if="githubUserIconUrl!==null" class="github-avatar" :src="githubUserIconUrl" @click="$store.commit('TRIGGER_AUTH_FORM', false)"/>
+          <svg v-else class="logo-locked" viewBox="0 0 32 32" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
             <path d="M5 15 L5 30 27 30 27 15 Z M9 15 C9 9 9 5 16 5 23 5 23 9 23 15 M16 20 L16 23" />
             <circle cx="16" cy="24" r="1" />
           </svg>
@@ -123,7 +124,8 @@ export default {
       'userToken',
       'announceViewed',
       'authInfo',
-      'authFormVisible'
+      'authFormVisible',
+      'githubUserIconUrl'
     ]),
     btnText () {
       return this.workMode === 'none' ? '登录' : (this.workMode === 'validation' ? '用户验证' : '正在登录')
@@ -477,5 +479,12 @@ export default {
   width: 140px;
   height: 140px;
   color: $text-color-lowlight;
+}
+.github-avatar {
+  cursor: pointer;
+  margin-bottom: 15px;
+  width: 130px;
+  height: 130px;
+  border-radius: 10px;
 }
 </style>

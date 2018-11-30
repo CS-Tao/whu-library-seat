@@ -20,6 +20,7 @@
 			<span v-if="authInfo.haveStaredRepo" class="text">[ √ ]&nbsp;&nbsp;GitHub 授权成功</span>
 			<span v-else class="text">GitHub star 永久授权</span>
 		</div>
+    <span v-if="socketFailMessage" class="socket-err-msg">{{socketFailMessage}}</span>
 		<div class="help-link-wrap">
 			<a class="help-link" href="javascript:void(0)" @click="$openLink('https://home.cs-tao.cc/whu-library-seat/specification/#申请软件使用权')">了解授权机制</a>
 		</div>
@@ -31,9 +32,13 @@
       :show-close="false"
       :close-on-click-modal="false"
 			width="70%"
-      top="43%"
+      top="42%"
 			center>
-			<span>{{'检测到 '+ authInfo.githubLoginName + ' 尚未 Star 本软件，是否通过在 Github 上 Star 以获取使用权限？'}}</span>
+			<span>{{'检测到您尚未 Star 本软件，请点击软件下方的&nbsp;'}}</span>
+      <i class="operation-icon" @click="$openLink('https://github.com/CS-Tao/whu-library-seat')">
+        <svg class="operation-icon" aria-labelledby="simpleicons-github-icon" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </i>
+			<span>{{'&nbsp;图标进入本软件的 GitHub 地址，点星后回到本软件，点击确定按钮即可完成授权'}}</span>
 			<span slot="footer" class="dialog-footer">
 				<el-button class="comfirm-button" @click="onComfirmDialogYes()">确 定</el-button>
 				<el-button class="cancel-button" @click="onComfirmDialogNo()">取 消</el-button>
@@ -44,22 +49,27 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import io from 'socket.io-client'
 import githubApi from '@/api/github.api'
-import authApi from '@/api/auth.api'
 
 const workFlowModes = {
   none: 'none',
+  waitConfirm: 'waitConfirm',
   logining: 'logining',
   logined: 'logined',
-  staring: 'staring',
-  stared: 'stared'
+  staring: 'staring'
 }
 
+const socketBaseUrl = 'http://localhost:3002'
+
 export default {
+  name: 'authen',
   data () {
     return {
       workMode: workFlowModes.none,
-      comfirmDialogVisible: false
+      comfirmDialogVisible: false,
+      socket: null,
+      socketFailMessage: null
     }
   },
   computed: {
@@ -72,7 +82,7 @@ export default {
       'authInfo'
     ]),
     ghBtnloading () {
-      return this.workMode === workFlowModes.logining || this.workMode === workFlowModes.staring
+      return this.workMode !== workFlowModes.none
     },
     ghBtnDisable () {
       return this.ghBtnloading
@@ -80,6 +90,9 @@ export default {
   },
   mounted () {
     this.workMode = workFlowModes.none
+  },
+  beforeDestroy () {
+    this.disconnectSocket()
   },
   methods: {
     showError (message) {
@@ -108,47 +121,104 @@ export default {
         this.$store.commit('TRIGGER_AUTH_FORM', false)
         return
       }
+      this.socketFailMessage = null
       this.loginGitHub()
+    },
+    connectSocket () {
+      this.disconnectSocket()
+      this.socket = io.connect(socketBaseUrl, {
+        reconnection: false,
+        transportOptions: {
+          polling: {
+            extraHeaders: {
+              'x-clientid': 'whu-library-seat'
+            }
+          }
+        }
+      })
+      this.socket.on('connect', () => {
+        this.socketFailMessage = null
+        this.workMode = workFlowModes.waitConfirm
+      })
+      this.socket.on('connect_error', (error) => {
+        this.socketFailMessage = '无法连接服务器：' + error
+        this.disconnectSocket()
+        this.workMode = workFlowModes.none
+      })
+      this.socket.on('error', (error) => {
+        this.socketFailMessage = '无法连接服务器：' + error
+        this.disconnectSocket()
+        this.workMode = workFlowModes.none
+      })
+      this.socket.on('disconnect', (reason) => {
+        if (reason !== 'io client disconnect') {
+          this.socketFailMessage = '已断开和服务器的连接'
+          this.disconnectSocket()
+          this.workMode = workFlowModes.none
+        }
+      })
+      this.socket.on('socketId', (socketId) => {
+        this.$openLink(`${socketBaseUrl}/comfirm?socketid=${socketId}&device=desktop`)
+        this.workMode = workFlowModes.waitConfirm
+      })
+      this.socket.on('token', (token) => {
+        this.disconnectSocket()
+        this.loginGitHubCallback((token))
+      })
+      this.socket.on('cancel', (socketId) => {
+        this.$message({
+          type: 'info',
+          duration: '0',
+          showClose: true,
+          message: '已取消授权'
+        })
+        this.cancelAuthen()
+        this.disconnectSocket()
+      })
+    },
+    disconnectSocket () {
+      if (this.socket !== null && this.socket.connected) {
+        this.socket.disconnect(true)
+      }
+    },
+    cancelAuthen () {
+      this.comfirmDialogVisible = false
+      this.workMode = workFlowModes.none
+      this.$store.commit('RESTORE_AUTH')
     },
     loginGitHub () {
       this.workMode = workFlowModes.logining
-      var guid = this.generateGuid()
-      this.$openLink(`https://seat-ghauth.cs-tao.cc/?authguid=${guid}`)
-      window.setInterval(() => {
-        authApi.getToken(guid)
-          .then((response) => {
-
-          })
-      }, 1000)
+      this.connectSocket()
     },
-    loginGitHubHandler () {
-      this.$store.commit('SAVE_GITHUB_LOGIN_NAME', 'GIS-Hacker')
+    loginGitHubCallback (token) {
       this.workMode = workFlowModes.logined
-      this.$store.dispatch('saveAuthToken', 'a532f8d27cafff9d296dec97eff25674378b6136')
+      this.$store.dispatch('saveAuthToken', token)
         .then((token) => {
           return this.checkIfStared(token)
         })
-        .then(([token, loginName, haveStared]) => {
-          this.workMode = workFlowModes.none
+        .then(([token, haveStared]) => {
           if (haveStared) {
+            this.workMode = workFlowModes.none
             this.$store.commit('TRIGGER_STAERD', true)
             this.$store.commit('TRIGGER_AUTH_FORM', false)
             this.$message({
               type: 'success',
-              duration: '2000',
+              duration: '3000',
               showClose: true,
-              message: `${loginName} 授权成功`
+              message: `GitHub 授权成功`
             })
           } else {
             this.comfirmDialogVisible = true
           }
         })
         .catch((error) => {
+          this.cancelAuthen()
           this.workMode = workFlowModes.none
           this.showError(error.message)
         })
     },
     checkIfStared (token) {
+      this.workMode = workFlowModes.staring
       return new Promise((resolve, reject) => {
         githubApi.checkStared(token).then((response) => {
           if (response.status === 200) {
@@ -157,35 +227,9 @@ export default {
             var haveStared = stargazers.find(
               stargazer =>
                 stargazer.id === viewer.id &&
-            stargazer.login === viewer.login
+                stargazer.login === viewer.login
             ) !== undefined
-            resolve([token, viewer.login, haveStared])
-          } else {
-            reject(Error('数据加载失败'))
-          }
-        }).catch((error) => {
-          reject(error)
-        })
-      })
-    },
-    starRepo (token, loginName) {
-      return new Promise((resolve, reject) => {
-        githubApi.starRepo(token).then((response) => {
-          if (response.status === 200) {
-            var viewerHasStarred = response.data.data.addStar.starrable.viewerHasStarred
-            if (viewerHasStarred) {
-              this.$message({
-                type: 'success',
-                duration: '2000',
-                showClose: true,
-                message: `${loginName} 授权成功`
-              })
-              this.$store.commit('TRIGGER_AUTH_FORM', false)
-              resolve([token, loginName, true])
-            } else {
-              this.showError(`${loginName} 授权失败`)
-              resolve([token, loginName, false])
-            }
+            resolve([token, haveStared])
           } else {
             reject(Error('数据加载失败'))
           }
@@ -196,15 +240,36 @@ export default {
     },
     onComfirmDialogYes () {
       this.comfirmDialogVisible = false
-      this.workMode = workFlowModes.staring
-      this.starRepo(this.authInfo.githubAuthToken, this.authInfo.githubLoginName)
-        .then(([token, loginName, status]) => {
-          this.workMode = workFlowModes.none
+      if (this.authInfo.githubAuthToken) {
+        this.checkIfStared(this.authInfo.githubAuthToken)
+          .then(([token, haveStared]) => {
+            if (haveStared) {
+              this.workMode = workFlowModes.none
+              this.$store.commit('TRIGGER_STAERD', true)
+              this.$store.commit('TRIGGER_AUTH_FORM', false)
+              this.$message({
+                type: 'success',
+                duration: '3000',
+                showClose: true,
+                message: `GitHub 授权成功`
+              })
+            } else {
+              this.comfirmDialogVisible = true
+            }
+          })
+          .catch((error) => {
+            this.cancelAuthen()
+            this.workMode = workFlowModes.none
+            this.showError(error.message)
+          })
+      } else {
+        this.$message({
+          type: 'warning',
+          duration: '3000',
+          showClose: true,
+          message: '无 GitHub 令牌，请点击取消按钮，然后重新授权'
         })
-        .catch((error) => {
-          this.workMode = workFlowModes.none
-          this.showError(error.message)
-        })
+      }
     },
     onComfirmDialogNo () {
       this.$message({
@@ -213,17 +278,7 @@ export default {
         showClose: true,
         message: '取消授权'
       })
-      this.comfirmDialogVisible = false
-      this.workMode = workFlowModes.none
-    },
-    generateGuid () {
-      var d = new Date().getTime()
-      var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0
-        d = Math.floor(d / 16)
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16)
-      })
-      return uuid
+      this.cancelAuthen()
     }
   }
 }
@@ -249,6 +304,7 @@ export default {
 		align-items: center;
 		cursor: pointer;
     color: $text-color;
+    font-size: $text-size-normal;
     background: $primary-button-background-blur!important;
 		border: 1px solid $primary-color!important;
 		border-radius: 0;
@@ -304,6 +360,16 @@ export default {
 			opacity: $button-click-opacity;
 		}
 	}
+  .socket-err-msg {
+    display: block;
+    text-align: center;
+    margin: auto;
+    max-width: 55vw;
+    font-size: $text-size-normal;
+    word-wrap: break-word;
+    cursor: default;
+    color: $button-red;
+  }
 	.help-link-wrap {
 		text-align: right;
 		.help-link {
@@ -337,6 +403,16 @@ export default {
   }
   &:active {
     background: $cancel-button-background-click!important;
+  }
+}
+.operation-icon {
+  fill: $text-color;
+  margin: auto;
+  cursor: pointer;
+  width: 20px;
+  opacity: $button-hover-opacity;
+  &:hover {
+    opacity: $button-click-opacity;
   }
 }
 </style>

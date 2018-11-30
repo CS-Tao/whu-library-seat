@@ -5,10 +5,10 @@
       <el-button v-if="updateAvailable" type="primary" class="el-icon-download update-button" @click.stop="downloadUpdate()">&nbsp;最新版本(v{{newVersion}})</el-button>
       <el-button v-if="updateDownloaded" type="primary" class="el-icon-refresh update-button" @click.stop="quitAndUpdate()">&nbsp;重启更新</el-button>
       <span class="text">{{!updateDownloaded&&!updateAvailable?'© 2018 CS-Tao':''}}</span>
-      <i v-if="!hasToken&&githubUserIconUrl!==null" class="github-icon-warper" style="margin-right: 1.5vw;" @click.stop="githubIconClicked()">
+      <i v-if="!hasToken&&!authFormVisible&&githubUserIconUrl!==null" class="github-icon-warper" style="margin-right: 1.5vw;" @click.stop="githubIconClicked()">
         <img class="github-icon" :src="githubUserIconUrl"/>
       </i>
-      <i v-if="!hasToken&&githubUserIconUrl===null" class="toggle-button" style="margin-right: 1.5vw;" @click.stop="keyIconClicked()">
+      <i v-if="!hasToken&&(authFormVisible||githubUserIconUrl===null)" class="toggle-button" style="margin-right: 1.5vw;" @click.stop="keyIconClicked()">
         <svg class="icon" :class="isLover?(authFormVisible?'icon-checked-red':'icon-unchecked-red'):(authFormVisible?'icon-checked':'icon-unchecked')" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M734.906278 299.765271 572.209802 299.765271c-0.25992 0-0.512676 0.022513-0.768503 0.038886L571.441299 186.185446l162.185846 0c6.78145 0 12.279674-5.498224 12.279674-12.279674l0-32.232099c0-6.78145-5.498224-12.279674-12.279674-12.279674L571.441299 129.393999 571.441299 62.758346c0-6.430456-5.498224-11.643178-12.279674-11.643178l-62.928215 0c-6.78145 0-12.279674 5.212722-12.279674 11.643178l0 502.066767c0 0.427742 0.027629 0.848321 0.074701 1.26276-83.718727 20.308535-145.890718 95.737458-145.890718 185.701422 0 105.537661 85.555561 191.092199 191.093223 191.092199 105.538685 0 191.093223-85.554538 191.093223-191.092199 0-91.043552-63.672158-167.206186-148.912541-186.41262 0.00921-0.184195 0.028653-0.36532 0.028653-0.551562L571.440275 356.517833c0.255827 0.016373 0.508583 0.038886 0.768503 0.038886l162.696476 0c6.78145 0 12.279674-5.498224 12.279674-12.279674l0-32.232099C747.185952 305.263495 741.687728 299.765271 734.906278 299.765271zM652.111596 751.789295c0 67.865667-55.016011 122.879632-122.879632 122.879632-67.864644 0-122.880655-55.014988-122.880655-122.879632 0-67.865667 55.016011-122.880655 122.880655-122.880655C597.095585 628.90864 652.111596 683.923628 652.111596 751.789295z"></path></svg>
       </i>
       <i v-if="!hasToken" class="operation-icon" style="margin-right: 2vw;" @click.stop="showQRCode()">
@@ -307,13 +307,11 @@ export default {
     cursor: pointer;
     width: 25px;
     height: 100%;
-    opacity: $button-blur-opacity;
-    &:hover {
-      opacity: $button-click-opacity;
-    }
+    opacity: $button-click-opacity;
     .github-icon {
       width: 22px;
       height: 22px;
+      border-radius: 2px;
     }
   }
   .operation-icon {
