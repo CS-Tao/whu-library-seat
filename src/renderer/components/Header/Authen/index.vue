@@ -60,7 +60,7 @@ const workFlowModes = {
   staring: 'staring'
 }
 
-const socketBaseUrl = 'http://localhost:3002'
+const socketBaseUrl = 'https://seat-ghauth.cs-tao.cc'
 
 export default {
   name: 'authen',

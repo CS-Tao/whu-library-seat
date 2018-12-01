@@ -10,8 +10,6 @@ const githubAuth = {
   state: {
     authInfo: {
       useListForAuth: store.get('authInfo_useListForAuth', true),
-      githubLogined: store.get('authInfo_githubLogined', false),
-      githubLoginId: store.get('authInfo_githubLoginId', null),
       githubAuthToken: store.get('authInfo_githubAuthToken', null),
       githubUserInfo: store.get('authInfo_githubUserInfo', null),
       haveStaredRepo: store.get('authInfo_haveStaredRepo', false)
@@ -28,28 +26,20 @@ const githubAuth = {
     },
     RESTORE_AUTH: (state) => {
       state.authInfo.useListForAuth = true
-      state.authInfo.githubLogined = false
-      state.authInfo.githubLoginId = null
       state.authInfo.githubAuthToken = null
       state.authInfo.githubUserInfo = null
       state.authInfo.haveStaredRepo = false
       store.set('authInfo_useListForAuth', false)
-      store.set('authInfo_githubLogined', false)
-      store.set('authInfo_githubLoginId', null)
       store.set('authInfo_githubAuthToken', null)
       store.set('authInfo_githubUserInfo', null)
       store.set('authInfo_haveStaredRepo', false)
     },
     USE_LIST_FOR_AUTH: (state) => {
       state.authInfo.useListForAuth = true
-      state.authInfo.githubLogined = false
-      state.authInfo.githubLoginId = null
       state.authInfo.githubAuthToken = null
       state.authInfo.githubUserInfo = null
       state.authInfo.haveStaredRepo = false
       store.set('authInfo_useListForAuth', true)
-      store.set('authInfo_githubLogined', false)
-      store.set('authInfo_githubLoginId', null)
       store.set('authInfo_githubAuthToken', null)
       store.set('authInfo_githubUserInfo', null)
       store.set('authInfo_haveStaredRepo', false)
@@ -98,10 +88,11 @@ const githubAuth = {
         resolve(token)
       })
     },
-    updateUserInfo ({ commit, state }, token) {
+    updateUserInfo ({ commit }, token) {
       // get user info
       githubApi.getUserInfo(token).then((response) => {
         if (response.status === 200) {
+          console.log(JSON.stringify(response.data))
           commit('SAVE_GITHUB_USER_INFO', response.data)
         } else {
           commit('SAVE_GITHUB_USER_INFO', null)
