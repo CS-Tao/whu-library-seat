@@ -525,7 +525,7 @@ export default {
         } else {
           if (response.data.code === 1 || response.data.code === '1') {
             // 位置不可用，如果未达抢座上限则继续抢
-            usageApi.grabState(this.userAccount, false, 12, `位置不可用，如果未达抢座上限则继续抢(${seatNum}:${this.grabCount}/${maxGrabCount})：${response.data.message}`)
+            // usageApi.grabState(this.userAccount, false, 12, `位置不可用，如果未达抢座上限则继续抢(${seatNum}:${this.grabCount}/${maxGrabCount})：${response.data.message}`)
             this.grabCount += 1
             var haveReservation = response.data.message.indexOf('已有') !== -1 &&
               response.data.message.indexOf('预约') !== -1 &&
