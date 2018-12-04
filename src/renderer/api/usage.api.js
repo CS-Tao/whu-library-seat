@@ -20,12 +20,13 @@ export default {
   loginState: (account, state, code, message = null) => {
     let usageRecordEnable = store.get('usageRecordEnable', true)
     let githubUserInfo = store.get('authInfo_githubUserInfo', null)
-    if (githubUserInfo || usageRecordEnable) {
+    if ((githubUserInfo && githubUserInfo.id) || usageRecordEnable) {
       service({
         url: urls.usage.loginState.url(),
         method: urls.usage.loginState.method,
         data: {
           account,
+          githubid: githubUserInfo.id,
           state,
           code,
           message: message || '',
@@ -39,12 +40,13 @@ export default {
   grabState: (account, state, code, message = null) => {
     let usageRecordEnable = store.get('usageRecordEnable', true)
     let githubUserInfo = store.get('authInfo_githubUserInfo', null)
-    if (githubUserInfo || usageRecordEnable) {
+    if ((githubUserInfo && githubUserInfo.id) || usageRecordEnable) {
       service({
         url: urls.usage.grabState.url(),
         method: urls.usage.grabState.method,
         data: {
           account,
+          githubid: githubUserInfo.id,
           state,
           code,
           message: message || '',
