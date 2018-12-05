@@ -1,0 +1,9 @@
+{
+	"status": "success",
+	"code": "0",
+	"message": "",
+	"meta": {
+		"description": "Data 为 normal 时才能使用移动端"
+	},
+	"data": "normal"
+}
