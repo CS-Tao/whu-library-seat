@@ -17,6 +17,24 @@ const urls = {
       method: 'get'
     }
   },
+  githubApi: {
+    // 得到 GitHub 用户信息
+    getUserInfo: {
+      url () {
+        return '/user'
+      },
+      regular: /api.github.com\/user/,
+      method: 'get'
+    },
+    // 检查是否点星
+    checkStared: {
+      url () {
+        return '/graphql'
+      },
+      regular: /api.github.com\/graphql/,
+      method: 'post'
+    }
+  },
   usage: {
     // 登录状态
     loginState: {
