@@ -15,6 +15,12 @@ Mock.mock(urls.gitcontents.validateUser.regular, urls.gitcontents.validateUser.m
 // 公告
 Mock.mock(urls.gitcontents.announce.regular, urls.gitcontents.announce.method, gitcontentsApi.announce)
 
+// GitHub id 黑名单
+Mock.mock(urls.gitcontents.blacklist.regular, urls.gitcontents.blacklist.method, gitcontentsApi.blacklist)
+
+// 禁用软件
+Mock.mock(urls.gitcontents.ban.regular, urls.gitcontents.ban.method, gitcontentsApi.ban)
+
 // 得到 GitHub 用户信息
 Mock.mock(urls.githubApi.getUserInfo.regular, urls.githubApi.getUserInfo.method, githubApi.getUserInfo)
 

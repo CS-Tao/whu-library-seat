@@ -15,6 +15,22 @@ const urls = {
       },
       regular: /\/user-validation\/announce.md/,
       method: 'get'
+    },
+    // GitHub id 黑名单
+    blacklist: {
+      url () {
+        return '/user-validation/github-blacklist.json'
+      },
+      regular: /\/user-validation\/github-blacklist.json/,
+      method: 'get'
+    },
+    // 禁用软件
+    ban: {
+      url () {
+        return '/user-validation/ban-desktop.json'
+      },
+      regular: /\/user-validation\/ban-desktop.json/,
+      method: 'get'
     }
   },
   githubApi: {

@@ -27,5 +27,25 @@ export default {
         time: new Date()
       }
     })
+  },
+  // GitHub id 黑名单
+  blacklist: () => {
+    return service({
+      url: urls.gitcontents.blacklist.url(),
+      method: urls.gitcontents.blacklist.method,
+      params: {
+        time: new Date()
+      }
+    })
+  },
+  // 禁用软件
+  ban: () => {
+    return service({
+      url: urls.gitcontents.ban.url(),
+      method: urls.gitcontents.ban.method,
+      params: {
+        time: new Date()
+      }
+    })
   }
 }
