@@ -1,4 +1,4 @@
-### 公告 (2018-12-9 23:30)
+### 公告 (2018-12-09 23:30)
 
 <a target="_blank" href="https://github.com/CS-Tao/whu-library-seat-mobile/releases/tag/v1.5.1">移动端 v1.5.1 更新日志</a>
 
