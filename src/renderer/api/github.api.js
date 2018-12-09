@@ -19,28 +19,75 @@ export default {
     })
   },
   // 检查是否点星
-  checkStared: (authToken) => {
+  checkStared: (authToken, cursor = null) => {
     const repoName = 'whu-library-seat'
     const maxUserCount = 100
-    const query = `query {
-      viewer { id login }
-      repository(owner:"CS-Tao", name:"${repoName}") {
-        id
-        stargazers (first: ${maxUserCount}) {
-          nodes {
-            id
-            login
+    var query = null
+    if (!cursor) {
+      query = `query {
+        viewer { id login }
+        repository(owner:"CS-Tao", name:"${repoName}") {
+          id
+          stargazers (first: ${maxUserCount}) {
+            edges {
+              cursor
+              starredAt
+              node {
+                id
+                login
+              }
+            }
           }
         }
-      }
-    }`
-    return service({
-      url: urls.githubApi.checkStared.url(),
-      method: urls.githubApi.checkStared.method,
-      headers: {
-        Authorization: `Bearer ${authToken}`
-      },
-      data: JSON.stringify({query})
+      }`
+    } else {
+      query = `query {
+        viewer { id login }
+        repository(owner:"CS-Tao", name:"${repoName}") {
+          id
+          stargazers (first: ${maxUserCount}, after: "${cursor}") {
+            edges {
+              cursor
+              starredAt
+              node {
+                id
+                login
+              }
+            }
+          }
+        }
+      }`
+    }
+    // resolve(token, lastCursor, haveStarted)
+    return new Promise((resolve, reject) => {
+      service({
+        url: urls.githubApi.checkStared.url(),
+        method: urls.githubApi.checkStared.method,
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        },
+        data: JSON.stringify({query})
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            var viewer = response.data.data.viewer
+            var stargazers = response.data.data.repository.stargazers.edges
+            if (stargazers.length === 0) {
+              resolve([authToken, null, false])
+            } else {
+              var haveStared = stargazers.find(
+                stargazer => stargazer.node.id === viewer.id
+              ) !== undefined
+              var lastCursor = stargazers[stargazers.length - 1].cursor
+              resolve([authToken, lastCursor, haveStared])
+            }
+          } else {
+            reject(Error('数据加载失败，请重新尝试'))
+          }
+        })
+        .catch((error) => {
+          reject(error)
+        })
     })
   }
   // 点星，弃用

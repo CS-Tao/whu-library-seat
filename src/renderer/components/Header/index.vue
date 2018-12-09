@@ -209,22 +209,24 @@ export default {
     },
     loginFlow () {
       this.workMode = 'validation'
-      this.validateUser()
-        .then(() => {
-          this.workMode = 'login'
-          return this.login()
-        })
-        .then((token) => {
-          return this.loadRooms(token)
-        })
-        .then((token) => {
-          this.workMode = 'none'
-          return this.loginFlowSuccessHandler(token)
-        })
-        .catch((error) => {
-          this.workMode = 'none'
-          this.loginFlowErrorHandler(error)
-        })
+      this.$nextTick(() => {
+        this.validateUser()
+          .then(() => {
+            this.workMode = 'login'
+            return this.login()
+          })
+          .then((token) => {
+            return this.loadRooms(token)
+          })
+          .then((token) => {
+            this.workMode = 'none'
+            return this.loginFlowSuccessHandler(token)
+          })
+          .catch((error) => {
+            this.workMode = 'none'
+            this.loginFlowErrorHandler(error)
+          })
+      })
     },
     loginFlowSuccessHandler (token) {
       this.settingsVisible = false
@@ -251,7 +253,7 @@ export default {
     },
     loginFlowErrorHandler (error) {
       this.$store.dispatch('setToken', null)
-      console.error('LoginFlowErrorHandler:', error.message)
+      console.trace('LoginFlowErrorHandler:', error.message)
     },
     validateUser () {
       return new Promise((resolve, reject) => {
@@ -282,7 +284,7 @@ export default {
               }
             }
             // 用户验证
-            const validateFailMessage = '对不起，您未在用户白名单中，不能使用本软件，您可以在 [菜单] -> [权限] -> [申请权限] 中了解如何获取权限'
+            const validateFailMessage = '对不起，您未在用户白名单中，只能通过 GitHub Star 授权使用本软件，具体请点击软件下方的钥匙按钮查看'
             if (userItem === null) {
               this.showError(validateFailMessage)
               usageApi.loginState(this.userInfo.account, false, 0)
@@ -478,13 +480,14 @@ export default {
 .logo-locked {
   width: 140px;
   height: 140px;
+  margin-bottom: 5px;
   color: $text-color-lowlight;
 }
 .github-avatar {
   cursor: pointer;
   margin-bottom: 15px;
-  width: 130px;
-  height: 130px;
+  width: 120px;
+  height: 120px;
   border-radius: 10px;
 }
 </style>

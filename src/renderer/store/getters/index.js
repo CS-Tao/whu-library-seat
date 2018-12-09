@@ -31,7 +31,6 @@ const getters = {
   authFormVisible: state =>
     ((!state.githubAuth.authInfo.useListForAuth &&
     (!state.githubAuth.authInfo.githubAuthToken ||
-      !state.githubAuth.authInfo.githubUserInfo ||
       !state.githubAuth.authInfo.haveStaredRepo)) ||
       state.githubAuth.formVisible) &&
     !state.app.userInfo.token,

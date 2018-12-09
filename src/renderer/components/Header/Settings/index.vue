@@ -29,7 +29,7 @@
       <el-form-item label="点击窗口的关闭按钮时退出到托盘" label-width="auto" class="form-item" style="margin-top: 10px;text-align: center;">
         <el-switch v-model="settings.backgroundEnable" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </el-form-item>
-      <el-form-item v-if="!authInfo" label="提交软件使用数据帮助我改善软件" label-width="auto" class="form-item" style="margin-top: 10px;text-align: center;">
+      <el-form-item v-if="!(authInfo.githubUserInfo&&authInfo.githubUserInfo.id)" label="提交软件使用数据帮助我改善软件" label-width="auto" class="form-item" style="margin-top: 10px;text-align: center;">
         <el-switch v-model="settings.usageRecordEnable" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </el-form-item>
       <div class="form-item" style="text-align: center;">
