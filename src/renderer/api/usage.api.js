@@ -13,6 +13,13 @@ var service = axios.create({
   withCredentials: true
 })
 
+service.interceptors.response.use(
+  response => response,
+  error => {
+    console.trace('usage.api.js', error.message)
+    return null
+  })
+
 const appVersion = remote.app.getVersion()
 
 export default {

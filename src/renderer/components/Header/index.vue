@@ -317,9 +317,8 @@ export default {
             resolve()
             return true
           } else {
-            this.showInfo('白名单加载失败，开启免验证登录')
-            resolve()
-            return true
+            reject(Error('管理员已关闭白名单认证方式，只能通过 GitHub Star 授权使用本软件，具体请点击软件下方的钥匙按钮查看'))
+            return false
           }
         }).catch(() => {
           this.showInfo('白名单加载失败，开启免验证登录')
