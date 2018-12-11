@@ -315,10 +315,8 @@ ipcMain.on('show-window-notify', (event, title, message) => {
 })
 
 // 配置自动更新
-
 autoUpdater.autoDownload = false
 autoUpdater.autoInstallOnAppQuit = true
-autoUpdater.allowPrerelease = true
 autoUpdater.allowDowngrade = true
 
 ipcMain.on('check-updates', (event, arg) => {
