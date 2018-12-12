@@ -145,8 +145,17 @@ const githubAuth = {
         }
       }).catch((e) => {
         commit('SAVE_GITHUB_USER_INFO', null)
+        if (e.response.status === 401) {
+          store.set('authInfo_githubAuthToken', null)
+          Message({
+            message: `GitHub 会话过期，您需要在下次启动软件时重新认证`,
+            type: 'warning',
+            duration: 0,
+            showClose: true
+          })
+        }
         Message({
-          message: `获取 GitHub 用户信息失败用户信息失败：${e.message}`,
+          message: `获取 GitHub 用户信息失败用户信息失败：${e.response.data.message ? e.response.data.message : e.message}`,
           type: 'error',
           duration: 3000,
           showClose: true
