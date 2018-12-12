@@ -6,7 +6,6 @@ var router = express.Router();
 router.post('/', function(req, res, next) {
   var connection = mysql.createConnection(mysqlConfig.config);
   var params = req.body;
-  console.log(JSON.stringify(params));
   var account = params.account;
   var state = params.state;
   var code = params.code;
@@ -20,19 +19,21 @@ router.post('/', function(req, res, next) {
   var min = time.getMinutes();
   var sec = time.getSeconds();
   var events = 'login';
-  var mobile = params.mobile ? params.mobile: false;
+  var mobile = params.mobile ? params.mobile : false;
+  var githubId = params.githubid ? params.githubid : null;
 
   var queryString = `Insert into events \
-    (account, state, year, month, day, hour, min, sec, event, code, version, message, mobile) \
-    values ('${account}', ${state}, ${year}, ${month}, ${day}, ${hour}, ${min}, ${sec}, '${events}', ${code}, '${version}', '${message}', ${mobile})`;
+    (account, state, year, month, day, hour, min, sec, event, code, version, message, mobile, githubid) \
+    values ('${account}', ${state}, ${year}, ${month}, ${day}, ${hour}, ${min}, ${sec}, '${events}', ${code}, '${version}', '${message}', ${mobile}, ${githubId ? `'${githubId}'` : null})`;
 
+    console.log(queryString)
   connection.query(queryString, function (err, results) {
       if (err) {
         console.log(err.message)
         res.json({
           'status': 'fail',
           'code': '1',
-          'message': 'Error for recording',
+          'message': err.message,
           'data': null
         });
         return;

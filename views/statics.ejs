@@ -66,6 +66,7 @@
       border-color: #d1d5da !important;
     }
     #data-list-header {
+      height: 80px !important;
       margin: 10px 20px 0 20px;
       white-space: nowrap;
       overflow: auto;
@@ -145,6 +146,10 @@
           <el-select v-model="selectedAccount" filterable>
             <el-option v-for="item in accountList" :key="item" :label="item" :value="item"></el-option>
           </el-select>
+          <span>GitHub id</span>
+          <el-select v-model="selectedGithubId" filterable>
+            <el-option v-for="item in githubIdList" :key="item" :label="item" :value="item"></el-option>
+          </el-select>
           <span>软件版本</span>
           <el-select v-model="selectedVersion">
             <el-option v-for="item in versionList" :key="item" :label="item === 'All' ? 'All' : 'v'+item" :value="item"></el-option>
@@ -182,6 +187,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="account" label="账号 (加密)" width="250"></el-table-column>
+            <el-table-column prop="githubId" label="Github Id (加密)" width="250"></el-table-column>
             <el-table-column width="100" label="软件版本">
               <template slot-scope="scope">
                 <span>{{ 'v' + scope.row.version }}</span>
@@ -212,12 +218,14 @@
         selectedStatus: 'All',
         selectedVersion: 'All',
         selectedDevice: 'All',
+        selectedGithubId: 'All',
         eventTypeList: ['All'],
         eventCodeList: ['All'],
         accountList: ['All'],
         statusList: ['All'],
         versionList: ['All'],
-        deviceList: ['All']
+        deviceList: ['All'],
+        githubIdList: ['All']
       },
       mounted () {
         axios.get('/staticsdata').then((response) => {
@@ -227,12 +235,8 @@
           this.accountList = ['All']
           this.statusList = ['All']
           this.versionList = ['All']
+          this.githubIdList = ['All']
           this.tableData.forEach((item) => {
-            if (!this.deviceList.includes(item.mobile)) {
-              if (item.mobile !== null) {
-                this.deviceList.push(item.mobile)
-              }
-            }
             if (!this.eventCodeList.includes(item.code)) {
               this.eventCodeList.push(item.code)
             }
@@ -247,6 +251,12 @@
             }
             if (!this.versionList.includes(item.version)) {
               this.versionList.push(item.version)
+            }
+            if (item.mobile && !this.deviceList.includes(item.mobile)) {
+              this.deviceList.push(item.mobile)
+            }
+            if (item.githubId && !this.githubIdList.includes(item.githubId)) {
+              this.githubIdList.push(item.githubId)
             }
           })
         }).catch((error) => {
@@ -383,6 +393,7 @@
               ((this.selectedEventCode === 'All' || item.code === this.selectedEventCode)) &&
               ((this.selectedStatus === 'All' || item.state === this.selectedStatus)) &&
               ((this.selectedVersion === 'All' || item.version === this.selectedVersion)) &&
+              ((this.selectedGithubId === 'All' || item.githubId === this.selectedGithubId)) &&
               ((this.selectedDevice === 'All' || (item.mobile === this.selectedDevice || item.mobile === null)))
           })
           tempData.sort((x, y) => y.id - x.id)

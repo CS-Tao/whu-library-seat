@@ -17,6 +17,9 @@ router.get('/', function(req, res, next) {
       } else {
         for (let i = 0; i< results.length; i++) {
           results[i].account = md5(results[i].account)
+          if (results[i].githubId) {
+            results[i].githubId = md5(results[i].githubId)
+          }
         }
         res.json(results);
       }
