@@ -138,18 +138,6 @@ const template = [
       }
     ]
   }, {
-    label: '权限',
-    submenu: [
-      {
-        label: '申请权限',
-        click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/specification/#申请软件使用权') }
-      },
-      {
-        label: '查看白名单',
-        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json') }
-      }
-    ]
-  }, {
     label: '关于',
     role: 'about',
     submenu: [
