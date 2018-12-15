@@ -26,9 +26,9 @@ export default {
   // 登录状态
   loginState: (account, state, code, message = null) => {
     let usageRecordEnable = store.get('usageRecordEnable', true)
-    let githubUserInfo = store.get('authInfo_githubUserInfo', null)
-    let githubid = (githubUserInfo && githubUserInfo.id) ? githubUserInfo.id : null
-    if ((githubUserInfo && githubUserInfo.id) || usageRecordEnable) {
+    if (usageRecordEnable) {
+      let githubUserInfo = store.get('authInfo_githubUserInfo', null)
+      let githubid = (githubUserInfo && githubUserInfo.id) ? githubUserInfo.id : null
       service({
         url: urls.usage.loginState.url(),
         method: urls.usage.loginState.method,
@@ -47,9 +47,9 @@ export default {
   // 抢座状态
   grabState: (account, state, code, message = null) => {
     let usageRecordEnable = store.get('usageRecordEnable', true)
-    let githubUserInfo = store.get('authInfo_githubUserInfo', null)
-    let githubid = (githubUserInfo && githubUserInfo.id) ? githubUserInfo.id : null
-    if ((githubUserInfo && githubUserInfo.id) || usageRecordEnable) {
+    if (usageRecordEnable) {
+      let githubUserInfo = store.get('authInfo_githubUserInfo', null)
+      let githubid = (githubUserInfo && githubUserInfo.id) ? githubUserInfo.id : null
       service({
         url: urls.usage.grabState.url(),
         method: urls.usage.grabState.method,
