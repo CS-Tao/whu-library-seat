@@ -90,12 +90,10 @@ export default {
     console.log('Mock: ' + config.url)
     return {
       'status': 'success',
-      'code': '0',
-      'message': '',
-      'meta': {
-        'description': 'Data 为 normal 时才能使用桌面端'
-      },
-      'data': 'normal'
+      'code': 0,
+      'locked': true,
+      'message': '正在测试，停止使用',
+      'time': '禁用时间：一天'
     }
   }
 }

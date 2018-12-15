@@ -1,6 +1,7 @@
 import Store from 'electron-store'
 import { Message } from 'element-ui'
 import githubApi from '@/api/github.api'
+import gitcontentsApi from '@/api/gitcontents.api'
 
 const store = new Store({
   name: 'whu-library-seat'
@@ -14,7 +15,12 @@ const githubAuth = {
       githubUserInfo: store.get('authInfo_githubUserInfo', null),
       haveStaredRepo: store.get('authInfo_haveStaredRepo', false)
     },
-    formVisible: false
+    formVisible: false,
+    lockInfo: {
+      locked: false,
+      message: '本软件已不再提供使用权，感谢您的使用',
+      time: '禁用时间未定'
+    }
   },
   mutations: {
     TRIGGER_AUTH_FORM: (state, visible) => {
@@ -73,6 +79,11 @@ const githubAuth = {
         state.authInfo.useListForAuth = false
         store.set('authInfo_useListForAuth', false)
       }
+    },
+    SET_LOCK_INFO: (state, lockInfo) => {
+      state.lockInfo.locked = lockInfo.locked
+      state.lockInfo.message = lockInfo.message
+      state.lockInfo.time = lockInfo.time
     }
   },
   actions: {
@@ -160,6 +171,33 @@ const githubAuth = {
           duration: 3000,
           showClose: true
         })
+      })
+    },
+    checkIfLocked ({ state, commit }) {
+      return new Promise((resolve, reject) => {
+        gitcontentsApi.ban()
+          .then((response) => {
+            if (response.status === 200) {
+              if (response.data.locked) {
+                commit('SET_LOCK_INFO', {
+                  locked: true,
+                  message: response.data.message
+                    ? response.data.message
+                    : state.lockInfo.message,
+                  time: response.data.time
+                    ? response.data.time
+                    : state.lockInfo.time
+                })
+              }
+            } else {
+              console.error('CheckIfLocked Status Code', response.status)
+            }
+            resolve()
+          })
+          .catch((error) => {
+            console.error('CheckIfLocked Error', error.message)
+            resolve()
+          })
       })
     }
   }

@@ -37,6 +37,8 @@ const getters = {
   githubUserIconUrl: state => (state.githubAuth.authInfo.githubUserInfo &&
     state.githubAuth.authInfo.githubUserInfo.avatar_url)
     ? state.githubAuth.authInfo.githubUserInfo.avatar_url : null,
+  // lock info
+  lockInfo: state => state.githubAuth.lockInfo,
   // user info
   userAccount: state => state.app.userInfo.account,
   userPasswd: state => state.app.userInfo.passwd,
