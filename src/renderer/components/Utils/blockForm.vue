@@ -12,6 +12,11 @@
       <div class="time">
         {{time}}
       </div>
+        <el-button
+          class="primary-button"
+          @click="$openLink('https://gitter.im/whu-library-seat/Lobby')">
+          打开 Gitter 聊天室
+        </el-button>
     </div>
   </div>
 </template>
@@ -86,7 +91,6 @@ export default {
     }
     .message {
       cursor: default;
-      margin-top: 0px;
       font-size: $text-size-normal;
       font-weight: bold;
       color: $button-green;
@@ -94,10 +98,22 @@ export default {
     .time {
       cursor: default;
       margin-top: 10px;
-      margin-bottom: 35%;
       font-size: $text-size-normal;
       font-weight: bold;
-      color: $button-blue;
+      color: $button-red;
+    }
+    .primary-button {
+      color: $text-color;
+      background: $primary-button-background-blur!important;
+      border-color: $primary-color!important;
+      margin-top: 20px;
+      margin-bottom: 25%;
+      &:hover {
+        background: $primary-button-background-hover!important;
+      }
+      &:active {
+        background: $primary-button-background-click!important;
+      }
     }
   }
 }
