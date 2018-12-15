@@ -51,6 +51,11 @@ app.on('ready', () => {
     },
     { type: 'separator' },
     {
+      label: 'Chat on gitter',
+      click () { require('electron').shell.openExternal('https://gitter.im/whu-library-seat/Lobby') }
+    },
+    { type: 'separator' },
+    {
       label: '恢复所有设置',
       click () {
         store.clear()
@@ -135,6 +140,14 @@ const template = [
           mainWindow.hide()
           mainWindow.setSkipTaskbar(true)
         }
+      }
+    ]
+  }, {
+    label: '群聊',
+    submenu: [
+      {
+        label: 'Chat on gitter',
+        click () { require('electron').shell.openExternal('https://gitter.im/whu-library-seat/Lobby') }
       }
     ]
   }, {
