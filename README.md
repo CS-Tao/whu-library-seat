@@ -1,7 +1,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/qq2adqaxv6vfj7di/branch/master?svg=true)](https://ci.appveyor.com/project/CS-Tao/whu-library-seat/branch/master)
 [![Build Status](https://travis-ci.com/CS-Tao/whu-library-seat.svg?branch=master)](https://travis-ci.com/CS-Tao/whu-library-seat)
+[![Join the chat at https://gitter.im/whu-library-seat/Lobby](https://img.shields.io/badge/chat-on%20gitter-28BC99.svg)](https://gitter.im/whu-library-seat/Lobby)
 [![license](https://img.shields.io/badge/license-none-yellow.svg)](#版权声明)
-[![feedback](https://img.shields.io/badge/feedback-issues-blue.svg)](https://github.com/CS-Tao/whu-library-seat/issues/new)
 
 # whu-library-seat
 
