@@ -31,7 +31,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="位置" :inline="true" style="flex-col">
-          <el-select v-model="form.seatNum" placeholder="座位号"
+          <el-select v-model="form.seatNum" :placeholder="seatsForSelectIsAvailable?(seatsForSelectIsAvailable.length + ' 座可约'):'座位号'"
             :no-data-text="seatSelectNoDataMessage"
             class="num">
             <el-option v-for="n in seatsForSelect.length" :key="n-1" :label="seatsForSelect[n-1].name" :value="seatsForSelect[n-1].id">
