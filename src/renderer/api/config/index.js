@@ -9,7 +9,7 @@ const store = new Store({
 // create an axios instance
 const service = axios.create({
   baseURL: store.get('baseUrl', 'https://seat.lib.whu.edu.cn:8443'),
-  timeout: 5000,
+  timeout: 8000,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
   },
