@@ -2,6 +2,7 @@ import Mock from 'mockjs'
 import gitcontentsApi from './gitcontents.api'
 import usageApi from './usage.api'
 import libraryApi from './library.api'
+import githubApi from './github.api'
 import urls from '../urls'
 
 Mock.setup({
@@ -13,6 +14,18 @@ Mock.mock(urls.gitcontents.validateUser.regular, urls.gitcontents.validateUser.m
 
 // 公告
 Mock.mock(urls.gitcontents.announce.regular, urls.gitcontents.announce.method, gitcontentsApi.announce)
+
+// GitHub id 黑名单
+Mock.mock(urls.gitcontents.blacklist.regular, urls.gitcontents.blacklist.method, gitcontentsApi.blacklist)
+
+// 禁用软件
+Mock.mock(urls.gitcontents.ban.regular, urls.gitcontents.ban.method, gitcontentsApi.ban)
+
+// 得到 GitHub 用户信息
+Mock.mock(urls.githubApi.getUserInfo.regular, urls.githubApi.getUserInfo.method, githubApi.getUserInfo)
+
+// 检查是否点星
+Mock.mock(urls.githubApi.checkStared.regular, urls.githubApi.checkStared.method, githubApi.checkStared)
 
 // 登录状态
 Mock.mock(urls.usage.loginState.regular, urls.usage.loginState.method, usageApi.loginState)

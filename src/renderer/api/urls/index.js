@@ -15,6 +15,40 @@ const urls = {
       },
       regular: /\/user-validation\/announce.md/,
       method: 'get'
+    },
+    // GitHub id 黑名单
+    blacklist: {
+      url () {
+        return '/user-validation/github-blacklist.json'
+      },
+      regular: /\/user-validation\/github-blacklist.json/,
+      method: 'get'
+    },
+    // 禁用软件
+    ban: {
+      url () {
+        return '/user-validation/ban-desktop.json'
+      },
+      regular: /\/user-validation\/ban-desktop.json/,
+      method: 'get'
+    }
+  },
+  githubApi: {
+    // 得到 GitHub 用户信息
+    getUserInfo: {
+      url () {
+        return '/user'
+      },
+      regular: /api.github.com\/user/,
+      method: 'get'
+    },
+    // 检查是否点星
+    checkStared: {
+      url () {
+        return '/graphql'
+      },
+      regular: /api.github.com\/graphql/,
+      method: 'post'
     }
   },
   usage: {

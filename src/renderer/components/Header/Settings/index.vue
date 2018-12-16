@@ -69,7 +69,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'settingInfo'
+      'settingInfo',
+      'authInfo'
     ]),
     checkOpenPreGap () {
       return (this.settings.checkOpenPreMili * 1000) / 10
