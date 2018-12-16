@@ -52,3 +52,21 @@ next: false
 - 其他
 
   开发新功能(最终会策略合并到`develop`分支)、解决刚发布版本的 bug(最终会策略合并到`master`分支和`develop`分支)
+
+### GitHub OAuth 第三方登录中间件
+
+> 项目工程：[whu-library-seat-ghoauth](https://github.com/CS-Tao/whu-library-seat-ghoauth)，使用 Express + Socket-io 搭建
+
+#### 分支使用说明
+
+- master
+
+  主分支，每次提交都标记一个 tag，对应一个新版本
+
+- develop
+
+  开发分支，开发的新功能都汇总到本分支
+
+- 其他
+
+  开发新功能(最终会策略合并到`develop`分支)、解决刚发布版本的 bug(最终会策略合并到`master`分支和`develop`分支)

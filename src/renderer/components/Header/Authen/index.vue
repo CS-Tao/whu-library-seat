@@ -22,7 +22,7 @@
 		</div>
     <span v-if="socketFailMessage" class="socket-err-msg">{{socketFailMessage}}</span>
 		<div class="help-link-wrap">
-			<a class="help-link" href="javascript:void(0)" @click="$openLink('https://home.cs-tao.cc/whu-library-seat/specification/#申请软件使用权')">了解授权机制</a>
+			<a class="help-link" href="javascript:void(0)" @click="$openLink('https://home.cs-tao.cc/whu-library-seat/specification/#GitHub%20Star%20认证')">了解授权机制</a>
 		</div>
 		<el-dialog
 			title="通过 Github Star 授权"
