@@ -194,6 +194,8 @@ export default {
       this.$store.dispatch('saveSeatInfo', seatInfo)
     },
     libraryChanged () {
+      this.seats = []
+      this.roomsDetial = []
       if (this.form.library === null) { return }
       this.singleLibRooms = this.libraryInfo.rooms.filter((item) => {
         return item[2] === this.form.library
