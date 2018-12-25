@@ -45,6 +45,7 @@ module.exports = {
               title: '用户手册',
               children: [
                 ['', '下载安装'],
+                ['auth', '用户认证'],
                 ['menu', '菜单'],
                 ['settings', '软件设置'],
                 ['reservation', '定时预约'],

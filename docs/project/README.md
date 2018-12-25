@@ -55,7 +55,7 @@ next: false
 
 ### GitHub OAuth 第三方登录中间件
 
-> 项目工程：[whu-library-seat-ghoauth](https://github.com/CS-Tao/whu-library-seat-ghoauth)，使用 Express + Socket-io 搭建
+> 项目工程：[whu-library-seat-ghauth](https://github.com/CS-Tao/whu-library-seat-ghauth)，使用 Express + Socket-io 搭建
 
 #### 分支使用说明
 
