@@ -20,15 +20,49 @@
 
 ### 申请软件使用权
 
-::: warning
-不再对桌面版本低于 v1.5.0、安卓版本低于 v1.2.0 的软件提供用户认证支持
-:::
+> v1.8.0 已移除本功能，改为 GitHub Star 认证，具体请查看 [GitHub Star 认证](#GitHub%20Star%20认证)
 
-在您登录之前，软件会检查您的学号是否被记录在[这个文件](https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json)中，只有被记录在这个文件中的学号(经过加密)才能使用本软件，如果您的学号(经过加密)没有被记录，您可以通过邮件[联系我](http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=whucstao@qq.com)(请在邮件中注明学号、院系和姓名)
+### GitHub Star 认证
 
-当然，因为本软件为开源软件，您可以在遵守本软件[版权声明](https://github.com/CS-Tao/whu-library-seat/blob/master/README.md#版权声明)的前提下，自己构建软件并删除其中的认证代码，具体请查看[面向开发者](https://github.com/CS-Tao/whu-library-seat/blob/master/README.md#面向开发者)
+请按照以下步骤登录本软件并获取永久授权
+
+1. 点击软件下方的**钥匙**进入软件授权页面(第一次打开软件会默认进入本页面)
+
+    ![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/OAuth/1.png)
+
+1. 点击`GitHub Star 永久授权`按钮，软件会打开系统浏览器访问认证页面
+
+    ![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/OAuth/3.png)
+
+1. 点击`确定通过 GitHub 账号登录`，此时 GitHub 会让你确认是否授权(如果没有登录 GitHub，此时会进入登录页面)
+
+    ![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/OAuth/4.png)
+
+1. 点击`Authorize CS-Tao`即可成功登录
+
+    ![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/OAuth/5.png)
+
+1. 登录成功后返回软件，如果出现下面的弹窗，说明您还未对本仓库点星，请进行下一步
+
+    ![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/OAuth/5.1.png)
+
+1. 如果您还给本仓库点星，请到指定仓库点星以供管理员了解软件使用情况。桌面端进入：[whu-library-seat](https://github.com/CS-Tao/whu-library-seat)，移动端进入：[whu-library-seat-mobile](https://github.com/CS-Tao/whu-library-seat-mobile)
+
+    - 桌面端点击右上角的`Star`按钮
+
+        ![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/OAuth/5.2.png)
+
+    - 移动端需要登录才会显示`Star`按钮，登录状态下直接点击即可
+    
+        ![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/OAuth/5.3.png)
+
+1. 点星后回到本软件，点击确定即可
+
+    ![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/OAuth/6.png)
 
 ### 软件更新
+
+![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/update.png)
 
 - 桌面端
     软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮

@@ -1,6 +1,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/qq2adqaxv6vfj7di/branch/master?svg=true)](https://ci.appveyor.com/project/CS-Tao/whu-library-seat/branch/master)
 [![Build Status](https://travis-ci.com/CS-Tao/whu-library-seat.svg?branch=master)](https://travis-ci.com/CS-Tao/whu-library-seat)
-[![Join the chat at https://gitter.im/whu-library-seat/Lobby](https://img.shields.io/badge/chat-on%20gitter-28BC99.svg)](https://gitter.im/whu-library-seat/Lobby)
+[![Join the chat at https://gitter.im/whu-library-seat/Lobby](https://img.shields.io/badge/chat-on%20gitter-28BC99.svg)](https://gitter.im/whu-library-seat/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![license](https://img.shields.io/badge/license-none-yellow.svg)](#版权声明)
 
 # whu-library-seat
@@ -38,17 +38,17 @@
 
 ### 申请软件使用权
 
-> 不再对桌面版本低于 v1.5.0、安卓版本低于 v1.2.0 的软件提供用户认证支持
-
-在您登录之前，软件会检查您的学号是否被记录在[这个文件](https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json)中，只有被记录在这个文件中的学号(经过加密)才能使用本软件，如果您的学号(经过加密)没有被记录，您可以通过邮件[联系我](http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=whucstao@qq.com)(请在邮件中注明学号、院系和姓名)
+> v1.8.0 已移除本功能，改为 GitHub Star 认证，具体请查看 [GitHub Star 认证](https://home.cs-tao.cc/whu-library-seat/specification/#GitHub%20Star%20认证)
 
 当然，因为本软件为开源软件，您可以在遵守本软件[版权声明](#版权声明)的前提下，自己构建软件并删除其中的认证代码，具体请查看[面向开发者](#面向开发者)
 
 ### 软件更新
 
-软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮
+软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮，您可以点击菜单中的 `关于` -> `更新日志` 查看新版本的特性
 
-# 面向开发者
+![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/update.png)
+
+## 面向开发者
 
 您可以通过以下步骤自行构建本软件，但请您务必注意，本仓库并未提供任何源码`许可证`，您没有权利将源码更改后继续传播，更没有权利将本软件或源码用于商业活动
 

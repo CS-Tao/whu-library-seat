@@ -44,13 +44,12 @@
 
 ### 权限
 
-- 申请权限
+> v1.8.0 版本已移除本菜单
 
-    打开[申请软件使用权](https://home.cs-tao.cc/whu-library-seat/specification/#申请软件使用权)
+### 群聊
 
-- 查看用户白名单
-
-    打开[用户白名单](https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json)
+- Chat on gitter
+    在 gitter 上反馈、讨论关于本软件的问题。群聊链接：[https://gitter.im/whu-library-seat/Lobby](https://gitter.im/whu-library-seat/Lobby)
 
 ### 关于
 
