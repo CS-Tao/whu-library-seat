@@ -252,7 +252,7 @@
             if (!this.versionList.includes(item.version)) {
               this.versionList.push(item.version)
             }
-            if (item.mobile && !this.deviceList.includes(item.mobile)) {
+            if (!this.deviceList.includes(item.mobile)) {
               this.deviceList.push(item.mobile)
             }
             if (item.githubId && !this.githubIdList.includes(item.githubId)) {
