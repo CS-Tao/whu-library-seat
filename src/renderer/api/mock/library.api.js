@@ -1,7 +1,9 @@
+import Mock from 'mockjs'
+
 export default {
   Login: config => {
     console.log('Mock: ' + config.url)
-    return {'status': 'success', 'data': { 'token': 'test-token' }, 'code': '0', 'message': ''}
+    return {'status': 'success', 'data': { 'token': Mock.mock(/[A-Z\d]{18}/) }, 'code': '0', 'message': ''}
   },
   FreeFilters: config => {
     console.log('Mock: ' + config.url)

@@ -1,18 +1,20 @@
 <template>
-  <div class="main">
+  <div v-if="!lockInfo.locked" class="main">
     <main-header></main-header>
     <transition name="el-fade-in-linear">
       <main-body v-if="hasToken" :showMode="bodyMode"></main-body>
     </transition>
     <main-footer :bodyMode="bodyMode" @iconClicked="footerIconClicked($event)"></main-footer>
   </div>
+  <block-form v-else :message="lockInfo.message" :time="lockInfo.time"></block-form>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import MainHeader from '@/components/Header'
-import MainFooter from '@/components/Footer'
-import MainBody from '@/components/Body'
+import MainHeader from './Header'
+import MainFooter from './Footer'
+import MainBody from './Body'
+import BlockForm from './Utils/blockForm'
 
 export default {
   data () {
@@ -21,15 +23,21 @@ export default {
     }
   },
   components: {
-    MainHeader, MainBody, MainFooter
+    MainHeader,
+    MainBody,
+    MainFooter,
+    BlockForm
   },
   computed: {
     ...mapGetters([
       'hasToken',
-      'announceViewed'
+      'announceViewed',
+      'lockInfo'
     ])
   },
   mounted () {
+    this.$store.dispatch('checkIfLocked')
+    this.$store.dispatch('checkIfAuthed')
   },
   methods: {
     footerIconClicked (param) {

@@ -13,6 +13,13 @@ var service = axios.create({
   withCredentials: true
 })
 
+service.interceptors.response.use(
+  response => response,
+  error => {
+    console.trace('usage.api.js', error.message)
+    return null
+  })
+
 const appVersion = remote.app.getVersion()
 
 export default {
@@ -20,11 +27,14 @@ export default {
   loginState: (account, state, code, message = null) => {
     let usageRecordEnable = store.get('usageRecordEnable', true)
     if (usageRecordEnable) {
+      let githubUserInfo = store.get('authInfo_githubUserInfo', null)
+      let githubid = (githubUserInfo && githubUserInfo.id) ? githubUserInfo.id : null
       service({
         url: urls.usage.loginState.url(),
         method: urls.usage.loginState.method,
         data: {
           account,
+          githubid,
           state,
           code,
           message: message || '',
@@ -38,11 +48,14 @@ export default {
   grabState: (account, state, code, message = null) => {
     let usageRecordEnable = store.get('usageRecordEnable', true)
     if (usageRecordEnable) {
+      let githubUserInfo = store.get('authInfo_githubUserInfo', null)
+      let githubid = (githubUserInfo && githubUserInfo.id) ? githubUserInfo.id : null
       service({
         url: urls.usage.grabState.url(),
         method: urls.usage.grabState.method,
         data: {
           account,
+          githubid,
           state,
           code,
           message: message || '',

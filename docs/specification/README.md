@@ -20,15 +20,12 @@
 
 ### 申请软件使用权
 
-::: warning
-不再对桌面版本低于 v1.5.0、安卓版本低于 v1.2.0 的软件提供用户认证支持
-:::
+> v1.8.0 已移除本功能，改为 GitHub Star 认证，具体请查看 [GitHub Star 认证](./auth.html)
 
-在您登录之前，软件会检查您的学号是否被记录在[这个文件](https://github.com/CS-Tao/whu-library-seat/blob/user-validation/validation.json)中，只有被记录在这个文件中的学号(经过加密)才能使用本软件，如果您的学号(经过加密)没有被记录，您可以通过邮件[联系我](http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=whucstao@qq.com)(请在邮件中注明学号、院系和姓名)
-
-当然，因为本软件为开源软件，您可以在遵守本软件[版权声明](https://github.com/CS-Tao/whu-library-seat/blob/master/README.md#版权声明)的前提下，自己构建软件并删除其中的认证代码，具体请查看[面向开发者](https://github.com/CS-Tao/whu-library-seat/blob/master/README.md#面向开发者)
 
 ### 软件更新
+
+![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/update.png)
 
 - 桌面端
     软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮

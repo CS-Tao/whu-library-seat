@@ -209,7 +209,7 @@
     }
   }
   thead {
-    color: $text-color-middlelight!important;
+    color: $text-color-highlight!important;
     font-family: 'Times New Roman'!important;
     font-size: $text-size-large - 2;
   }
@@ -258,4 +258,21 @@
 }
 .el-loading-mask {
   background: transparent;
+}
+
+.el-dialog {
+  background: $bg-color-2;
+	box-shadow: 0 0px 14px black;
+  color: $text-color;
+  .el-dialog__header {
+    .el-dialog__title {
+      color: $text-color-middlelight;
+      cursor: default;
+    }
+  }
+  .el-dialog__body {
+    padding: 15px 25px;
+    color: $text-color;
+    cursor: default;
+  }
 }

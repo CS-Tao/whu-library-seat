@@ -79,16 +79,15 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
-$warp-width: 296px;
+$warp-width: 306px;
 $warp-height: 300px;
-$warp-padding: 20px;
+$warp-padding: 15px;
 .warp {
   width: $warp-width;
   height: $warp-height;
   margin: $layout-header-h ($layout-width - $warp-width)/2 - $warp-padding $layout-footer-h ($layout-width - $warp-width)/2 - $warp-padding;
   padding: $warp-padding;
-  border: 1px solid $text-color;
-  border-radius: 4px;
+  border: 1px solid $text-color-middlelight;
   .title {
     display: block;
     margin-left: (140 - $text-size-large * 2);

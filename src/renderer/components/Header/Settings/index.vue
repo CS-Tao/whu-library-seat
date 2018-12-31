@@ -18,13 +18,18 @@
       <el-form-item label="预约时间" class="form-item">
         <time-picker class="input" v-model="settings.oppointmentTime"></time-picker>
       </el-form-item>
-      <el-form-item label="预约明天座位前检测系统是否开放" label-width="224px" class="form-item" style="margin-top: 15px;text-align: center;">
+      <el-form-item label="预约明天座位前检测系统是否开放" label-width="auto" class="form-item" style="margin-top: 15px;text-align: center;">
         <el-switch v-model="settings.checkOpenEnable" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </el-form-item>
-      <el-form-item label="点击窗口的关闭按钮时退出到托盘" label-width="224px" class="form-item" style="margin-top: 10px;text-align: center;">
+      <el-form-item v-if="settings.checkOpenEnable" label-width="auto" class="form-item" style="margin-top: 15px;text-align: left;">
+        <label class="num-tip-text">提前</label>
+        <el-input-number class="num" v-model="settings.checkOpenPreMili" controls-position="right" :min="2" :max="10"></el-input-number>
+        <label class="num-tip-text">{{`秒开始检测，${checkOpenPreGap} 毫秒检测一次`}}</label>
+      </el-form-item>
+      <el-form-item label="点击窗口的关闭按钮时退出到托盘" label-width="auto" class="form-item" style="margin-top: 10px;text-align: center;">
         <el-switch v-model="settings.backgroundEnable" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </el-form-item>
-      <el-form-item label="提交软件使用数据帮助我改善软件" label-width="224px" class="form-item" style="margin-top: 10px;text-align: center;">
+      <el-form-item label="提交软件使用数据帮助我改善软件" label-width="auto" class="form-item" style="margin-top: 10px;text-align: center;">
         <el-switch v-model="settings.usageRecordEnable" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
       </el-form-item>
       <div class="form-item" style="text-align: center;">
@@ -53,6 +58,7 @@ export default {
         beginTime: null,
         endTime: null,
         checkOpenEnable: true,
+        checkOpenPreMili: 10,
         backgroundEnable: true,
         usageRecordEnable: true
       }
@@ -64,10 +70,15 @@ export default {
   computed: {
     ...mapGetters([
       'settingInfo'
-    ])
+    ]),
+    checkOpenPreGap () {
+      return (this.settings.checkOpenPreMili * 1000) / 10
+    }
   },
   mounted () {
-    this.settings = {...this.settingInfo}
+    var tempSettings = {...this.settingInfo}
+    tempSettings.checkOpenPreMili = tempSettings.checkOpenPreMili / 1000
+    this.settings = {...tempSettings}
   },
   methods: {
     saveSettings () {
@@ -75,7 +86,9 @@ export default {
       if (this.settings.baseUrl !== store.get('baseUrl', 'https://seat.lib.whu.edu.cn:8443')) {
         saveMessage = '保存成功，重启生效'
       }
-      this.$store.dispatch('saveSettings', this.settings)
+      var tempSettings = {...this.settings}
+      tempSettings.checkOpenPreMili = tempSettings.checkOpenPreMili * 1000
+      this.$store.dispatch('saveSettings', tempSettings)
       this.$message({
         type: 'success',
         duration: '800',
@@ -88,7 +101,9 @@ export default {
         restoreMessage = '已恢复默认设置，重启生效'
       }
       this.$store.dispatch('restoreSettings')
-      this.settings = {...this.settingInfo}
+      var tempSettings = {...this.settingInfo}
+      tempSettings.checkOpenPreMili = tempSettings.checkOpenPreMili / 1000
+      this.settings = {...tempSettings}
       this.$message({
         type: 'success',
         duration: '800',
@@ -112,6 +127,15 @@ export default {
   .input {
     width: 240px;
     margin: 0 5px;
+  }
+  .num {
+    width: 50px;
+  }
+  .num-tip-text {
+    color: #999999;
+    // padding: 0 1px;
+    vertical-align: middle;
+    cursor: default;
   }
   .save-button {
     margin: 16px 8px;

@@ -17,12 +17,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="场馆">
-          <el-select v-model="form.library" placeholder="请选择场馆" class="input" @change="libraryChanged()">
+          <el-select v-model="form.library" placeholder="请选择场馆" no-data-text="数据加载失败，请重新登录" class="input" @change="libraryChanged()">
             <el-option v-for="library in libraryInfo.buildings" :key="library[0]" :label="library[1]" :value="library[0]"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="房间">
-          <el-select v-model="form.room" placeholder="请选择房间" class="input" @change="roomChanged()">
+          <el-select v-model="form.room" placeholder="请选择房间" no-data-text="数据加载失败，请重新登录" class="input" @change="roomChanged()">
             <el-option v-for="room in singleLibRooms" :key="room[0]" :label="room[1]" :value="room[0]">
               <span class="room-option-name">{{ room[1] }}</span>
               <span class="room-option-floor">{{ room[3] }} F</span>
@@ -31,7 +31,9 @@
           </el-select>
         </el-form-item>
         <el-form-item label="位置" :inline="true" style="flex-col">
-          <el-select v-model="form.seatNum" placeholder="座位号" class="num">
+          <el-select v-model="form.seatNum" :placeholder="seatsForSelectIsAvailable?(seatsForSelectIsAvailable.length + ' 座可约'):'座位号'"
+            :no-data-text="seatSelectNoDataMessage"
+            class="num">
             <el-option v-for="n in seatsForSelect.length" :key="n-1" :label="seatsForSelect[n-1].name" :value="seatsForSelect[n-1].id">
               <span class="seat-option-left" :style="{color: getSeatColor(seatsForSelect[n-1].id)}">{{ seatsForSelect[n-1].name }}</span>
               <span class="seat-option-right">
@@ -54,7 +56,16 @@
     <announce-form v-if="hasToken&&showMode==='announce'"></announce-form>
     <user-form v-if="hasToken&&showMode==='userForm'"></user-form>
     <history-form v-if="hasToken&&showMode==='historyForm'"></history-form>
-    <timer-form v-if="hasToken&&checkReserveTime" v-model="reserveTime" :book-func="grabSeat" :check-open-and-book-func="checkLibraryIsOpen" :login-func="login" :loginAndBookFunc="loginAndReserveSeat" :is-today="form.date===freeDates[0]" @btnClick="oppointmentTimechecked($event)"></timer-form>
+    <timer-form
+      v-if="hasToken&&checkReserveTime"
+      v-model="reserveTime"
+      :book-func="grabSeat"
+      :check-open-and-book-func="checkLibraryIsOpen"
+      :login-func="login"
+      :loginAndBookFunc="loginAndReserveSeat"
+      :is-today="form.date===freeDates[0]"
+      @btnClick="oppointmentTimechecked($event)">
+    </timer-form>
 	</div>
 </template>
 
@@ -69,8 +80,6 @@ import usageApi from '@/api/usage.api'
 import { ipcRenderer } from 'electron'
 
 const emptyMessage = '数据加载失败'
-const maxOpenCheckCount = 20
-const openCheckInterval = 1000
 const maxGrabCount = 10
 const arbitraryGrabCount = 4
 
@@ -108,7 +117,9 @@ export default {
       openCheckCount: 0,
       openCheckMessaggeHandle: null,
       triedSeatIds: [],
-      stopGrab: false
+      stopGrab: false,
+      maxOpenCheckCount: 20, // 之前检测 10 次, 之后检测 10 次
+      checkOpenPreMili: 10000
     }
   },
   computed: {
@@ -139,6 +150,28 @@ export default {
     },
     isVip () {
       return this.userAccount === 2015302590039 || this.userAccount === 2017302590175
+    },
+    seatSelectNoDataMessage () {
+      var message = '无数据'
+      if (!this.seats.length || this.seats.length === 0) {
+        if (this.form.room === null) {
+          message = '无数据，请选择房间'
+        } else {
+          message = '数据加载失败，请重新选择房间'
+        }
+      } else if (this.form.battery || this.form.sun) {
+        message = `没有筛选到${(this.form.battery && this.form.sun)
+          ? '有电源且靠窗'
+          : this.form.battery
+            ? '有电源'
+            : '靠窗'}的位置`
+      } else {
+        message = '无数据'
+      }
+      return `  ${message}  `
+    },
+    openCheckInterval () {
+      return this.checkOpenPreMili / (this.maxOpenCheckCount / 2)
     }
   },
   watch: {
@@ -147,16 +180,13 @@ export default {
     }
   },
   mounted () {
+    this.checkOpenPreMili = this.settingInfo.checkOpenPreMili
     this.form = {...this.seatInfo}
     this.form.date = this.freeDates.length > 0 ? this.freeDates[0] : null
     this.form.date = this.freeDatesDefault
     if (this.seatInfo.library !== null) {
       this.form.library = this.seatInfo.library
       this.libraryChanged()
-      if (this.seatInfo.room !== null) {
-        this.form.room = this.seatInfo.room
-        this.roomChanged()
-      }
     }
   },
   methods: {
@@ -164,6 +194,8 @@ export default {
       this.$store.dispatch('saveSeatInfo', seatInfo)
     },
     libraryChanged () {
+      this.seats = []
+      this.roomsDetial = []
       if (this.form.library === null) { return }
       this.singleLibRooms = this.libraryInfo.rooms.filter((item) => {
         return item[2] === this.form.library
@@ -171,17 +203,23 @@ export default {
       this.singleLibRooms.sort((x, y) => {
         return parseInt(x[3]) - parseInt(y[3])
       })
+      this.form.room = null
+      this.form.seatNum = null
+      // 提取缓存
+      if (this.seatInfo.room !== null && this.seatInfo.library === this.form.library) {
+        this.form.room = this.seatInfo.room
+        this.roomChanged()
+      }
+      // 异步更新房间内可用座位数
       libraryRestApi.RoomStats(this.form.library, this.userToken).then((response) => {
         if (response.data.status === 'success') {
           this.roomsDetial = response.data.data
         }
       }).catch(() => {})
-      this.form.room = null
-      this.form.seatNum = null
     },
     roomChanged () {
-      if (this.form.room === null || this.form.date === null) { return }
       this.seats = []
+      if (this.form.room === null || this.form.date === null) { return }
       libraryRestApi.LayoutByDate(this.form.room, this.form.date, this.userToken).then((response) => {
         if (response.data.status === 'success') {
           for (var key in response.data.data.layout) {
@@ -197,7 +235,9 @@ export default {
           })
           this.filterSeats()
         }
-      }).catch(() => {})
+      }).catch(() => {
+        this.filterSeats()
+      })
     },
     chargerButtonClicked () {
       this.form.battery = !this.form.battery
@@ -209,7 +249,7 @@ export default {
     },
     filterSeats () {
       this.seatsForSelect = this.seats.filter((item) => {
-        return item.type !== 'empty' && (this.form.battery ? item.power : true) && (this.form.sun ? item.window : true)
+        return item.type === 'seat' && (this.form.battery ? item.power : true) && (this.form.sun ? item.window : true)
       })
       this.seatsForSelect.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
@@ -298,7 +338,7 @@ export default {
           type: 'info',
           duration: '0',
           showClose: true,
-          message: `正在 (提前) 检测是否可以预约明天的座位，最多检测 ${maxOpenCheckCount} 次，最长耗时 ${(openCheckInterval / 1000) * maxOpenCheckCount}s，请稍后...`
+          message: `正在 (提前) 检测是否可以预约明天的座位，最多检测 ${this.maxOpenCheckCount} 次，最长耗时 ${this.openCheckInterval * this.maxOpenCheckCount / 1000}s，请稍后...`
         })
         var checkOpenTimerId = setInterval(() => {
           this.openCheckCount += 1
@@ -318,7 +358,7 @@ export default {
             }
             return
           }
-          if (this.openCheckCount > maxOpenCheckCount) {
+          if (this.openCheckCount > this.maxOpenCheckCount) {
             this.openCheckCount = 0
             if (this.openCheckMessaggeHandle) {
               this.openCheckMessaggeHandle.close()
@@ -328,7 +368,7 @@ export default {
               window.clearTimeout(checkOpenTimerId)
             }
             this.$store.dispatch('updateTimer', 'fail')
-            let message = `已到达检测次数上限 (${maxOpenCheckCount})：当前不能预约明天的座位。如果是定时抢座，请确保您的系统时间和网络时间相差不会过大。`
+            let message = `已到达检测次数上限 (${this.maxOpenCheckCount})：当前不能预约明天的座位。如果是定时抢座，请确保您的系统时间和网络时间相差不会过大。`
             this.$message({
               type: 'error',
               duration: '0',
@@ -355,9 +395,28 @@ export default {
                   this.grabSeat()
                 }
               }
+            } else {
+              this.$store.dispatch('updateTimer', 'fail')
+              this.openCheckCount = 0
+              if (this.openCheckMessaggeHandle) {
+                this.openCheckMessaggeHandle.close()
+                this.openCheckMessaggeHandle = null
+              }
+              if (checkOpenTimerId) {
+                window.clearTimeout(checkOpenTimerId)
+              }
+              if (!haveStartedGrab) {
+                haveStartedGrab = true
+                this.$message({
+                  type: 'error',
+                  duration: '0',
+                  showClose: true,
+                  message: response.data.message ? response.data.message : emptyMessage
+                })
+              }
             }
           })
-        }, openCheckInterval)
+        }, this.openCheckInterval)
       } else {
         // 如果预约今天的，直接开始抢
         this.grabSeat()
@@ -487,7 +546,7 @@ export default {
         } else {
           if (response.data.code === 1 || response.data.code === '1') {
             // 位置不可用，如果未达抢座上限则继续抢
-            usageApi.grabState(this.userAccount, false, 12, `位置不可用，如果未达抢座上限则继续抢(${seatNum}:${this.grabCount}/${maxGrabCount})：${response.data.message}`)
+            // usageApi.grabState(this.userAccount, false, 12, `位置不可用，如果未达抢座上限则继续抢(${seatNum}:${this.grabCount}/${maxGrabCount})：${response.data.message}`)
             this.grabCount += 1
             var haveReservation = response.data.message.indexOf('已有') !== -1 &&
               response.data.message.indexOf('预约') !== -1 &&
@@ -525,7 +584,7 @@ export default {
               this.$store.dispatch('updateTimer', 'working')
               // 打印信息
               var seatInTheRoom = this.seatsSearched === null ? this.seats.filter((item) => {
-                return item.type !== 'empty'
+                return item.type === 'seat'
               }) : this.seatsSearched
               for (let index = 0; index < seatInTheRoom.length; index++) {
                 if (seatInTheRoom[index].id === newSeatId) {
@@ -587,13 +646,13 @@ export default {
         return -1
       }
       var seatInTheRoom = this.seatsSearched === null ? this.seats.filter((item) => {
-        return item.type !== 'empty'
+        return item.type === 'seat'
       }) : this.seatsSearched
       seatInTheRoom.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
       })
       var seatInTheRoomBetter = seatInTheRoom.filter((item) => {
-        return item.type !== 'empty' && (this.form.battery ? item.power : true) && (this.form.sun ? item.window : true)
+        return item.type === 'seat' && (this.form.battery ? item.power : true) && (this.form.sun ? item.window : true)
       })
       seatInTheRoomBetter.sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)

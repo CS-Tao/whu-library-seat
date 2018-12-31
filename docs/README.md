@@ -39,11 +39,21 @@ footer: Copyright © 2018 CS-Tao
 
   ![安卓版本二维码](https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android-qr.jpg)
 
+#### 用户认证
+
+请移步 [GitHub Star 认证](/specification/auth.html)
+
 #### 使用演示
 
 > 以桌面端为例，移动端相关操作与之一致
 
 ![软件演示](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/full.gif)
+
+#### Gitter 群聊
+
+[![Join the chat at https://gitter.im/whu-library-seat/Lobby](https://img.shields.io/badge/chat-on%20gitter-28BC99.svg)](https://gitter.im/whu-library-seat/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+---
 
 ::: warning Copyright © 2018 CS-Tao
 本软件开源，但没有向开发者提供任何源码`许可证`，作者本人保留源代码的所有权利，任何组织和个人不得将本软件或源码用于商业活动
