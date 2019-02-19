@@ -80,8 +80,8 @@ import usageApi from '@/api/usage.api'
 import { ipcRenderer } from 'electron'
 
 const emptyMessage = '数据加载失败'
-const maxGrabCount = 10
-const arbitraryGrabCount = 4
+const maxGrabCount = 8
+const arbitraryGrabCount = 3
 
 export default {
   props: {
