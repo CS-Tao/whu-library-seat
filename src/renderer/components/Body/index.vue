@@ -270,6 +270,13 @@ export default {
         message
       })
     },
+    showError (message) {
+      this.$message({
+        type: 'error',
+        duration: '3000',
+        message
+      })
+    },
     getRoomDetail (roomId) {
       for (let i = 0; i < this.roomsDetial.length; i++) {
         if (this.roomsDetial[i].roomId === roomId) {
@@ -489,10 +496,10 @@ export default {
                   } else {
                     usageApi.grabState(this.userAccount, false, 13, `取消当前预约失败：${response.data.message}`)
                   }
-                  this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
+                  this.reserveSeat(beginTime, endTime, seatNum, date, this.userToken)
                 }).catch((error) => {
                   usageApi.grabState(this.userAccount, false, 14, `取消当前预约出现异常：${error.message}`)
-                  this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
+                  this.reserveSeat(beginTime, endTime, seatNum, date, this.userToken)
                 })
               } else {
                 // 终止当前使用
@@ -506,28 +513,28 @@ export default {
                   } else {
                     usageApi.grabState(this.userAccount, false, 15, `终止当前使用失败：${response.data.message}`)
                   }
-                  this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
+                  this.reserveSeat(beginTime, endTime, seatNum, date, this.userToken)
                 }).catch((error) => {
                   usageApi.grabState(this.userAccount, false, 16, `终止当前使用异常：${error.message}`)
-                  this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
+                  this.reserveSeat(beginTime, endTime, seatNum, date, this.userToken)
                 })
               }
             } else {
               usageApi.grabState(this.userAccount, false, 17, '准备取消预约，但当前无预约或正在使用的座位')
-              this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
+              this.reserveSeat(beginTime, endTime, seatNum, date, this.userToken)
             }
           } else {
             usageApi.grabState(this.userAccount, false, 18, `获取预约历史失败：${response.data.message}`)
-            this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
+            this.reserveSeat(beginTime, endTime, seatNum, date, this.userToken)
           }
         }).catch((error) => {
           usageApi.grabState(this.userAccount, false, 19, `获取预约历史出现异常：${error.message}`)
-          this.reserveSeat(beginTime, endTime, seatNum, date, userToken)
+          this.reserveSeat(beginTime, endTime, seatNum, date, this.userToken)
         })
         return
       }
       if (!this.triedSeatIds.includes(seatNum)) { this.triedSeatIds.push(seatNum) }
-      libraryRestApi.Book(1, 2, beginTime, endTime, seatNum, date, userToken).then((response) => {
+      libraryRestApi.Book(1, 2, beginTime, endTime, seatNum, date, this.userAccount, this.userPasswd, this.updateToken, this.showError).then((response) => {
         if (response.data.status === 'success') {
           this.$store.dispatch('updateTimer', 'success')
           this.$notify({
@@ -601,9 +608,9 @@ export default {
                 this.sleep(120)
               }
               if (this.grabCount === arbitraryGrabCount) {
-                this.searchSeatsByTime(this.form.library, this.form.room, date, beginTime, endTime, userToken)
+                this.searchSeatsByTime(this.form.library, this.form.room, date, beginTime, endTime, this.userToken)
               }
-              this.reserveSeat(beginTime, endTime, newSeatId, date, userToken, cancelCurrentBool)
+              this.reserveSeat(beginTime, endTime, newSeatId, date, this.userToken, cancelCurrentBool)
             } else {
               // 外部终止抢座，即 this.stopGrab === true
             }
@@ -777,6 +784,9 @@ export default {
           break
       }
       return str
+    },
+    updateToken (token) {
+      this.$store.dispatch('setToken', token)
     },
     formatDate (date, options) {
       options = options || {}

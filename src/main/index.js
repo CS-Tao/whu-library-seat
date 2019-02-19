@@ -108,7 +108,8 @@ const template = [
           if (mainWindow) {
             mainWindow.reload()
           }
-        }}
+        }
+      }
     ]
   }, {
     label: '视图',
@@ -231,6 +232,7 @@ function createWindow () {
       details.requestHeaders['Accept-Language'] = null
       details.requestHeaders['Referer'] = null
       details.requestHeaders['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
+      details.requestHeaders['Origin'] = null
     }
     callback({ cancel: false, requestHeaders: details.requestHeaders }) // eslint-disable-line
   })
