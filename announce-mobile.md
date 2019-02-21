@@ -1,6 +1,6 @@
-### 公告 (2019-02-20 20.00)
+### 公告 (2019-02-21 23.20)
 
-<a target="_blank" href="https://github.com/CS-Tao/whu-library-seat-mobile/releases/tag/v1.6.1">移动端 v1.6.1 更新日志</a>
+<a target="_blank" href="https://github.com/CS-Tao/whu-library-seat-mobile/releases/tag/v1.6.2">移动端 v1.6.2 更新日志</a>
 
 <a target="_blank" href="https://github.com/CS-Tao/whu-library-seat/releases/tag/v1.8.1">桌面端 v1.8.1 更新日志</a>
 
