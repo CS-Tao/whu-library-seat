@@ -72,15 +72,43 @@ export default {
   },
   // 预约位置
   // t=1&startTime=1290&endTime=1350&seat=5728&date=2018-07-23&t2=2
-  Book: (t, t2, startTime, endTime, seat, date, token) => {
-    return request({
-      url: urls.library.Book.url(),
-      method: urls.library.Book.method,
-      headers: {
-        token
-      },
-      data: `t=${t}&startTime=${startTime}&endTime=${endTime}&seat=${seat}&date=${date}&t2=${t2}`
-    })
+  Book: async (t, t2, startTime, endTime, seat, date, account, passwd, updateToken, errorCallback) => {
+    try {
+      const responseData = await new Promise((resolve, reject) => {
+        request({
+          url: urls.library.Login.url(),
+          method: urls.library.Login.method,
+          params: {
+            username: account,
+            password: passwd
+          }
+        })
+          .then((response) => {
+            return resolve(response)
+          })
+          .catch((error) => {
+            return reject(error)
+          })
+      })
+      if (responseData.data.status === 'success' && responseData.data.data.token) {
+        updateToken(responseData.data.data.token)
+        return request({
+          url: urls.library.Book.url(),
+          method: urls.library.Book.method,
+          headers: {
+            token: responseData.data.data.token
+          },
+          data: `t=${t}&startTime=${startTime}&endTime=${endTime}&seat=${seat}&date=${date}&t2=${t2}`
+        })
+      } else {
+        const message = '网络拥堵，请重新预约'
+        errorCallback(message)
+        return Promise.reject(Error(message))
+      }
+    } catch (error) {
+      errorCallback(error.message)
+      return Promise.reject(error)
+    }
   },
   // 取消预约
   Cancel: (id, token) => {
