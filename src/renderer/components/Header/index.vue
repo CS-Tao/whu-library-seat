@@ -134,6 +134,13 @@ export default {
       return this.userInfo.account === 2017302590175
     }
   },
+  watch: {
+    authFormVisible () {
+      if (this.authFormVisible) {
+        this.settingsVisible = false
+      }
+    }
+  },
   mounted () {
     this.userInfo.account = this.userAccount
     this.userInfo.passwd = this.userPasswd
@@ -147,6 +154,9 @@ export default {
   methods: {
     openSettings () {
       this.settingsVisible = !this.settingsVisible
+      if (this.settingsVisible) {
+        this.$store.commit('TRIGGER_AUTH_FORM', false)
+      }
     },
     showInfo (message) {
       this.$message({
