@@ -10,6 +10,7 @@ var loginState = require('./routes/loginState');
 var grabState = require('./routes/grabState');
 var staticsData = require('./routes/staticsData');
 var yearData = require('./routes/yearData');
+var yearDataAll = require('./routes/yearDataAll');
 var dayData = require('./routes/dayData');
 var deviceData = require('./routes/deviceData');
 
@@ -31,6 +32,7 @@ app.use('/loginState', loginState);
 app.use('/grabState', grabState);
 app.use('/staticsdata', staticsData);
 app.use('/yeardata', yearData);
+app.use('/yeardataall', yearDataAll);
 app.use('/dayData', dayData);
 app.use('/deviceData', deviceData);
 

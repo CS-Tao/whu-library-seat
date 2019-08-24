@@ -116,6 +116,10 @@
         <div id="heatmap"></div>
         <button v-if="heatmap" class="export-btn" @click="heatmap.export()">Export</button>
       </div>
+      <div :class="heatmapAll?'chart-wrapper':null">
+        <div id="heatmap-all"></div>
+        <button v-if="heatmapAll" class="export-btn" @click="heatmapAll.export()">Export</button>
+      </div>
       <div :class="hourline?'chart-wrapper':null">
         <div id="hourline"></div>
         <button v-if="hourline" class="export-btn" @click="hourline.export()">Export</button>
@@ -209,6 +213,7 @@
       el: '#app',
       data: {
         heatmap: null,
+        heatmapAll: null,
         hourline: null,
         deviceline: null,
         tableData: [],
@@ -278,6 +283,24 @@
             // Set of five incremental colors,
             // preferably with a low-saturation color for zero data;
             // def: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127']
+          });
+        }).catch((error) => {
+          console.log(error)
+        });
+        axios.get('/yeardataall').then((response) => {
+          let now = new Date()
+          this.heatmapAll = new frappe.Chart("#heatmap-all", {
+            type: 'heatmap',
+            title: "Usages in last year",
+            data: {
+              dataPoints: response.data,
+              start: new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
+              end: now
+            },
+            countLabel: '',
+            discreteDomains: 0,
+            colors: ['#ebedf0', '#c0ddf9', '#73b3f3', '#3886e1', '#17459e'],
+            def: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127']
           });
         }).catch((error) => {
           console.log(error)
