@@ -4,7 +4,7 @@
       <span style="cursor: default!important;">&nbsp;&nbsp;</span>
       <el-button v-if="updateAvailable" type="primary" class="el-icon-download update-button" @click.stop="downloadUpdate()">&nbsp;最新版本(v{{newVersion}})</el-button>
       <el-button v-if="updateDownloaded" type="primary" class="el-icon-refresh update-button" @click.stop="quitAndUpdate()">&nbsp;重启更新</el-button>
-      <span class="text">{{!updateDownloaded&&!updateAvailable?'© 2018 CS-Tao':''}}</span>
+      <span class="text">{{!updateDownloaded&&!updateAvailable?`© ${new Date().getFullYear()} CS-Tao`:''}}</span>
       <i v-show="!hasToken&&!authFormVisible&&githubUserIconUrl!==null" class="github-icon-warper" style="margin-right: 1.5vw;" @click.stop="githubIconClicked()">
         <img class="github-icon" :src="githubUserIconUrl"/>
       </i>
