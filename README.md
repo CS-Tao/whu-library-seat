@@ -24,16 +24,16 @@
 ### 最新版本下载
 
 - Windows
-    - 链接: [whu-library-seat-setup-1.8.1.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.1/whu-library-seat-setup-1.8.1.exe)
-    - 备用地址: [whu-library-seat-setup-1.8.1.exe](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.1/whu-library-seat-setup-1.8.1.exe)
+    - 链接: [whu-library-seat-setup-1.8.2.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.2/whu-library-seat-setup-1.8.2.exe)
+    - 备用地址: [whu-library-seat-setup-1.8.2.exe](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.2/whu-library-seat-setup-1.8.2.exe)
 
 - Mac OS
-    - 链接: [whu-library-seat-1.8.1.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.1/whu-library-seat-1.8.1.dmg)
-    - 备用地址: [whu-library-seat-1.8.1.dmg](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.1/whu-library-seat-1.8.1.dmg)
+    - 链接: [whu-library-seat-1.8.2.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.2/whu-library-seat-1.8.2.dmg)
+    - 备用地址: [whu-library-seat-1.8.2.dmg](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.2/whu-library-seat-1.8.2.dmg)
 
 - Linux
-    - 链接: [whu-library-seat-1.8.1-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.1/whu-library-seat-1.8.1-x86_64.AppImage)
-    - 备用地址: [whu-library-seat-1.8.1-x86_64.AppImage](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.1/whu-library-seat-1.8.1-x86_64.AppImage)
+    - 链接: [whu-library-seat-1.8.2-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.2/whu-library-seat-1.8.2-x86_64.AppImage)
+    - 备用地址: [whu-library-seat-1.8.2-x86_64.AppImage](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.2/whu-library-seat-1.8.2-x86_64.AppImage)
 
 ### 安装软件
 
