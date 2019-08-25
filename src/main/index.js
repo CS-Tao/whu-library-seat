@@ -244,7 +244,7 @@ function createWindow () {
   }
 
   mainWindow.on('close', (e) => {
-    let background = store.get('backgroundEnable', false)
+    let background = store.get('backgroundEnable', true)
     if (background) {
       e.preventDefault()
       if (mainWindow) {
