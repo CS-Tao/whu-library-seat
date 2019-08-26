@@ -244,7 +244,7 @@ function createWindow () {
   }
 
   mainWindow.on('close', (e) => {
-    let background = store.get('backgroundEnable', false)
+    let background = store.get('backgroundEnable', true)
     if (background) {
       e.preventDefault()
       if (mainWindow) {
@@ -345,6 +345,11 @@ ipcMain.on('quit-and-install', (event, arg) => {
     }
     autoUpdater.quitAndInstall()
   }
+})
+
+autoUpdater.on('download-progress', (progress) => {
+  // 更新下载进度
+  mainWindow.webContents.send('download-progress', progress)
 })
 
 autoUpdater.on('update-downloaded', () => {

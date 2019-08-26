@@ -1,6 +1,6 @@
 {
   "name": "whu-library-seat",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "author": "CS-Tao <whucstao@qq.com>",
   "description": "武汉大学图书馆抢座软件",
   "license": null,
@@ -133,7 +133,7 @@
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.4.2",
     "webpack": "^3.5.2",
-    "webpack-dev-server": "^3.1.11",
+    "webpack-dev-server": "^2.7.1",
     "webpack-hot-middleware": "^2.18.2",
     "webpack-merge": "^4.1.0"
   }

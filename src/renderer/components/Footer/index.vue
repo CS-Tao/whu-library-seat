@@ -4,7 +4,11 @@
       <span style="cursor: default!important;">&nbsp;&nbsp;</span>
       <el-button v-if="updateAvailable" type="primary" class="el-icon-download update-button" @click.stop="downloadUpdate()">&nbsp;最新版本(v{{newVersion}})</el-button>
       <el-button v-if="updateDownloaded" type="primary" class="el-icon-refresh update-button" @click.stop="quitAndUpdate()">&nbsp;重启更新</el-button>
-      <span class="text">{{!updateDownloaded&&!updateAvailable?'© 2018 CS-Tao':''}}</span>
+      <div v-if="updateDownloadInfo" class="progress-wraper" @click.stop="showProgressInfo()">
+        <el-progress :text-inside="true" :stroke-width="26" color="rgba(0, 204, 0, 0.5)" :percentage="parseFloat(updateDownloadInfo.percent.toFixed(1))"></el-progress>
+        <span>&nbsp;&nbsp;{{`${this.getByteFormat(this.updateDownloadInfo.bytesPerSecond)}/s`}}</span>
+      </div>
+      <span class="text">{{!updateDownloaded&&!updateAvailable&&!updateDownloadInfo?`© ${new Date().getFullYear()} CS-Tao`:''}}</span>
       <i v-show="!hasToken&&!authFormVisible&&githubUserIconUrl!==null" class="github-icon-warper" style="margin-right: 1.5vw;" @click.stop="githubIconClicked()">
         <img class="github-icon" :src="githubUserIconUrl"/>
       </i>
@@ -69,6 +73,8 @@ export default {
     return {
       // 最新版本
       newVersion: null,
+      // 下载进度信息
+      updateDownloadInfo: null,
       // 更新下载完毕
       updateDownloaded: false,
       notifyUpdateInfo: false
@@ -126,13 +132,19 @@ export default {
         }
       }
     })
+    // 更新下载进度
+    ipcRenderer.on('download-progress', (event, progress) => {
+      this.updateDownloadInfo = progress
+    })
     // 更新下载完毕
     ipcRenderer.on('update-downloaded', () => {
       this.updateDownloaded = true
+      this.updateDownloadInfo = null
       ipcRenderer.send('show-window-notify', '更新下载完毕', '请重启更新')
     })
     // 检查更新出现错误
     ipcRenderer.on('check-update-error', (event, error) => {
+      this.updateDownloadInfo = null
       if (this.notifyUpdateInfo) {
         this.$message({
           type: 'info',
@@ -147,6 +159,7 @@ export default {
     ipcRenderer.on('check-update-menu-clicked', () => {
       this.notifyUpdateInfo = true
       this.newVersion = null
+      this.updateDownloadInfo = null
       this.updateDownloaded = false
       this.$message({
         type: 'info',
@@ -219,14 +232,39 @@ export default {
         dangerouslyUseHTMLString: true,
         message: '<p style="line-height:20px;">' + message + '</p>'
       })
+      this.updateDownloadInfo = {
+        bytesPerSecond: 0,
+        delta: 0,
+        percent: 0,
+        total: 0,
+        transferred: 0
+      }
     },
     quitAndUpdate () {
       this.updateDownloaded = false
       ipcRenderer.send('quit-and-install')
       ipcRenderer.send('exit-app', 0)
     },
+    showProgressInfo () {
+      this.$message({
+        type: 'info',
+        duration: '4000',
+        showClose: true,
+        dangerouslyUseHTMLString: true,
+        message: '<p style="line-height:20px;">' +
+        `下载速度 ${this.getByteFormat(this.updateDownloadInfo.bytesPerSecond)}/s<br/>共 ${this.getByteFormat(this.updateDownloadInfo.total)}，已下载 ${this.getByteFormat(this.updateDownloadInfo.transferred)}` +
+        '</p>'
+      })
+    },
     exitApp () {
       ipcRenderer.sendSync('exit-app', 0)
+    },
+    getByteFormat (byte) {
+      return byte < 1024
+        ? `${byte}b`
+        : (byte < 1048576
+          ? `${(byte / 1024).toFixed(1)}k`
+          : `${(byte / 1048576).toFixed(1)}M`)
     }
   }
 }
@@ -293,6 +331,13 @@ export default {
     &:active {
       background: $ok-button-background-click!important;
     }
+  }
+  .progress-wraper {
+    margin: auto;
+    display: inline-flex;
+    color: $text-color;
+    align-items: center;
+    cursor: pointer;
   }
   .text {
     color: $second-color;
