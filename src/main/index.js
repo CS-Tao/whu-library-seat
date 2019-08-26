@@ -347,6 +347,11 @@ ipcMain.on('quit-and-install', (event, arg) => {
   }
 })
 
+autoUpdater.on('download-progress', (progress) => {
+  // 更新下载进度
+  mainWindow.webContents.send('download-progress', progress)
+})
+
 autoUpdater.on('update-downloaded', () => {
   // 更新下载完毕
   mainWindow.webContents.send('update-downloaded')

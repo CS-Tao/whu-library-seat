@@ -276,3 +276,23 @@
     cursor: default;
   }
 }
+
+.el-progress {
+  margin: auto;
+  .el-progress-bar {
+    width: 91px;
+    cursor: pointer !important;
+    .el-progress-bar__inner {
+      border-radius: 3px;
+    }
+    .el-progress-bar__outer {
+      border-radius: 3px;
+      box-sizing: border-box;
+      height: 25px !important;
+      font-size: $text-size-small + 2;
+      color: $text-color-highlight;
+      background: $ok-button-background-blur!important;
+      border: 1px solid $button-green!important;
+    }
+  }
+}
