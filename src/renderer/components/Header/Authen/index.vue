@@ -232,6 +232,7 @@ export default {
     },
     loginGitHubCallback (token) {
       this.workMode = workFlowModes.logined
+      this.socketFailMessage = null
       this.$store.dispatch('saveAuthToken', token)
         .then((token) => {
           return this.checkIfStared(token)
