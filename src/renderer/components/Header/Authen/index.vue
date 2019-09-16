@@ -26,7 +26,7 @@
 		</div>
 		<el-dialog
 			title="GitHub Token"
-			:visible.sync="socketFailMessage"
+			:visible.sync="showManualTokenDialog"
       :modal-append-to-body="false"
       :close-on-press-escape="false"
       :show-close="false"
@@ -120,6 +120,9 @@ export default {
         default:
           return 'GitHub star 永久授权'
       }
+    },
+    showManualTokenDialog () {
+      return this.socketFailMessage !== null
     }
   },
   mounted () {
