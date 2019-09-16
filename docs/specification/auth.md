@@ -1,6 +1,6 @@
 # GitHub Star 认证
 
-> 无法连接服务器请移步[手动申请 Token](manualtoekn.html)
+> 无法连接服务器请移步[手动申请 Token](manualtoken.html)
 
 请按照以下步骤登录本软件并获取永久授权
 
@@ -8,7 +8,7 @@
 
     ![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/OAuth/1.png)
 
-1. 点击`GitHub Star 永久授权`按钮，软件会打开系统浏览器访问认证页面
+1. 点击`GitHub Star 永久授权`按钮，软件会打开系统浏览器访问认证页面，如果出现无法连接服务器的弹窗，请移步[手动申请 Token](manualtoken.html)进行认证
 
     ![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/OAuth/3.png)
 
