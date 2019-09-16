@@ -46,6 +46,7 @@ module.exports = {
               children: [
                 ['', '下载安装'],
                 ['auth', '用户认证'],
+                ['manualtoken', '手动申请 Token'],
                 ['menu', '菜单'],
                 ['settings', '软件设置'],
                 ['reservation', '定时预约'],
