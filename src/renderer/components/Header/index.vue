@@ -184,6 +184,9 @@ export default {
       })
     },
     lockAccount () {
+      if (!this.userInfo.account) {
+        return
+      }
       this.accountLocked = !this.accountLocked
       if (this.accountLocked) {
         this.$store.dispatch('saveAccount', this.userInfo.account)
@@ -201,6 +204,9 @@ export default {
       }
     },
     lockPasswd () {
+      if (!this.userInfo.passwd) {
+        return
+      }
       this.passwdLocked = !this.passwdLocked
       if (this.passwdLocked) {
         this.$store.dispatch('savePasswd', this.userInfo.passwd)

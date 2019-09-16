@@ -22,8 +22,29 @@
 		</div>
     <span v-if="socketFailMessage" class="socket-err-msg">{{socketFailMessage}}</span>
 		<div class="help-link-wrap">
-			<a class="help-link" href="javascript:void(0)" @click="$openLink('https://home.cs-tao.cc/whu-library-seat/specification/auth.html')">了解授权机制</a>
+			<a class="help-link" href="javascript:void(0)" @click="$openLink('https://home.cs-tao.cc/whu-library-seat/specification/auth.html')">了解授权方法</a>
 		</div>
+		<el-dialog
+			title="GitHub Token"
+			:visible.sync="showManualTokenDialog"
+      :modal-append-to-body="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+      :close-on-click-modal="false"
+			width="70%"
+      top="30%"
+			center>
+			<span>无法连接服务器，请您在 GitHub 的</span>
+			<a class="help-link" href="javascript:void(0)" @click="$openLink('https://github.com/settings/tokens/new')">Developer settings 页面</a>
+			<span>手动申请 token 后粘贴到下方，以继续获取本软件授权</span>
+      <br/>
+			<span class="tip">Tip: 进入上方链接，输入任意 Note，生成并复制 token 即可，无需任何 Scope</span>
+      <el-input v-model="inputToken" placeholder="Ctrl + V  to paste your token" style="margin-top: 8px;"/>
+      <span slot="footer" class="dialog-footer">
+				<el-button class="comfirm-button" @click="onComfirmInputTokenDialogYes()">确 定</el-button>
+				<el-button class="cancel-button" @click="onComfirmInputTokenDialogNo()">取 消</el-button>
+			</span>
+		</el-dialog>
 		<el-dialog
 			title="通过 Github Star 授权"
 			:visible.sync="comfirmDialogVisible"
@@ -40,8 +61,8 @@
       </i>
 			<span>{{'&nbsp;图标进入本软件的 GitHub 地址，点星后回到本软件，点击确定按钮即可完成授权'}}</span>
 			<span slot="footer" class="dialog-footer">
-				<el-button class="comfirm-button" @click="onComfirmDialogYes()">确 定</el-button>
-				<el-button class="cancel-button" @click="onComfirmDialogNo()">取 消</el-button>
+				<el-button class="comfirm-button" @click="onComfirmStarDialogYes()">确 定</el-button>
+				<el-button class="cancel-button" @click="onComfirmStarDialogNo()">取 消</el-button>
 			</span>
 		</el-dialog>
 	</div>
@@ -68,7 +89,8 @@ export default {
       workMode: workFlowModes.none,
       comfirmDialogVisible: false,
       socket: null,
-      socketFailMessage: null
+      socketFailMessage: null,
+      inputToken: null
     }
   },
   computed: {
@@ -98,6 +120,9 @@ export default {
         default:
           return 'GitHub star 永久授权'
       }
+    },
+    showManualTokenDialog () {
+      return this.socketFailMessage !== null
     }
   },
   mounted () {
@@ -175,7 +200,7 @@ export default {
       })
       this.socket.on('token', (token) => {
         this.disconnectSocket()
-        this.loginGitHubCallback((token))
+        this.loginGitHubCallback(token)
       })
       this.socket.on('cancel', (socketId) => {
         this.$message({
@@ -195,6 +220,7 @@ export default {
     },
     cancelAuthen () {
       this.comfirmDialogVisible = false
+      this.socketFailMessage = null
       this.workMode = workFlowModes.none
       this.$store.commit('RESTORE_AUTH')
     },
@@ -206,6 +232,7 @@ export default {
     },
     loginGitHubCallback (token) {
       this.workMode = workFlowModes.logined
+      this.socketFailMessage = null
       this.$store.dispatch('saveAuthToken', token)
         .then((token) => {
           return this.checkIfStared(token)
@@ -235,7 +262,7 @@ export default {
       this.workMode = workFlowModes.staring
       return this.$store.dispatch('checkIfStared', {token, cursor: null})
     },
-    onComfirmDialogYes () {
+    onComfirmStarDialogYes () {
       this.comfirmDialogVisible = false
       if (this.authInfo.githubAuthToken) {
         this.checkIfStared(this.authInfo.githubAuthToken)
@@ -268,13 +295,28 @@ export default {
         })
       }
     },
-    onComfirmDialogNo () {
+    onComfirmStarDialogNo () {
       this.$message({
         type: 'warning',
         duration: '2000',
         showClose: true,
         message: '取消授权'
       })
+      this.cancelAuthen()
+    },
+    onComfirmInputTokenDialogYes () {
+      if (this.inputToken && this.inputToken.length === 40) {
+        this.loginGitHubCallback(this.inputToken)
+      } else {
+        this.$message({
+          type: 'warning',
+          duration: '2000',
+          showClose: true,
+          message: '请正确输入 Token'
+        })
+      }
+    },
+    onComfirmInputTokenDialogNo () {
       this.cancelAuthen()
     }
   }
@@ -373,6 +415,11 @@ export default {
 			color: $button-green;
 		}
 	}
+  .tip {
+    font-style: italic;
+    font-size: $text-size-small + 1;
+    color: $button-yellow;
+  }
 }
 .comfirm-button {
   margin: 0 8px;
