@@ -2,7 +2,7 @@
 
 启动程序，在未登录的状态下，点击软件右上角的设置按钮即可进入设置界面
 
-![settings.png](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/settings.png)
+![settings.png](https://home.cs-tao.cc/github-content/contents/github/whu-library-seat/settings.png)
 
 ### 配置设置项
 

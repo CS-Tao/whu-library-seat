@@ -17,23 +17,23 @@
 
 ### 软件演示
 
-![软件演示](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/full.gif)
+![软件演示](https://home.cs-tao.cc/github-content/contents/github/whu-library-seat/full.gif)
 
 ## 下载和安装
 
 ### 最新版本下载
 
 - Windows
-    - 链接: [whu-library-seat-setup-1.8.3.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.3/whu-library-seat-setup-1.8.3.exe)
-    - 备用地址: [whu-library-seat-setup-1.8.3.exe](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.3/whu-library-seat-setup-1.8.3.exe)
+    - 链接: [whu-library-seat-setup-1.8.4.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.4/whu-library-seat-setup-1.8.4.exe)
+    - 备用地址: [whu-library-seat-setup-1.8.4.exe](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.4/whu-library-seat-setup-1.8.4.exe)
 
 - Mac OS
-    - 链接: [whu-library-seat-1.8.3.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.3/whu-library-seat-1.8.3.dmg)
-    - 备用地址: [whu-library-seat-1.8.3.dmg](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.3/whu-library-seat-1.8.3.dmg)
+    - 链接: [whu-library-seat-1.8.4.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.4/whu-library-seat-1.8.4.dmg)
+    - 备用地址: [whu-library-seat-1.8.4.dmg](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.4/whu-library-seat-1.8.4.dmg)
 
 - Linux
-    - 链接: [whu-library-seat-1.8.3-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.3/whu-library-seat-1.8.3-x86_64.AppImage)
-    - 备用地址: [whu-library-seat-1.8.3-x86_64.AppImage](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.3/whu-library-seat-1.8.3-x86_64.AppImage)
+    - 链接: [whu-library-seat-1.8.4-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.8.4/whu-library-seat-1.8.4-x86_64.AppImage)
+    - 备用地址: [whu-library-seat-1.8.4-x86_64.AppImage](https://assets.cs-tao.cc/whu-library-seat/releases/v1.8.4/whu-library-seat-1.8.4-x86_64.AppImage)
 
 ### 安装软件
 
@@ -49,7 +49,7 @@
 
 软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮，您可以点击菜单中的 `关于` -> `更新日志` 查看新版本的特性
 
-![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/update.png)
+![图片加载失败](https://home.cs-tao.cc/github-content/contents/github/whu-library-seat/update.png)
 
 ## 面向开发者
 

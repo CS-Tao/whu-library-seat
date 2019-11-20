@@ -25,7 +25,7 @@
 
 ### 软件更新
 
-![图片加载失败](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/update.png)
+![图片加载失败](https://home.cs-tao.cc/github-content/contents/github/whu-library-seat/update.png)
 
 - 桌面端
     软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮

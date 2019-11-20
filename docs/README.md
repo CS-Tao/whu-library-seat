@@ -47,7 +47,7 @@ footer: Copyright © 2018 CS-Tao
 
 > 以桌面端为例，移动端相关操作与之一致
 
-![软件演示](https://raw.githubusercontent.com/CS-Tao/github-content/master/contents/github/whu-library-seat/full.gif)
+![软件演示](https://home.cs-tao.cc/github-content/contents/github/whu-library-seat/full.gif)
 
 #### Gitter 群聊
 

@@ -2,7 +2,7 @@ import axios from 'axios'
 import urls from './urls'
 
 var service = axios.create({
-  baseURL: 'https://raw.githubusercontent.com/CS-Tao/whu-library-seat',
+  baseURL: 'http://home.cs-tao.cc/github-content/contents/github/whu-library-seat',
   timeout: 8000,
   withCredentials: true
 })
