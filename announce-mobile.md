@@ -1,8 +1,8 @@
 ### 公告 (2019-08-25 18.00)
 
-<a target="_blank" href="https://github.com/CS-Tao/whu-library-seat-mobile/releases/tag/v1.6.5">移动端 v1.6.5 更新日志</a>
+<a target="_blank" href="https://github.com/CS-Tao/whu-library-seat-mobile/releases/tag/v1.6.6">移动端 v1.6.6 更新日志</a>
 
-<a target="_blank" href="https://github.com/CS-Tao/whu-library-seat/releases/tag/v1.8.3">桌面端 v1.8.3 更新日志</a>
+<a target="_blank" href="https://github.com/CS-Tao/whu-library-seat/releases/tag/v1.8.4">桌面端 v1.8.4 更新日志</a>
 
 #### 功能说明
 
@@ -36,7 +36,7 @@
 
 #### 扫一扫即可安装
 
-<p align="center"><img alt="软件二维码.jpg" src="https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android.png" width="70%" height="70%"></p>
+<p align="center"><img alt="软件二维码.jpg" src="http://home.cs-tao.cc/github-content/contents/github/whu-library-seat/user-validation/last-android.png" width="70%" height="70%"></p>
 
 #### 欢迎打赏，金额随意~
 

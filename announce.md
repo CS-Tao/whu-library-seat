@@ -22,7 +22,7 @@
 
 #### 关于本软件
 
-- 本软件的最新版本是 v1.8.3，点击菜单: `关于 > 更新日志`可以查看。移动端最新版为 v1.6.5
+- 本软件的最新版本是 v1.8.4，点击菜单: `关于 > 更新日志`可以查看。移动端最新版为 v1.6.6
 
 - 短时间内向图书馆后台发送大量请求会被图书馆暂时性封号(30min)，请节制使用本软件
 
@@ -34,7 +34,7 @@
 
 #### 手机扫一扫下载安卓版
 
-<p align="center"><img alt="安卓版本二维码.jpg" src="https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android.png" width="80%" height="80%"></p>
+<p align="center"><img alt="安卓版本二维码.jpg" src="http://home.cs-tao.cc/github-content/contents/github/whu-library-seat/user-validation/last-android.png" width="80%" height="80%"></p>
 
 #### 欢迎打赏，金额随意~
 
