@@ -207,6 +207,7 @@ var monitor = {
         showClose: true,
         message: '到达监控时长，未检测到可用座位，已停止监控器'
       })
+      this.windowsNotification('已停止监控器', '到达监控时长，未检测到可用座位')
       this.stopMonitor()
     },
     monitorSuccessCB (seatIds) {
