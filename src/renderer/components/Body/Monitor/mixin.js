@@ -201,7 +201,13 @@ var monitor = {
       if (this.stopMonitorFlag) {
         return
       }
-      this.resetMonitor()
+      this.$message({
+        type: 'info',
+        duration: '0',
+        showClose: true,
+        message: '到达监控时长，未检测到可用座位，已停止监控器'
+      })
+      this.stopMonitor()
     },
     monitorSuccessCB (seatIds) {
       // seatIds 和 this.seatsForSelectIsAvailable 相同
