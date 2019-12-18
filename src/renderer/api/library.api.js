@@ -91,7 +91,9 @@ export default {
           })
       })
       if (responseData.data.status === 'success' && responseData.data.data.token) {
-        updateToken(responseData.data.data.token)
+        if (updateToken) {
+          updateToken(responseData.data.data.token)
+        }
         return request({
           url: urls.library.Book.url(),
           method: urls.library.Book.method,
@@ -102,11 +104,15 @@ export default {
         })
       } else {
         const message = '网络拥堵，请重新预约'
-        errorCallback(message)
+        if (errorCallback) {
+          errorCallback(message)
+        }
         return Promise.reject(Error(message))
       }
     } catch (error) {
-      errorCallback(error.message)
+      if (errorCallback) {
+        errorCallback(error.message)
+      }
       return Promise.reject(error)
     }
   },

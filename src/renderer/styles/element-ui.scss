@@ -53,6 +53,16 @@
 .el-select-dropdown__item.selected {
   color: $primary-color;
 }
+.el-select-group__wrap {
+  padding-left: 0;
+  &:not(:last-of-type) {
+    padding-bottom: 12px;
+    &::after {
+      bottom: 6px;
+      background: $second-color;
+    }
+  }
+}
 
 .el-popper .popper__arrow::after {
   border-bottom-color: $second-color!important;
