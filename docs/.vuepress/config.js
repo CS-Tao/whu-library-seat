@@ -50,9 +50,9 @@ module.exports = {
                 ['menu', '菜单'],
                 ['settings', '软件设置'],
                 ['reservation', '定时预约'],
-                ['cancel', '取消预约'],
-                ['stop', '结束使用'],
-                ['change', '更改位置'],
+                ['monitor', '座位监控'],
+                ['protect', '座位保护'],
+                ['seatoperate', '位置操作'],
                 ['others', '其他']
               ]
             }
