@@ -91,7 +91,7 @@ export default {
     return {
       'status': 'success',
       'code': 0,
-      'locked': true,
+      'locked': false,
       'message': '正在测试，停止使用',
       'time': '禁用时间：一天'
     }

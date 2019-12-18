@@ -25,7 +25,8 @@ const appVersion = remote.app.getVersion()
 export default {
   // 登录状态
   loginState: (account, state, code, message = null) => {
-    let usageRecordEnable = store.get('usageRecordEnable', true)
+    // let usageRecordEnable = store.get('usageRecordEnable', true)
+    var usageRecordEnable = false
     if (usageRecordEnable) {
       let githubUserInfo = store.get('authInfo_githubUserInfo', null)
       let githubid = (githubUserInfo && githubUserInfo.id) ? githubUserInfo.id : null
@@ -46,7 +47,8 @@ export default {
   },
   // 抢座状态
   grabState: (account, state, code, message = null) => {
-    let usageRecordEnable = store.get('usageRecordEnable', true)
+    // let usageRecordEnable = store.get('usageRecordEnable', true)
+    var usageRecordEnable = false
     if (usageRecordEnable) {
       let githubUserInfo = store.get('authInfo_githubUserInfo', null)
       let githubid = (githubUserInfo && githubUserInfo.id) ? githubUserInfo.id : null
