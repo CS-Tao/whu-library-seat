@@ -24,16 +24,16 @@
 ### 最新版本下载
 
 - Windows
-    - 链接: [whu-library-seat-setup-1.9.0.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.0/whu-library-seat-setup-1.9.0.exe)
-    - 备用地址: [whu-library-seat-setup-1.9.0.exe](https://assets.cs-tao.cc/whu-library-seat/releases/v1.9.0/whu-library-seat-setup-1.9.0.exe)
+    - 链接: [whu-library-seat-setup-1.9.1.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.1/whu-library-seat-setup-1.9.1.exe)
+    - 备用地址: [whu-library-seat-setup-1.9.1.exe](https://assets.cs-tao.cc/whu-library-seat/releases/v1.9.1/whu-library-seat-setup-1.9.1.exe)
 
 - Mac OS
-    - 链接: [whu-library-seat-1.9.0.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.0/whu-library-seat-1.9.0.dmg)
-    - 备用地址: [whu-library-seat-1.9.0.dmg](https://assets.cs-tao.cc/whu-library-seat/releases/v1.9.0/whu-library-seat-1.9.0.dmg)
+    - 链接: [whu-library-seat-1.9.1.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.1/whu-library-seat-1.9.1.dmg)
+    - 备用地址: [whu-library-seat-1.9.1.dmg](https://assets.cs-tao.cc/whu-library-seat/releases/v1.9.1/whu-library-seat-1.9.1.dmg)
 
 - Linux
-    - 链接: [whu-library-seat-1.9.0-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.0/whu-library-seat-1.9.0-x86_64.AppImage)
-    - 备用地址: [whu-library-seat-1.9.0-x86_64.AppImage](https://assets.cs-tao.cc/whu-library-seat/releases/v1.9.0/whu-library-seat-1.9.0-x86_64.AppImage)
+    - 链接: [whu-library-seat-1.9.1-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.1/whu-library-seat-1.9.1-x86_64.AppImage)
+    - 备用地址: [whu-library-seat-1.9.1-x86_64.AppImage](https://assets.cs-tao.cc/whu-library-seat/releases/v1.9.1/whu-library-seat-1.9.1-x86_64.AppImage)
 
 ### 安装软件
 

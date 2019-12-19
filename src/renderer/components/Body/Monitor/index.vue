@@ -48,7 +48,18 @@
             :max="360">
           </el-input-number>
         </el-form-item>
-        <div class="form-item" style="text-align: center;">
+        <div class="spark-line">
+          <v-trend
+            :data="spark.data"
+            :gradient="spark.color"
+            :height="40"
+            :max="20"
+            :min="-20"
+            :padding="4"
+            auto-draw>
+          </v-trend>
+        </div>
+        <div class="form-item" style="text-align: center;margin-top:0;">
           <el-button
             :disabled="isWorking"
             type="primary"
@@ -71,6 +82,11 @@
 </template>
 
 <script>
+import VTrend from 'vuetrend'
+import { monitorStatuses } from './mixin'
+
+const sparkLength = 300
+
 export default {
   name: 'monitor-form',
   props: {
@@ -115,12 +131,32 @@ export default {
       require: true
     }
   },
+  components: {
+    'v-trend': VTrend
+  },
   data () {
     return {
       interval: 1500,
       last: 60,
-      intervalTooLowWarned: false
+      intervalTooLowWarned: false,
+      spark: {
+        enable: true,
+        data: new Array(sparkLength).fill(0),
+        nextValue: 0,
+        color: ['#8fc8fc', '#62d9a3', '#4c5e70']
+      }
     }
+  },
+  watch: {
+    workingStatus () {
+      this.spark.nextValue = this.getSparkValueOfStatus(this.workingStatus)
+    }
+  },
+  mounted () {
+    this.loopSparkLine()
+  },
+  beforeDestroy () {
+    this.stopSparkLine()
   },
   methods: {
     okBtnClicked () {
@@ -137,6 +173,23 @@ export default {
         btn: 'cancel'
       })
     },
+    loopSparkLine () {
+      var loop = () => {
+        if (!this.spark.enable) {
+          return
+        }
+        this.spark.data.unshift(...this.getSparkPattern(this.spark.nextValue))
+        this.spark.data = this.spark.data.slice(0, sparkLength)
+        if (this.spark.nextValue !== 0) {
+          this.spark.nextValue = 0
+        }
+        window.requestAnimationFrame(loop)
+      }
+      window.requestAnimationFrame(loop)
+    },
+    stopSparkLine () {
+      this.spark.enable = false
+    },
     warnIntervalTooLow () {
       if (!this.intervalTooLowWarned) {
         if (this.interval < 1500) {
@@ -149,6 +202,37 @@ export default {
         }
         this.intervalTooLowWarned = true
       }
+    },
+    getSparkValueOfStatus (status) {
+      switch (status) {
+        case monitorStatuses.unstart:
+          return 0
+        case monitorStatuses.starting:
+          return 20
+        case monitorStatuses.checking:
+          return Math.random() > 0.5 ? 40 : -40
+        case monitorStatuses.checkFailed:
+          return -20
+        case monitorStatuses.checkSuccessfulYes:
+          return 32
+        case monitorStatuses.checkSuccessfulNo:
+          return -32
+        case monitorStatuses.grabingSeat:
+          return 28
+        case monitorStatuses.grabFailed:
+          return -40
+        case monitorStatuses.grabSuccessful:
+          return 40
+        case monitorStatuses.fatalError:
+          return -40
+        default:
+          return -40
+      }
+    },
+    getSparkPattern (amplitude) {
+      return [
+        amplitude
+      ]
     }
   }
 }
@@ -157,7 +241,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/styles/index.scss';
 $warp-width: 280px;
-$warp-height: 300px;
+$warp-height: 320px;
 $warp-padding: 0px;
 .dialog {
   z-index: 15;
@@ -181,7 +265,7 @@ $warp-padding: 0px;
       font-size: $text-size-large + 4;
     }
     .date-info {
-      margin: 6px 17px 10px 17px;
+      margin: 10px 17px 10px 17px;
       display: flex;
       justify-content: flex-start;
       cursor: default !important;
@@ -199,7 +283,7 @@ $warp-padding: 0px;
       }
     }
     .room-info {
-      margin-bottom: 6px;
+      margin-bottom: 12px;
       cursor: default !important;
       .room {
         .tag {
@@ -209,11 +293,15 @@ $warp-padding: 0px;
         }
       }
     }
+    .spark-line {
+      height: 40px;
+      margin-top: 4px;
+    }
     .form-item {
-      margin: 10px 17px;
+      margin: 4px 18px;
       border: none!important;
       .save-button {
-        margin: 10px 8px;
+        margin: 4px 8px;
         width: 80px;
         color: $text-color;
         background: $primary-button-background-blur!important;
@@ -226,7 +314,7 @@ $warp-padding: 0px;
         }
       }
       .cancel-button {
-        margin: 10px 8px;
+        margin: 4px 8px;
         width: 80px;
         color: $text-color;
         background: $cancel-button-background-blur!important;
@@ -239,7 +327,7 @@ $warp-padding: 0px;
         }
       }
       .button-disabled {
-        margin: 10px 8px;
+        margin: 4px 8px;
         width: 80px;
         color: $text-color;
         background: $disabled-button-background-blur!important;
