@@ -1,7 +1,7 @@
 import libraryRestApi from '@/api/library.api'
 import usageApi from '@/api/usage.api'
 
-const monitorStatuses = {
+export const monitorStatuses = {
   unstart: 'unstart', // 未开始
   starting: 'starting', // 正在启动
   checking: 'checking', // 检测中
