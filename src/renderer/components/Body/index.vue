@@ -31,7 +31,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="位置" :inline="true" style="flex-col">
-          <el-select v-model="form.seatNum" :placeholder="seatsForSelectIsAvailable!==null?(`共 ${seatsForSelectIsAvailable.length} 座可约`):'数据加载中...'"
+          <el-select v-model="form.seatNum" :placeholder="seatsForSelectIsAvailable!==null?(`共 ${seatsForSelectIsAvailable.length} 座可约`):seatsForSelect.length + ' 个座位'"
             :no-data-text="seatSelectNoDataMessage"
             class="num">
             <el-option-group :key="'seat-group-1'" label="可选功能">
