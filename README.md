@@ -23,17 +23,9 @@
 
 ### 最新版本下载
 
-- Windows
-    - 链接: [whu-library-seat-setup-1.9.1.exe](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.1/whu-library-seat-setup-1.9.1.exe)
-    - 备用地址: [whu-library-seat-setup-1.9.1.exe](https://assets.cs-tao.cc/whu-library-seat/releases/v1.9.1/whu-library-seat-setup-1.9.1.exe)
-
-- Mac OS
-    - 链接: [whu-library-seat-1.9.1.dmg](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.1/whu-library-seat-1.9.1.dmg)
-    - 备用地址: [whu-library-seat-1.9.1.dmg](https://assets.cs-tao.cc/whu-library-seat/releases/v1.9.1/whu-library-seat-1.9.1.dmg)
-
-- Linux
-    - 链接: [whu-library-seat-1.9.1-x86_64.AppImage](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.1/whu-library-seat-1.9.1-x86_64.AppImage)
-    - 备用地址: [whu-library-seat-1.9.1-x86_64.AppImage](https://assets.cs-tao.cc/whu-library-seat/releases/v1.9.1/whu-library-seat-1.9.1-x86_64.AppImage)
+[![Windows 版本下载链接 v1.9.1](https://img.shields.io/badge/v1.9.1-Windows-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.1/whu-library-seat-setup-1.9.1.exe)
+[![Mac OS 版本下载链接 v1.9.1](https://img.shields.io/badge/v1.9.1-Mac%20OS-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.1/whu-library-seat-1.9.1.dmg)
+[![Linux 版本下载链接 v1.9.1](https://img.shields.io/badge/v1.9.1-Linux-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.1/whu-library-seat-1.9.1-x86_64.AppImage)
 
 ### 安装软件
 
@@ -55,10 +47,6 @@
 
 您可以通过以下步骤自行构建本软件，但请您务必注意，本仓库并未提供任何源码`许可证`，您没有权利将源码更改后继续传播，更没有权利将本软件或源码用于商业活动
 
-如果您是自行构建而不是通过[申请软件使用权](#申请软件使用权)使用本软件，重新构建的软件只能您自己使用
-
-如果您希望在本软件的基础上继续添加新的功能，非常欢迎您向本仓库发送 Pull Request
-
 ``` bash
 # 安装依赖
 yarn
@@ -76,7 +64,14 @@ yarn lint
 yarn build
 ```
 
+如果您是自行构建而不是通过[申请软件使用权](#申请软件使用权)使用本软件，重新构建的软件只能您自己使用
+
+如果您希望在本软件的基础上继续添加新的功能，非常欢迎您向本仓库发送 Pull Request
+
 ## 版权声明
 
 本软件开源，但没有向开发者提供任何源码`许可证`，作者本人保留源代码的所有权利，任何组织和个人不得将本软件或源码用于商业活动
 
+## 免责声明
+
+本软件和软件源代码仅用于学习研究和技术交流，使用本软件或软件源代码造成的任何不良影响由使用者自行承担，与软件开发人员无关
