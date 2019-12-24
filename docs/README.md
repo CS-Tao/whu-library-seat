@@ -16,7 +16,7 @@ features:
   details: 出馆前可设置一段时间后更改此座位的时间，即通过定时执行"座位更改"功能实现座位保护
 - title: 开源跨平台
   details: 本软件为开源跨平台软件，有 WIndows、MacOS、Linux、Android 等版本可供用户下载使用
-footer: Copyright © 2018 CS-Tao
+footer: Copyright © since 2018 CS-Tao
 ---
 
 ### 快速开始
@@ -25,15 +25,15 @@ footer: Copyright © 2018 CS-Tao
 您可以通过以下步骤快速使用本软件预约座位，查看详细使用说明请移步[用户手册](/specification/)
 :::
 
-#### 安装软件
+#### 下载安装软件
 
-- 桌面端(Windows/MacOS/Linux)
+- 桌面端
 
-  安装包链接: [https://github.com/CS-Tao/whu-library-seat#最新版本下载](https://github.com/CS-Tao/whu-library-seat#最新版本下载)
+  [![桌面端下载链接](https://img.shields.io/badge/下载链接-Windows%20/%20MacOS%20/%20Linux-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat#最新版本下载)
 
-- 移动端(Android)
+- 移动端
 
-  安装包链接：[https://github.com/CS-Tao/whu-library-seat-mobile#最新版本下载](https://github.com/CS-Tao/whu-library-seat-mobile#最新版本下载)
+  [![移动端下载链接](https://img.shields.io/badge/下载链接-Android-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat#最新版本下载)
 
   二维码：
 
@@ -57,4 +57,8 @@ footer: Copyright © 2018 CS-Tao
 
 ::: warning 版权声明
 本软件开源，但没有向开发者提供任何源码`许可证`，作者本人保留源代码的所有权利，任何组织和个人不得将本软件或源码用于商业活动
+:::
+
+::: warning 免责声明
+本软件和软件源代码仅用于学习研究和技术交流，使用本软件或软件源代码造成的任何不良影响由使用者自行承担，与软件开发人员无关
 :::
