@@ -87,6 +87,8 @@ import { monitorStatuses } from './mixin'
 
 const sparkLength = 300
 
+const defaultInterval = 1500
+
 export default {
   name: 'monitor-form',
   props: {
@@ -136,7 +138,7 @@ export default {
   },
   data () {
     return {
-      interval: 1500,
+      interval: defaultInterval,
       last: 60,
       intervalTooLowWarned: false,
       spark: {
@@ -192,7 +194,7 @@ export default {
     },
     warnIntervalTooLow () {
       if (!this.intervalTooLowWarned) {
-        if (this.interval < 1500) {
+        if (this.interval < defaultInterval) {
           this.$message({
             type: 'warning',
             duration: '0',
@@ -210,7 +212,7 @@ export default {
         case monitorStatuses.starting:
           return 20
         case monitorStatuses.checking:
-          return Math.random() > 0.5 ? 40 : -40
+          return 40
         case monitorStatuses.checkFailed:
           return -20
         case monitorStatuses.checkSuccessfulYes:

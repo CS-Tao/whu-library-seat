@@ -278,7 +278,7 @@ export default {
           for (var key in response.data.data.layout) {
             this.seats.push(response.data.data.layout[key])
           }
-          this.filterSeats(true)
+          this.filterSeats()
         } else {
           this.$message({
             type: 'error',
@@ -286,35 +286,32 @@ export default {
             showClose: true,
             message: response.data.message ? response.data.message : emptyMessage
           })
-          this.filterSeats(true)
+          this.filterSeats()
         }
       }).catch(() => {
-        this.filterSeats(true)
+        this.filterSeats()
       })
     },
     chargerButtonClicked () {
       this.form.battery = !this.form.battery
-      this.filterSeats(true)
+      this.filterSeats()
     },
     sunButtonClicked () {
       this.form.sun = !this.form.sun
-      this.filterSeats(true)
+      this.filterSeats()
     },
-    filterSeats (disableCache = false) {
+    filterSeats () {
       this.seatsForSelect = this.seats.filter((item) => {
         return item.type === 'seat' && (this.form.battery ? item.power : true) && (this.form.sun ? item.window : true)
       }).sort((x, y) => {
         return parseInt(x.name) - parseInt(y.name)
       })
-      if (!disableCache) {
-        let cachedSeatExist = this.seatsForSelect.findIndex((item) => {
-          return item.id === this.seatInfo.seatNum
-        }) !== -1
-        if (this.form.library && this.form.library === this.seatInfo.library && this.form.room && this.form.room === this.seatInfo.room && cachedSeatExist) {
-          this.form.seatNum = this.seatInfo.seatNum
-        } else {
-          this.form.seatNum = null
-        }
+      let clearSeatSelect = this.form.seatNum >= 0 &&
+        (this.seatsForSelect.findIndex((item) => {
+          return item.id === this.form.seatNum
+        }) === -1)
+      if (clearSeatSelect) {
+        this.form.seatNum = null
       }
     },
     showWarning (message) {
