@@ -1,22 +1,20 @@
+# 快速使用
+
 ## 下载软件
 
 本软件是针对`武汉大学`图书馆预约系统开发的抢座软件，支持 Windows、Mac OS、Linux、Android 等操作系统
 
 - 桌面端
 
-  [![桌面端下载链接](https://img.shields.io/badge/下载链接-Windows%20/%20MacOS%20/%20Linux-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat#最新版本下载)
-
-  <!-- 安装包链接: [https://github.com/CS-Tao/whu-library-seat#最新版本下载](https://github.com/CS-Tao/whu-library-seat#最新版本下载) -->
+  [![桌面端下载链接](https://img.shields.io/badge/下载链接-Windows%20/%20MacOS%20/%20Linux-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/blob/master/README.md#最新版本下载)
 
 - 移动端
 
-  [![移动端下载链接](https://img.shields.io/badge/下载链接-Android-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat#最新版本下载)
-
-  <!-- 安装包链接：[https://github.com/CS-Tao/whu-library-seat-mobile#最新版本下载](https://github.com/CS-Tao/whu-library-seat-mobile#最新版本下载) -->
+  [![移动端下载链接](https://img.shields.io/badge/下载链接-Android-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat-mobile/blob/master/README.md#最新版本下载)
 
   二维码：
 
-  ![安卓版本二维码](https://raw.githubusercontent.com/CS-Tao/whu-library-seat/user-validation/last-android-qr.jpg)
+  ![安卓版本二维码](https://home.cs-tao.cc/github-content/contents/github/whu-library-seat/user-validation/last-android-qr.jpg)
 
 ## 安装软件
 
@@ -25,7 +23,6 @@
 ## 申请软件使用权
 
 > v1.8.0 已移除本功能，改为 GitHub Star 认证，具体请查看 [GitHub Star 认证](./auth.html)
-
 
 ## 软件更新
 
