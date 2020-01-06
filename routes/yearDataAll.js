@@ -11,8 +11,8 @@ router.get('/', function (req, res, next) {
 
   var serverDownTimeList = [
     {
-      begin: new Date(2019, 7 - 1, 8).getTime(),
-      end: new Date(2020, 1 - 1, 5).getTime()
+      begin: new Date(2019, 7 - 1, 7).getTime(),
+      end: new Date(2020, 1 - 1, 6).getTime()
     }
   ]
 
