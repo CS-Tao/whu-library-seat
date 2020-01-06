@@ -9,6 +9,13 @@ router.get('/', function (req, res, next) {
 
   var queryString = `SELECT year, month, day, count(*) as 'count' FROM events where (year=${now.getFullYear()} || year=${now.getFullYear() - 1}) || (year=${now.getFullYear() - 1} && month <= ${now.getMonth() + 1}) || (year=${now.getFullYear() - 1} && month=${now.getMonth() + 1} && day <= ${now.getDate()}) group by year, month, day;`;
 
+  var serverDownTimeList = [
+    {
+      begin: new Date(2019, 7, 8).getTime(),
+      end: new Date(2020, 1, 5).getTime()
+    }
+  ]
+
   connection.query(queryString, (err, results) => {
     if (err) {
       console.log(err.message)
@@ -16,6 +23,12 @@ router.get('/', function (req, res, next) {
       return;
     } else {
       let data = Object()
+      // 服务器宕机时间补充
+      serverDownTimeList.forEach(serverDownTime => {
+        for (var downDay = serverDownTime.begin; downDay < serverDownTime.end; downDay+=86400000) {
+          data[new Date(downDay).getTime().toString().substring(0, 10)] = 1
+        }
+      })
       results.forEach(element => {
         data[new Date(element.year, element.month - 1, element.day).getTime().toString().substring(0, 10)] = element.count
       });
