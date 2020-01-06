@@ -7,7 +7,7 @@
 
 > 武汉大学图书馆抢座软件 - 桌面端
 
-> Android 版本：[https://github.com/CS-Tao/whu-library-seat-mobile](https://github.com/CS-Tao/whu-library-seat-mobile)
+> 移动端：[https://github.com/CS-Tao/whu-library-seat-mobile](https://github.com/CS-Tao/whu-library-seat-mobile)
 
 ## 使用说明
 

@@ -24,7 +24,7 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "whu-library-seat",
+    "productName": "图书馆助手",
     "appId": "cc.cs-tao.whu-library-seat",
     "directories": {
       "output": "build"
@@ -36,6 +36,7 @@
       "static"
     ],
     "dmg": {
+      "artifactName": "${name}-${version}.${ext}",
       "contents": [
         {
           "x": 410,
@@ -51,12 +52,15 @@
       ]
     },
     "mac": {
+      "artifactName": "${name}-${version}-${os}.${ext}",
       "icon": "build/icons/icon.icns"
     },
     "win": {
+      "artifactName": "${name}-${version}.${ext}",
       "icon": "build/icons/icon.ico"
     },
     "linux": {
+      "artifactName": "${name}-${version}-${arch}.${ext}",
       "icon": "build/icons"
     }
   },
