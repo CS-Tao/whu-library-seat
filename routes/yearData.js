@@ -1,6 +1,7 @@
 var express = require('express');
 var mysql = require("mysql");
 var mysqlConfig = require("./mysql.conf");
+var serverDownTimeList = require("./serverDownTimeList").serverDownTimeList;
 var router = express.Router();
 
 router.get('/', function (req, res, next) {
@@ -8,13 +9,6 @@ router.get('/', function (req, res, next) {
   var now = new Date()
 
   var queryString = `SELECT year, month, day, count(*) as 'count' FROM events where (code = 6 && (year=${now.getFullYear()} || year=${now.getFullYear() - 1}) || (year=${now.getFullYear() - 1} && month <= ${now.getMonth() + 1}) || (year=${now.getFullYear() - 1} && month=${now.getMonth() + 1} && day <= ${now.getDate()})) group by year, month, day;`;
-
-  var serverDownTimeList = [
-    {
-      begin: new Date(2019, 7 - 1, 6).getTime(),
-      end: new Date(2020, 1 - 1, 6).getTime()
-    }
-  ]
 
   connection.query(queryString, (err, results) => {
     if (err) {
