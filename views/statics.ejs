@@ -95,20 +95,7 @@
       padding-bottom: 0;
     }
     </style>
-    <script>
-    // if (!localStorage.homepageAuthForCSTaoOrFriend || localStorage.homepageAuthForCSTaoOrFriend !== '7f1a65908b05238c21c134c764c89e28') {
-    //   window.location = '/auth/index.html'
-    // }
-    </script>
-    <script>
-      var _hmt = _hmt || [];
-      (function () {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?60c849aef33194f2884736dfb3f0b518";
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(hm, s);
-      })();
-	  </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   </head>
   <body>
     <div id="app">
@@ -127,6 +114,14 @@
       <div :class="deviceline?'chart-wrapper':null">
         <div id="deviceline"></div>
         <button v-if="deviceline" class="export-btn" @click="deviceline.export()">Export</button>
+      </div>
+      <div :class="desktopInfo?'chart-wrapper':null">
+        <div id="download-info"></div>
+        <button v-if="desktopInfo && desktopInfo.downloadsGraph" class="export-btn" @click="desktopInfo.export()">Export</button>
+      </div>
+      <div :class="mobileInfo?'chart-wrapper':null">
+        <div id="download-info-m"></div>
+        <button v-if="mobileInfo && mobileInfo.downloadsGraph" class="export-btn" @click="mobileInfo.export()">Export</button>
       </div>
       <el-container id="data-list" v-show="dataForShow">
         <el-header id="data-list-header">
@@ -204,7 +199,6 @@
       </el-container>
     </div>
   </body>
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/frappe-charts@1.1.0/dist/frappe-charts.min.iife.js"></script>
@@ -212,6 +206,8 @@
     new Vue({
       el: '#app',
       data: {
+        desktopInfo: null,
+        mobileInfo: null,
         heatmap: null,
         heatmapAll: null,
         hourline: null,
@@ -233,40 +229,6 @@
         githubIdList: ['All']
       },
       mounted () {
-        axios.get('/staticsdata').then((response) => {
-          this.tableData = response.data
-          this.eventTypeList = ['All']
-          this.eventCodeList = ['All']
-          this.accountList = ['All']
-          this.statusList = ['All']
-          this.versionList = ['All']
-          this.githubIdList = ['All']
-          this.tableData.forEach((item) => {
-            if (!this.eventCodeList.includes(item.code)) {
-              this.eventCodeList.push(item.code)
-            }
-            if (!this.eventTypeList.includes(item.event)) {
-              this.eventTypeList.push(item.event)
-            }
-            if (!this.accountList.includes(item.account)) {
-              this.accountList.push(item.account)
-            }
-            if (!this.statusList.includes(item.state)) {
-              this.statusList.push(item.state)
-            }
-            if (!this.versionList.includes(item.version)) {
-              this.versionList.push(item.version)
-            }
-            if (!this.deviceList.includes(item.mobile)) {
-              this.deviceList.push(item.mobile)
-            }
-            if (item.githubId && !this.githubIdList.includes(item.githubId)) {
-              this.githubIdList.push(item.githubId)
-            }
-          })
-        }).catch((error) => {
-          console.log(error)
-        });
         axios.get('/yeardata').then((response) => {
           let now = new Date()
           this.heatmap = new frappe.Chart("#heatmap", {
@@ -299,8 +261,8 @@
             },
             countLabel: '',
             discreteDomains: 0,
-            colors: ['#ebedf0', '#c0ddf9', '#73b3f3', '#3886e1', '#17459e'],
-            def: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127']
+            colors: ['#ebedf0', '#fdf436', '#ffc700', '#ff9100', '#06001c'],
+            def: ['#ebedf0', '#fdf436', '#ffc700', '#ff9100', '#06001c']
           });
         }).catch((error) => {
           console.log(error)
@@ -345,6 +307,56 @@
           });
         }).catch((error) => {
           console.log(error)
+        });
+        axios.get('/downloadsInfo').then((response) => {
+          if (response.data.status === 'success') {
+            console.log(response.data)
+            var desktopData = response.data.data[0]
+            this.desktopInfo = {}
+            this.desktopInfo.times = desktopData.totalDownload
+            this.desktopInfo.downloadsGraph = new frappe.Chart("#download-info", {
+              title: `Desktop download information（Total：${desktopData.totalDownload} times）`,
+              data: {
+                labels: desktopData.trendTag,
+                datasets: [
+                  {
+                    name: "Desktop", chartType: 'bar',
+                    values: desktopData.trendData
+                  }
+                ]
+              },
+              height: 300,
+              colors: ['light-blue'],
+              tooltipOptions: {
+                formatTooltipX: v => v,
+                formatTooltipY: d => d + ' times',
+              }
+            });
+            var mobileData = response.data.data[1]
+            this.mobileInfo = {}
+            this.mobileInfo.times = mobileData.totalDownload
+            this.mobileInfo.downloadsGraph = new frappe.Chart("#download-info-m", {
+              title: `Mobile download information（Total：${mobileData.totalDownload} times）`,
+              data: {
+                labels: mobileData.trendTag,
+                datasets: [
+                  {
+                    name: "Mobile", chartType: 'bar',
+                    values: mobileData.trendData
+                  }
+                ]
+              },
+              colors: ['#ffa3ef'],
+              tooltipOptions: {
+                formatTooltipX: v => v,
+                formatTooltipY: d => d + ' times',
+              }
+            });
+          } else {
+            console.error("Can not fetch software downloads data. Error:", response.data.message)
+          }
+        }).catch((error) => {
+          console.error(error)
         });
         axios.get('/deviceData').then((response) => {
           let maxLength = 100
@@ -404,6 +416,40 @@
               formatTooltipY: d => d === undefined ? 0 : d + ' times',
             }
           });
+        }).catch((error) => {
+          console.log(error)
+        });
+        axios.get('/staticsdata').then((response) => {
+          this.tableData = response.data
+          this.eventTypeList = ['All']
+          this.eventCodeList = ['All']
+          this.accountList = ['All']
+          this.statusList = ['All']
+          this.versionList = ['All']
+          this.githubIdList = ['All']
+          this.tableData.forEach((item) => {
+            if (!this.eventCodeList.includes(item.code)) {
+              this.eventCodeList.push(item.code)
+            }
+            if (!this.eventTypeList.includes(item.event)) {
+              this.eventTypeList.push(item.event)
+            }
+            if (!this.accountList.includes(item.account)) {
+              this.accountList.push(item.account)
+            }
+            if (!this.statusList.includes(item.state)) {
+              this.statusList.push(item.state)
+            }
+            if (!this.versionList.includes(item.version)) {
+              this.versionList.push(item.version)
+            }
+            if (!this.deviceList.includes(item.mobile)) {
+              this.deviceList.push(item.mobile)
+            }
+            if (item.githubId && !this.githubIdList.includes(item.githubId)) {
+              this.githubIdList.push(item.githubId)
+            }
+          })
         }).catch((error) => {
           console.log(error)
         });

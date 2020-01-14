@@ -13,6 +13,7 @@ var yearData = require('./routes/yearData');
 var yearDataAll = require('./routes/yearDataAll');
 var dayData = require('./routes/dayData');
 var deviceData = require('./routes/deviceData');
+var downloadsInfo = require('./routes/downloadsInfo');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use('/yeardata', yearData);
 app.use('/yeardataall', yearDataAll);
 app.use('/dayData', dayData);
 app.use('/deviceData', deviceData);
+app.use('/downloadsInfo', downloadsInfo);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

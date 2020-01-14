@@ -26,7 +26,6 @@ router.post('/', function(req, res, next) {
     (account, state, year, month, day, hour, min, sec, event, code, version, message, mobile, githubid) \
     values ('${account}', ${state}, ${year}, ${month}, ${day}, ${hour}, ${min}, ${sec}, '${events}', ${code}, '${version}', '${message}', ${mobile}, ${githubId ? `'${githubId}'` : null})`;
 
-    console.log(queryString)
   connection.query(queryString, function (err, results) {
       if (err) {
         console.log(err.message)
