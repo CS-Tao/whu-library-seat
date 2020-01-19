@@ -34,6 +34,7 @@ body {
   background-color: #fff;
   border-bottom: 1px solid #EDF2F7;
   height: 60px;
+  width: 100vw;
   display: flex;
 }
 .header .logo-text {
@@ -67,6 +68,7 @@ body {
 
 .main-wrapper {
   display: flex;
+  margin: 0 16px;
 }
 .main-wrapper .main {
   width: 1156px;
