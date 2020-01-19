@@ -71,7 +71,7 @@ router.get('/', function(req, res, next) {
       'data': downloadsInfo
     });
   }).catch(error => {
-    console.log(error.message)
+    console.error(error.message)
     res.json({
       'status': 'fail',
       'code': 1,

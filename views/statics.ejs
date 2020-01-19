@@ -1,483 +1,200 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>武汉大学图书馆抢座软件 - 使用统计</title>
+    <title>图书馆助手 - 使用统计</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/images/app.png" type="image/png">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <style>
-    #app {
-      margin: 0;
-    }
-    .chart-wrapper {
-      box-sizing: border-box;
-      text-align: right;
-      margin: 10px 0 20px 0;
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-      padding-bottom: 8px !important;
-      padding-top: 8px !important;
-      border: 1px solid #e1e4e8!important;
-      border-color: #d1d5da !important;
-      overflow-x: auto;
-    }
-    .export-btn {
-      -webkit-appearance: button;
-      cursor: pointer;
-      display: inline-block;
-      margin: 0 20px 10px 20px;
-      right: 0;
-      padding: 0.25rem 0.5rem;
-      font-weight: 400;
-      color: #8d99a6;
-      background: transparent;
-      background-image: none;
-      border: 1px solid #8d99a6;
-      user-select: none;
-      white-space: nowrap;
-      vertical-align: middle;
-      text-align: center;
-      border-radius: 0.2rem;
-      font-size: 0.875rem;
-      text-decoration: none;
-      outline: none;
-      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    }
-    .export-btn:hover {
-      color: #fff;
-      background-color: #8d99a6;
-      border-color: #8d99a6;
-      text-decoration: none;
-    }
-    #heatmap {
-    }
-    #hourline {
-    }
-    #deviceline {
-    }
-    #data-list {
-      box-sizing: border-box;
-      margin: 0 0 10px 0;
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-      padding-bottom: 8px !important;
-      padding-top: 8px !important;
-      border: 1px solid #e1e4e8!important;
-      border-color: #d1d5da !important;
-    }
-    #data-list-header {
-      height: 80px !important;
-      margin: 10px 20px 0 20px;
-      white-space: nowrap;
-      overflow: auto;
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-      padding-bottom: 8px !important;
-      padding-top: 8px !important;
-      border: 1px solid #e1e4e8!important;
-      border-color: #d1d5da !important;
-    }
-    .el-table {
-      border-top-left-radius: 3px;
-      border-top-right-radius: 3px;
-      padding-bottom: 8px !important;
-      padding-top: 8px !important;
-      border: 1px solid #e1e4e8!important;
-      border-color: #d1d5da !important;
-    }
-    .el-input {
-      width: 140px;
-    }
-    span {
-      margin-left: 15px;
-    }
-    .el-main {
-      padding-bottom: 0;
-    }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="/css/index.css">
   </head>
   <body>
     <div id="app">
-      <div :class="heatmap?'chart-wrapper':null">
-        <div id="heatmap"></div>
-        <button v-if="heatmap" class="export-btn" @click="heatmap.export()">Export</button>
+      <div class="header">
+        <div class="logo-text">
+          <img class="logo" src="/images/app.png"/>
+          <span class="text">图书馆助手 使用统计</span>
+        </div>
+        <div class="header-links">
+          <a class="link" target="_blank" href="https://home.cs-tao.cc/whu-library-seat/">使用文档</a>
+          <a class="link" target="_blank" href="https://github.com/CS-Tao/whu-library-seat/">项目地址</a>
+        </div>
       </div>
-      <div :class="heatmapAll?'chart-wrapper':null">
-        <div id="heatmap-all"></div>
-        <button v-if="heatmapAll" class="export-btn" @click="heatmapAll.export()">Export</button>
+      <div class="main-wrapper">
+        <div class="main">
+          <div class="chart-wrapper-frame">
+            <div class="chart-and-btn">
+              <div class="chart-wrapper year-chart-wrapper">
+                <div v-show="yearDataPanel==='year-data'" id="heatmap"></div>
+                <div v-show="yearDataPanel==='year-data-all'" id="heatmap-all"></div>
+              </div>
+              <div class="export-btn-group">
+                <button :class="{'btn-active':yearDataPanel==='year-data-all'}" @click="yearDataPanel='year-data-all'">使用记录</button>
+                <button :class="{'btn-active':yearDataPanel==='year-data'}" @click="yearDataPanel='year-data'">预约记录</button>
+                <button class="export-btn" @click="exportGraph(yearDataPanel)">导出</button>
+              </div>
+            </div>
+            <div class="chart-and-btn">
+              <div class="chart-wrapper daytrend-chart-wrapper">
+                <div id="day-trend"></div>
+              </div>
+              <div class="export-btn-group" style="margin-left:21px">
+                <button class="btn-only-one">使用趋势</button>
+                <button class="export-btn" @click="exportGraph('day-trend')">导出</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-and-btn">
+            <div class="chart-wrapper" style="height: 280px">
+              <div v-show="tagPanel==='desktop-info'" id="download-info"></div>
+              <div v-show="tagPanel==='mobile-info'" id="download-info-m"></div>
+            </div>
+            <div class="export-btn-group">
+              <button :class="{'btn-active':tagPanel==='desktop-info'}" @click="tagPanel='desktop-info'">桌面端下载量</button>
+              <button :class="{'btn-active':tagPanel==='mobile-info'}" @click="tagPanel='mobile-info'">移动端下载量</button>
+              <button class="export-btn" @click="exportGraph(tagPanel)">导出</button>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:row;">
+            <div class="chart-wrapper project-list-wrapper">
+              <span class="title">项目信息</span>
+              <div class="project-wrapper" v-for="project in projectList">
+                <div class="project">
+                  <span class="project-name" @click="openLink(project.link)">{{project.name}}</span>
+                  <span class="project-desc">{{project.desc}}</span>
+                  <div class="project-star">
+                    <iframe :src="`https://ghbtns.com/github-btn.html?user=CS-Tao&repo=${project.repo}&type=watch&count=true&size=small&v=2`" frameborder="0" scrolling="0" width="100px" height="30px"></iframe>
+                    <iframe :src="`https://ghbtns.com/github-btn.html?user=CS-Tao&repo=${project.repo}&type=star&count=true&size=small&v=2`" frameborder="0" scrolling="0" width="100px" height="30px"></iframe>
+                    <iframe :src="`https://ghbtns.com/github-btn.html?user=CS-Tao&repo=${project.repo}&type=fork&count=true&size=small&v=2`" frameborder="0" scrolling="0" width="100px" height="30px"></iframe>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;">
+              <div class="chart-wrapper-frame" style="display:flex;flex-direction:row;">
+                <div class="chart-and-btn" style="margin-right:15px">
+                  <div class="chart-wrapper pie-wrapper">
+                    <div id="grade-pie"></div>
+                  </div>
+                  <div class="export-btn-group">
+                    <button class="btn-only-one">年级分布</button>
+                    <button class="export-btn" @click="exportGraph('grade-pie')">导出</button>
+                  </div>
+                </div>
+                <div class="chart-and-btn">
+                  <div class="chart-wrapper pie-wrapper">
+                    <div id="college-pie"></div>
+                  </div>
+                  <div class="export-btn-group">
+                    <button class="btn-only-one">院系分布</button>
+                    <button class="export-btn" @click="exportGraph('college-pie')">导出</button>
+                  </div>
+                </div>
+              </div>
+              <div class="chart-wrapper-frame">
+                <div class="chart-and-btn">
+                  <div class="chart-wrapper day-or-device">
+                    <div v-show="dayOrDevicePanel==='day-panel'" id="hourline"></div>
+                    <div v-show="dayOrDevicePanel==='device-panel'" id="deviceline"></div>
+                  </div>
+                  <div class="export-btn-group">
+                    <button :class="{'btn-active':dayOrDevicePanel==='day-panel'}" @click="dayOrDevicePanel='day-panel'">按小时记录</button>
+                    <button :class="{'btn-active':dayOrDevicePanel==='device-panel'}" @click="dayOrDevicePanel='device-panel'">按设备记录</button>
+                    <button class="export-btn" @click="exportGraph(dayOrDevicePanel)">导出</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <el-container id="data-list" v-show="dataForShow">
+            <el-header id="data-list-header">
+              <span>设备</span>
+              <el-select v-model="selectedDevice">
+                <el-option v-for="item in deviceList" :key="item" :label="item === 'All' ? 'All' :(item === 0 ? '桌面端' : '移动端')" :value="item"></el-option>
+              </el-select>
+              <span>状态</span>
+              <el-select v-model="selectedStatus">
+                <el-option v-for="item in statusList" :key="item" :label="item === 'All' ? 'All' :(item === 0 ? '失败' : '成功')" :value="item"></el-option>
+              </el-select>
+              <span>事件</span>
+              <el-select v-model="selectedEventType">
+                <el-option v-for="item in eventTypeList" :key="item" :label="item === 'All' ? 'All' :(item === 'login' ? '登录' : '抢座')" :value="item"></el-option>
+              </el-select>
+              <span>事件代码</span>
+              <el-select v-model="selectedEventCode">
+                <el-option v-for="item in eventCodeList" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
+              <span>账号</span>
+              <el-select v-model="selectedAccount" filterable>
+                <el-option v-for="item in accountList" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
+              <span>GitHub id</span>
+              <el-select v-model="selectedGithubId" filterable>
+                <el-option v-for="item in githubIdList" :key="item" :label="item" :value="item"></el-option>
+              </el-select>
+              <span>软件版本</span>
+              <el-select v-model="selectedVersion">
+                <el-option v-for="item in versionList" :key="item" :label="item === 'All' ? 'All' : 'v'+item" :value="item"></el-option>
+              </el-select>
+            </el-header>
+            <el-main style="margin: 0">
+              <el-table :data="dataForShow" :border="true" :stripe="true" height="500">
+                <el-table-column width="60" prop="id" label="Id"></el-table-column>
+                <el-table-column width="90" prop="mobile" label="设备">
+                  <template slot-scope="scope">
+                    <i v-if="(scope.row.mobile === null || scope.row.mobile === 0)" class="el-icon-menu" style="color: #409EFF"></i>
+                    <i v-else class="el-icon-mobile-phone" style="color: #909399"></i>
+                    <span style="margin-left: 5px" :style="{color: (scope.row.mobile === null || scope.row.mobile === 0) ?  '#409EFF': '#909399'}">{{ (scope.row.mobile === null || scope.row.mobile === 0) ? '桌面端' : '移动端' }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column width="80" label="状态">
+                  <template slot-scope="scope">
+                    <i v-if="scope.row.state === 1" class="el-icon-success" style="color: green"></i>
+                    <i v-else class="el-icon-error" style="color: red"></i>
+                    <span style="margin-left: 5px">{{ scope.row.state === 0 ? '失败' : '成功' }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column width="80" prop="event" label="事件">
+                  <template slot-scope="scope">
+                    <i v-if="scope.row.event === 'login'" class="el-icon-phone" style="color: #909399"></i>
+                    <i v-else class="el-icon-phone-outline" style="color: #E6A23C"></i>
+                    <span style="margin-left: 5px" :style="{color: scope.row.event === 'login' ? '#909399' : '#E6A23C'}">{{ scope.row.event === 'login' ? '登录' : '抢座' }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column width="55" prop="code" label="Code"></el-table-column>
+                <el-table-column width="60" label="版本">
+                  <template slot-scope="scope">
+                    <span>{{ 'v' + scope.row.version }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column width="60" label="消息">
+                  <template slot-scope="scope">
+                    <span v-if="scope.row.message" @click="showMessage(scope.row.message)" class="message-text">查看</span>
+                    <span v-else>无</span>
+                  </template>
+                </el-table-column>
+                <el-table-column width="170" label="时间">
+                  <template slot-scope="scope">
+                    <i class="el-icon-time"></i>
+                    <span style="margin-left: 5px">{{ scope.row.year + '-' + fill0(scope.row.month) + '-' + fill0(scope.row.day) + ' ' + fill0(scope.row.hour) + ':' + fill0(scope.row.min) + ':' + fill0(scope.row.sec) }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="account" label="账号 (加密)" width="240"></el-table-column>
+                <el-table-column prop="githubId" label="Github Id (加密)" width="240"></el-table-column>
+              </el-table>
+             <p style="text-align: left;">已显示最近 {{countOfSelected}} 条数据</p>
+            </el-main>
+          </el-container>
+        </div>
       </div>
-      <div :class="hourline?'chart-wrapper':null">
-        <div id="hourline"></div>
-        <button v-if="hourline" class="export-btn" @click="hourline.export()">Export</button>
-      </div>
-      <div :class="deviceline?'chart-wrapper':null">
-        <div id="deviceline"></div>
-        <button v-if="deviceline" class="export-btn" @click="deviceline.export()">Export</button>
-      </div>
-      <div :class="desktopInfo?'chart-wrapper':null">
-        <div id="download-info"></div>
-        <button v-if="desktopInfo && desktopInfo.downloadsGraph" class="export-btn" @click="desktopInfo.export()">Export</button>
-      </div>
-      <div :class="mobileInfo?'chart-wrapper':null">
-        <div id="download-info-m"></div>
-        <button v-if="mobileInfo && mobileInfo.downloadsGraph" class="export-btn" @click="mobileInfo.export()">Export</button>
-      </div>
-      <el-container id="data-list" v-show="dataForShow">
-        <el-header id="data-list-header">
-          <span>设备</span>
-          <el-select v-model="selectedDevice">
-            <el-option v-for="item in deviceList" :key="item" :label="item === 'All' ? 'All' :(item === 0 ? '桌面端' : '移动端')" :value="item"></el-option>
-          </el-select>
-          <span>状态</span>
-          <el-select v-model="selectedStatus">
-            <el-option v-for="item in statusList" :key="item" :label="item === 'All' ? 'All' :(item === 0 ? '失败' : '成功')" :value="item"></el-option>
-          </el-select>
-          <span>事件</span>
-          <el-select v-model="selectedEventType">
-            <el-option v-for="item in eventTypeList" :key="item" :label="item === 'All' ? 'All' :(item === 'login' ? '登录' : '抢座')" :value="item"></el-option>
-          </el-select>
-          <span>事件代码</span>
-          <el-select v-model="selectedEventCode">
-            <el-option v-for="item in eventCodeList" :key="item" :label="item" :value="item"></el-option>
-          </el-select>
-          <span>账号</span>
-          <el-select v-model="selectedAccount" filterable>
-            <el-option v-for="item in accountList" :key="item" :label="item" :value="item"></el-option>
-          </el-select>
-          <span>GitHub id</span>
-          <el-select v-model="selectedGithubId" filterable>
-            <el-option v-for="item in githubIdList" :key="item" :label="item" :value="item"></el-option>
-          </el-select>
-          <span>软件版本</span>
-          <el-select v-model="selectedVersion">
-            <el-option v-for="item in versionList" :key="item" :label="item === 'All' ? 'All' : 'v'+item" :value="item"></el-option>
-          </el-select>
-        </el-header>
-        <el-main style="margin: 0">
-          <el-table :data="dataForShow" :border="true" :stripe="true">
-            <el-table-column width="50" prop="id" label="Id"></el-table-column>
-            <el-table-column width="100" prop="mobile" label="设备">
-              <template slot-scope="scope">
-                <i v-if="(scope.row.mobile === null || scope.row.mobile === 0)" class="el-icon-menu" style="color: #409EFF"></i>
-                <i v-else class="el-icon-mobile-phone" style="color: #909399"></i>
-                <span style="margin-left: 5px" :style="{color: (scope.row.mobile === null || scope.row.mobile === 0) ?  '#409EFF': '#909399'}">{{ (scope.row.mobile === null || scope.row.mobile === 0) ? '桌面端' : '移动端' }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column width="100" label="状态">
-              <template slot-scope="scope">
-                <i v-if="scope.row.state === 1" class="el-icon-success" style="color: green"></i>
-                <i v-else class="el-icon-error" style="color: red"></i>
-                <span style="margin-left: 5px">{{ scope.row.state === 0 ? '失败' : '成功' }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column width="90" prop="event" label="事件">
-              <template slot-scope="scope">
-                <i v-if="scope.row.event === 'login'" class="el-icon-phone" style="color: #909399"></i>
-                <i v-else class="el-icon-phone-outline" style="color: #E6A23C"></i>
-                <span style="margin-left: 5px" :style="{color: scope.row.event === 'login' ? '#909399' : '#E6A23C'}">{{ scope.row.event === 'login' ? '登录' : '抢座' }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column width="60" prop="code" label="Code"></el-table-column>
-            <el-table-column width="200" label="时间">
-              <template slot-scope="scope">
-                <i class="el-icon-time"></i>
-                <span style="margin-left: 5px">{{ scope.row.year + '-' + fill0(scope.row.month) + '-' + fill0(scope.row.day) + ' ' + fill0(scope.row.hour) + ':' + fill0(scope.row.min) + ':' + fill0(scope.row.sec) }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="account" label="账号 (加密)" width="250"></el-table-column>
-            <el-table-column prop="githubId" label="Github Id (加密)" width="250"></el-table-column>
-            <el-table-column width="100" label="软件版本">
-              <template slot-scope="scope">
-                <span>{{ 'v' + scope.row.version }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="message" label="消息"></el-table-column>
-          </el-table>
-          <p>共 {{countOfSelected}} 条数据</p>
-        </el-main>
-      </el-container>
+      <span class="copyright">Copyright © since 2018 CS-Tao</span>
     </div>
   </body>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/frappe-charts@1.1.0/dist/frappe-charts.min.iife.js"></script>
-  <script>
-    new Vue({
-      el: '#app',
-      data: {
-        desktopInfo: null,
-        mobileInfo: null,
-        heatmap: null,
-        heatmapAll: null,
-        hourline: null,
-        deviceline: null,
-        tableData: [],
-        selectedAccount: 'All',
-        selectedEventType: 'All',
-        selectedEventCode: 'All',
-        selectedStatus: 'All',
-        selectedVersion: 'All',
-        selectedDevice: 'All',
-        selectedGithubId: 'All',
-        eventTypeList: ['All'],
-        eventCodeList: ['All'],
-        accountList: ['All'],
-        statusList: ['All'],
-        versionList: ['All'],
-        deviceList: ['All'],
-        githubIdList: ['All']
-      },
-      mounted () {
-        axios.get('/yeardata').then((response) => {
-          let now = new Date()
-          this.heatmap = new frappe.Chart("#heatmap", {
-            type: 'heatmap',
-            title: "Successful reservation count in last year",
-            data: {
-              dataPoints: response.data,
-              start: new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
-              end: now
-            },
-            countLabel: '',
-            discreteDomains: 0,
-            // colors: ['#ebedf0', '#c0ddf9', '#73b3f3', '#3886e1', '#17459e'],
-            // Set of five incremental colors,
-            // preferably with a low-saturation color for zero data;
-            // def: ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127']
-          });
-        }).catch((error) => {
-          console.log(error)
-        });
-        axios.get('/yeardataall').then((response) => {
-          let now = new Date()
-          this.heatmapAll = new frappe.Chart("#heatmap-all", {
-            type: 'heatmap',
-            title: "Usages in last year",
-            data: {
-              dataPoints: response.data,
-              start: new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
-              end: now
-            },
-            countLabel: '',
-            discreteDomains: 0,
-            colors: ['#ebedf0', '#fdf436', '#ffc700', '#ff9100', '#06001c'],
-            def: ['#ebedf0', '#fdf436', '#ffc700', '#ff9100', '#06001c']
-          });
-        }).catch((error) => {
-          console.log(error)
-        });
-        axios.get('/dayData').then((response) => {
-          let labels = []
-          let loginData = []
-          let grabData = []
-          for (let i = 0; i < 24; i++) {
-            labels.push(i.toString())
-            loginData.push(0)
-            grabData.push(0)
-          }
-          for (let i = 0; i < response.data.length; i++) {
-            if (response.data[i].code === 4) {
-              loginData[response.data[i].hour] = response.data[i].avg
-            } else if (response.data[i].code === 6) {
-              grabData[response.data[i].hour] = response.data[i].avg
-            }
-          }
-          this.hourline = new frappe.Chart("#hourline", {
-            data: {
-              labels: labels,
-              datasets: [
-                {
-                  name: "Login", chartType: 'line',
-                  values: loginData
-                },
-                {
-                  name: "Grabing", chartType: 'line',
-                  values: grabData
-                }
-              ]
-            },
-            title: "Average usage count in a day",
-            type: 'line',
-            colors: ['light-blue', '#ffa3ef'],
-            tooltipOptions: {
-              formatTooltipX: d => (d + '').toUpperCase(),
-              formatTooltipY: d => d.toFixed(1) + ' times',
-            }
-          });
-        }).catch((error) => {
-          console.log(error)
-        });
-        axios.get('/downloadsInfo').then((response) => {
-          if (response.data.status === 'success') {
-            console.log(response.data)
-            var desktopData = response.data.data[0]
-            this.desktopInfo = {}
-            this.desktopInfo.times = desktopData.totalDownload
-            this.desktopInfo.downloadsGraph = new frappe.Chart("#download-info", {
-              title: `Desktop download information（Total：${desktopData.totalDownload} times）`,
-              data: {
-                labels: desktopData.trendTag,
-                datasets: [
-                  {
-                    name: "Desktop", chartType: 'bar',
-                    values: desktopData.trendData
-                  }
-                ]
-              },
-              height: 300,
-              colors: ['light-blue'],
-              tooltipOptions: {
-                formatTooltipX: v => v,
-                formatTooltipY: d => d + ' times',
-              }
-            });
-            var mobileData = response.data.data[1]
-            this.mobileInfo = {}
-            this.mobileInfo.times = mobileData.totalDownload
-            this.mobileInfo.downloadsGraph = new frappe.Chart("#download-info-m", {
-              title: `Mobile download information（Total：${mobileData.totalDownload} times）`,
-              data: {
-                labels: mobileData.trendTag,
-                datasets: [
-                  {
-                    name: "Mobile", chartType: 'bar',
-                    values: mobileData.trendData
-                  }
-                ]
-              },
-              colors: ['#ffa3ef'],
-              tooltipOptions: {
-                formatTooltipX: v => v,
-                formatTooltipY: d => d + ' times',
-              }
-            });
-          } else {
-            console.error("Can not fetch software downloads data. Error:", response.data.message)
-          }
-        }).catch((error) => {
-          console.error(error)
-        });
-        axios.get('/deviceData').then((response) => {
-          let maxLength = 100
-          if (response.data.length > maxLength) {
-            response.data = response.data.slice(response.data.length - maxLength + 1, response.data.length)
-          }
-          let labels = []
-          let labelsForShow = []
-          let mobileData = []
-          let desktopData = []
-          for (let i = 0; i < response.data.length; i++) {
-            let dateFormated = `${response.data[i].year}-${response.data[i].month}-${response.data[i].day}`
-            if (!labels.includes(dateFormated)) {
-              labels.push(dateFormated)
-              labelsForShow.push(labels.length)
-            }
-          }
-          for (let i = 0; i < labels.length; i++) {
-            let mobileInTheDay = response.data.filter(item => {
-              let dateFormated = `${item.year}-${item.month}-${item.day}`
-              return dateFormated === labels[i] && item.mobile === 1
-            })
-            let desktopInTheDay = response.data.filter(item => {
-              let dateFormated = `${item.year}-${item.month}-${item.day}`
-              return dateFormated === labels[i] && item.mobile !== 1
-            })
-            if (mobileInTheDay && mobileInTheDay.length !== 0) {
-              mobileData.push(mobileInTheDay[0].count)
-            } else {
-              mobileData.push(0)
-            }
-            if (desktopInTheDay && desktopInTheDay.length !== 0) {
-              desktopData.push(desktopInTheDay[0].count)
-            } else {
-              desktopData.push(0)
-            }
-          }
-          this.deviceline = new frappe.Chart( "#deviceline", {
-            data: {
-              labels: labelsForShow,
-              datasets: [
-                {
-                  name: "Desktop", chartType: 'bar',
-                  values: desktopData
-                },
-                {
-                  name: "Mobile", chartType: 'bar',
-                  values: mobileData
-                }
-              ]
-            },
-            title: "Usages by devices in recent days",
-            type: 'bar',
-            colors: ['#7cd6fd', '#28a745'],
-            tooltipOptions: {
-              formatTooltipX: d => labels[parseInt(d) - 1],
-              formatTooltipY: d => d === undefined ? 0 : d + ' times',
-            }
-          });
-        }).catch((error) => {
-          console.log(error)
-        });
-        axios.get('/staticsdata').then((response) => {
-          this.tableData = response.data
-          this.eventTypeList = ['All']
-          this.eventCodeList = ['All']
-          this.accountList = ['All']
-          this.statusList = ['All']
-          this.versionList = ['All']
-          this.githubIdList = ['All']
-          this.tableData.forEach((item) => {
-            if (!this.eventCodeList.includes(item.code)) {
-              this.eventCodeList.push(item.code)
-            }
-            if (!this.eventTypeList.includes(item.event)) {
-              this.eventTypeList.push(item.event)
-            }
-            if (!this.accountList.includes(item.account)) {
-              this.accountList.push(item.account)
-            }
-            if (!this.statusList.includes(item.state)) {
-              this.statusList.push(item.state)
-            }
-            if (!this.versionList.includes(item.version)) {
-              this.versionList.push(item.version)
-            }
-            if (!this.deviceList.includes(item.mobile)) {
-              this.deviceList.push(item.mobile)
-            }
-            if (item.githubId && !this.githubIdList.includes(item.githubId)) {
-              this.githubIdList.push(item.githubId)
-            }
-          })
-        }).catch((error) => {
-          console.log(error)
-        });
-      },
-      computed: {
-        dataForShow () {
-          let tempData = this.tableData.filter((item) => {
-            return (this.selectedAccount === 'All' || item.account === this.selectedAccount) &&
-              ((this.selectedEventType === 'All' || item.event === this.selectedEventType)) &&
-              ((this.selectedEventCode === 'All' || item.code === this.selectedEventCode)) &&
-              ((this.selectedStatus === 'All' || item.state === this.selectedStatus)) &&
-              ((this.selectedVersion === 'All' || item.version === this.selectedVersion)) &&
-              ((this.selectedGithubId === 'All' || item.githubId === this.selectedGithubId)) &&
-              ((this.selectedDevice === 'All' || (item.mobile === this.selectedDevice || item.mobile === null)))
-          })
-          tempData.sort((x, y) => y.id - x.id)
-          return tempData
-        },
-        countOfSelected () {
-          return !this.dataForShow ? 0 : this.dataForShow.length
-        }
-      },
-      methods: {
-        fill0 (value) {
-          var str = value > 9 ? '' : '0'
-          return str + value
-        }
-      }
-    })
-  </script>
+  <script src="/js/vue.me.js"></script>
 </html>

@@ -6,7 +6,7 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
   var connection = mysql.createConnection(mysqlConfig.config);
 
-  var queryString = `SELECT year, month, day, mobile, count(*) as 'count' FROM events where (code=4 || code = 6) group by year, month, day, mobile order by year desc, month desc, day desc limit 28;`;
+  var queryString = `SELECT year, month, day, count(*) as 'count' FROM events group by year, month, day order by year desc, month desc, day desc limit 7;`;
 
   connection.query(queryString, (err, results) => {
       if (err) {

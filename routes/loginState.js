@@ -28,7 +28,7 @@ router.post('/', function(req, res, next) {
 
   connection.query(queryString, function (err, results) {
       if (err) {
-        console.log(err.message)
+        console.error(err.message)
         res.json({
           'status': 'fail',
           'code': '1',

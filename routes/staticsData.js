@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 
   connection.query(queryString, (err, results) => {
       if (err) {
-        console.log(err.message)
+        console.error(err.message)
         res.json([]);
         return;
       } else {
