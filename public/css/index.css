@@ -34,7 +34,7 @@ body {
   background-color: #fff;
   border-bottom: 1px solid #EDF2F7;
   height: 60px;
-  width: 100vw;
+  width: 100%;
   display: flex;
 }
 .header .logo-text {
