@@ -69,7 +69,7 @@ body {
 .main-wrapper {
   display: flex;
   margin: 0 16px;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 .main-wrapper .main {
   width: 1156px;
