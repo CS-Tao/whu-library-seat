@@ -140,7 +140,7 @@
             </el-header>
             <el-main style="margin: 0">
               <el-table :data="dataForShow" :border="true" :stripe="true" height="500">
-                <el-table-column width="60" prop="id" label="Id"></el-table-column>
+                <el-table-column width="80" prop="id" label="Id"></el-table-column>
                 <el-table-column width="90" prop="mobile" label="设备">
                   <template slot-scope="scope">
                     <i v-if="(scope.row.mobile === null || scope.row.mobile === 0)" class="el-icon-menu" style="color: #409EFF"></i>

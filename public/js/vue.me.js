@@ -435,7 +435,7 @@ new Vue({
       }
     },
     openLink (link) {
-      window.open(link, '_blank')
+      window.open(link)
     },
     showMessage (message) {
       this.$message({
