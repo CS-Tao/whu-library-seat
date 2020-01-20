@@ -272,3 +272,26 @@ button:hover {
   text-decoration: underline;
   cursor: pointer;
 }
+
+.list-trigger-btn {
+  margin: 20px 0;
+  display: flex;
+}
+.list-trigger-btn .img-wrapper {
+  margin: auto;
+  border: 1px solid #718096;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  transform: rotate(180deg);
+}
+.list-trigger-btn .img-wrapper.hidden {
+  transform: rotate(0);
+}
+.list-trigger-btn .img-wrapper img {
+  margin: auto;
+  width: 25px;
+  height: 25px;
+}

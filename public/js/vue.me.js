@@ -41,6 +41,7 @@ new Vue({
     graphData: {},
     tableData: [],
     projectList: projectList,
+    showDataList: false,
     selectedAccount: 'All',
     selectedEventType: 'All',
     selectedEventCode: 'All',

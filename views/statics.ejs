@@ -107,7 +107,10 @@
             </div>
           </div>
 
-          <el-container id="data-list" v-show="dataForShow">
+          <div class="list-trigger-btn">
+            <div class="img-wrapper" :class="showDataList?null:'hidden'" @click="showDataList=!showDataList"><img src="/images/go_down.svg"/></div>
+          </div>
+          <el-container id="data-list" v-show="showDataList">
             <el-header id="data-list-header">
               <span>设备</span>
               <el-select v-model="selectedDevice">
