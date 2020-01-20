@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Axios = require('axios').default;
 
-var downloadsInfoCache = null
+var downloadsInfoCache = null;
 
 (() => {
 	Date.prototype.Format = function(fmt) {
