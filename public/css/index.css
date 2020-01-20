@@ -117,6 +117,7 @@ button:hover {
   background-color: #8d99a6;
   border-color: #8d99a6;
   text-decoration: none;
+  cursor: not-allowed;
 }
 .btn-only-one {
   color: #fff;
