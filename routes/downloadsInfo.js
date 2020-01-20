@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Axios = require('axios').default;
 
+var downloadsInfoCache = null
+
 (() => {
 	Date.prototype.Format = function(fmt) {
 		const o = {
@@ -63,22 +65,33 @@ function getDownloadsInfo () {
 }
 
 router.get('/', function(req, res, next) {
-  getDownloadsInfo().then(downloadsInfo => {
+  if (downloadsInfoCache) {
     res.json({
       'status': 'success',
       'code': 0,
       'message': '',
-      'data': downloadsInfo
+      'data': downloadsInfoCache
     });
-  }).catch(error => {
-    console.error(error.message)
-    res.json({
-      'status': 'fail',
-      'code': 1,
-      'message': error.message,
-      'data': null
-    });
-  })
+  } else {
+    getDownloadsInfo().then(downloadsInfo => {
+      downloadsInfoCache = downloadsInfo
+      setTimeout(_ => downloadsInfoCache = null, 3600000)
+      res.json({
+        'status': 'success',
+        'code': 0,
+        'message': '',
+        'data': downloadsInfo
+      });
+    }).catch(error => {
+      console.error(error.message)
+      res.json({
+        'status': 'fail',
+        'code': 1,
+        'message': error.message,
+        'data': null
+      });
+    })
+  }
 })
 
 module.exports = router
