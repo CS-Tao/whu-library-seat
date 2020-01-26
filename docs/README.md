@@ -27,17 +27,13 @@ footer: Copyright © since 2018 CS-Tao
 
 #### 下载安装软件
 
-- 桌面端
+| 桌面端 | 移动端 |
+| :---: | :---:  |
+| [![桌面端下载链接](https://img.shields.io/badge/下载链接-Windows%20/%20MacOS%20/%20Linux-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/blob/master/README.md#最新版本下载) | [![移动端下载链接](https://img.shields.io/badge/下载链接-Android-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat-mobile/blob/master/README.md#最新版本下载) |
 
-  [![桌面端下载链接](https://img.shields.io/badge/下载链接-Windows%20/%20MacOS%20/%20Linux-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/blob/master/README.md#最新版本下载)
-
-- 移动端
-
-  [![移动端下载链接](https://img.shields.io/badge/下载链接-Android-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat-mobile/blob/master/README.md#最新版本下载)
-
-  二维码：
-
-  ![安卓版本二维码](https://home.cs-tao.cc/github-content/contents/github/whu-library-seat/user-validation/last-android-qr.jpg)
+|移动端二维码|
+| :---: |
+| ![安卓版本二维码](https://home.cs-tao.cc/github-content/contents/github/whu-library-seat/user-validation/last-android-qr.jpg)|
 
 #### 用户认证
 
