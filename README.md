@@ -23,13 +23,9 @@
 
 ### 最新版本下载
 
-[![Windows 版本下载链接 v1.9.3](https://img.shields.io/badge/v1.9.3-Windows-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.3/whu-library-seat-setup-1.9.3.exe)
-[![Mac OS 版本下载链接 v1.9.3](https://img.shields.io/badge/v1.9.3-Mac%20OS-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.3/whu-library-seat-1.9.3.dmg)
-[![Linux 版本下载链接 v1.9.3](https://img.shields.io/badge/v1.9.3-Linux-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.3/whu-library-seat-1.9.3-x86_64.AppImage)
-
-### 安装软件
-
-运行安装包即可
+|   平台   | Windows | Mac OS | Linux |
+|   :---   | :---: | :---:  | :---: |
+|下载链接| [![Windows 版本下载链接 v1.9.3](https://img.shields.io/badge/v1.9.3-Windows-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.3/whu-library-seat-setup-1.9.3.exe) | [![Mac OS 版本下载链接 v1.9.3](https://img.shields.io/badge/v1.9.3-Mac%20OS-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.3/whu-library-seat-1.9.3.dmg) | [![Linux 版本下载链接 v1.9.3](https://img.shields.io/badge/v1.9.3-Linux-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.3/whu-library-seat-1.9.3-x86_64.AppImage) |
 
 ### 申请软件使用权
 
