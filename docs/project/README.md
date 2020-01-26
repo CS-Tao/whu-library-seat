@@ -15,7 +15,7 @@ next: false
 
 - master
 
-  主分支，除更新文档外，每次提交都标记一个 tag，对应一个新版本
+  主分支
 
 - develop
 
@@ -45,7 +45,7 @@ next: false
 
 - master
 
-  主分支，每次提交都标记一个 tag，对应一个新版本
+  主分支
 
 - develop
 
@@ -63,7 +63,7 @@ next: false
 
 - master
 
-  主分支，每次提交都标记一个 tag，对应一个新版本
+  主分支
 
 - develop
 
@@ -81,7 +81,7 @@ next: false
 
 - master
 
-  主分支，每次提交都标记一个 tag，对应一个新版本
+  主分支
 
 - develop
 
