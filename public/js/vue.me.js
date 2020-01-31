@@ -58,15 +58,6 @@ new Vue({
     deviceList: ['All'],
     githubIdList: ['All']
   },
-  computed: {
-    title () {
-      if (userCount) {
-        return `图书馆助手 使用统计（共 ${userCount} 位用户）`
-      } else {
-        return '图书馆助手'
-      }
-    }
-  },
   watch: {
     dayOrDevicePanel () {
       this.$nextTick(() => {
@@ -414,6 +405,13 @@ new Vue({
     });
   },
   computed: {
+    title () {
+      if (this.userCount) {
+        return `图书馆助手 使用统计（共 ${this.userCount} 位用户）`
+      } else {
+        return '图书馆助手'
+      }
+    },
     dataForShow () {
       let tempData = this.tableData.filter((item) => {
         return (this.selectedAccount === 'All' || item.account === this.selectedAccount) &&
