@@ -5,13 +5,14 @@
     <link rel="icon" href="/images/app.png" type="image/png">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" href="/css/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   </head>
   <body>
     <div id="app">
       <div class="header">
         <div class="logo-text">
           <img class="logo" src="/images/app.png"/>
-          <span class="text">图书馆助手 使用统计</span>
+          <span class="text">{{`图书馆助手 使用统计（共 ${userCount} 位用户）`}}</span>
         </div>
         <div class="header-links">
           <a class="link" target="_blank" href="https://home.cs-tao.cc/whu-library-seat/">使用文档</a>
@@ -194,7 +195,6 @@
       <span class="copyright">Copyright © since 2018 CS-Tao</span>
     </div>
   </body>
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/frappe-charts@1.1.0/dist/frappe-charts.min.iife.js"></script>

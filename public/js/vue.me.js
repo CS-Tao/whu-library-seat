@@ -34,6 +34,7 @@ const projectList = [
 new Vue({
   el: '#app',
   data: {
+    userCount: null,
     tagPanel: 'desktop-info',
     yearDataPanel: 'year-data-all',
     dayOrDevicePanel: 'day-panel',
@@ -280,6 +281,7 @@ new Vue({
         throw Error('Data is empty.')
       }
       var accounts = response.data
+      this.userCount = accounts.length
       var gradeLabels = [...new Set(accounts.map(a => a.account.substr(0, 4)))].sort((x, y) => parseInt(x) - parseInt(y))
       var collegeLabels = [...new Set(accounts.map(a => a.account.substr(4, 4)))].sort((x, y) => parseInt(x) - parseInt(y))
       var gradeMap = {}
@@ -303,7 +305,7 @@ new Vue({
           ]
         },
         maxSlices: 6,
-        title: `年级分布`,
+        title: `年级分布（共 ${gradeValues.length} 个年级）`,
         type: 'pie'
       });
       this.graphs['college-pie'] = new frappe.Chart("#college-pie", {
@@ -317,7 +319,7 @@ new Vue({
           ]
         },
         maxSlices: 6,
-        title: `院系分布`,
+        title: `院系分布（共 ${collegeValues.length} 个院系）`,
         type: 'pie'
       });
     }).catch((error) => {
