@@ -409,7 +409,7 @@ new Vue({
       if (this.userCount) {
         return `图书馆助手 使用统计（共 ${this.userCount} 位用户）`
       } else {
-        return '图书馆助手'
+        return '图书馆助手 使用统计'
       }
     },
     dataForShow () {
