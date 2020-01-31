@@ -58,6 +58,15 @@ new Vue({
     deviceList: ['All'],
     githubIdList: ['All']
   },
+  computed: {
+    title () {
+      if (userCount) {
+        return `图书馆助手 使用统计（共 ${userCount} 位用户）`
+      } else {
+        return '图书馆助手'
+      }
+    }
+  },
   watch: {
     dayOrDevicePanel () {
       this.$nextTick(() => {
