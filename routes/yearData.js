@@ -17,13 +17,13 @@ router.get('/', function (req, res, next) {
       return;
     } else {
       let data = Object()
+      // 服务器宕机时间补充
+      serverDownTimeList.forEach(serverDownTime => {
+        for (var downDay = serverDownTime.begin; downDay < serverDownTime.end; downDay+=86400000) {
+          data[new Date(downDay).getTime().toString().substring(0, 10)] = 1
+        }
+      })
       results.forEach(element => {
-        // 服务器宕机时间补充
-        serverDownTimeList.forEach(serverDownTime => {
-          for (var downDay = serverDownTime.begin; downDay < serverDownTime.end; downDay+=86400000) {
-            data[new Date(downDay).getTime().toString().substring(0, 10)] = 1
-          }
-        })
         data[new Date(element.year, element.month - 1, element.day).getTime().toString().substring(0, 10)] = element.count
       });
       res.json(data);

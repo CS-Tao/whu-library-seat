@@ -162,7 +162,7 @@ new Vue({
       let now = new Date()
       this.graphs['year-data-all'] = new frappe.Chart("#heatmap-all", {
         type: 'heatmap',
-        title: "使用次数",
+        title: "使用次数（服务器宕机时间默认每天使用次数为 1）",
         data: {
           dataPoints: response.data,
           start: new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
@@ -182,7 +182,7 @@ new Vue({
       let now = new Date()
       this.graphs['year-data'] = new frappe.Chart("#heatmap", {
         type: 'heatmap',
-        title: "成功预约次数",
+        title: "成功预约次数（服务器宕机时间默认每天预约次数为 1）",
         data: {
           dataPoints: response.data,
           start: new Date(now.getFullYear() - 1, now.getMonth(), now.getDate()),
