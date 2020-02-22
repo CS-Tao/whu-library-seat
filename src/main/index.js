@@ -42,6 +42,13 @@ app.on('ready', () => {
 
   const contextMenu = Menu.buildFromTemplate([
     {
+      label: '打开软件',
+      click () {
+        mainWindow.show()
+      }
+    },
+    { type: 'separator' },
+    {
       label: '查看文档',
       click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/') }
     },
@@ -71,7 +78,7 @@ app.on('ready', () => {
       click: (menuItem, browserWindow, event) => {
         store.set('mainWindowPosition', mainWindow.getPosition())
         mainWindow = null
-        if (tray) {
+        if (tray && process.platform !== 'darwin') {
           tray.destroy()
         }
         app.exit()
@@ -80,113 +87,112 @@ app.on('ready', () => {
   ])
   tray.setToolTip('武汉大学图书馆抢座软件')
   tray.setContextMenu(contextMenu)
+
+  const template = [
+    {
+      label: '文件',
+      submenu: [
+        {
+          label: '退出程序',
+          click () {
+            store.set('mainWindowPosition', mainWindow.getPosition())
+            mainWindow = null
+            if (tray) {
+              tray.destroy()
+            }
+            app.exit()
+          }
+        }
+      ]
+    }, {
+      label: '设置',
+      submenu: [
+        {
+          label: '恢复所有设置',
+          click () {
+            store.clear()
+            if (mainWindow) {
+              mainWindow.reload()
+            }
+          }
+        }
+      ]
+    }, {
+      label: '视图',
+      submenu: [
+        { role: 'reload', label: '重新加载' },
+        { role: 'forcereload', label: '强制重新加载' }
+      ]
+    }, {
+      label: '窗口',
+      submenu: [
+        {
+          label: '置顶',
+          type: 'checkbox',
+          checked: store.get('mainWindowOnTop', false),
+          click: (menuItem, browserWindow, event) => {
+            mainWindow.setAlwaysOnTop(menuItem.checked)
+            store.set('mainWindowOnTop', menuItem.checked)
+            if (!mainWindow.isVisible()) {
+              mainWindow.show()
+              mainWindow.setSkipTaskbar(false)
+            }
+          }
+        },
+        { role: 'minimize', label: '最小化' },
+        {
+          label: '退出到托盘',
+          click: (menuItem, browserWindow, event) => {
+            mainWindow.hide()
+            mainWindow.setSkipTaskbar(true)
+          }
+        }
+      ]
+    }, {
+      label: '群聊',
+      submenu: [
+        {
+          label: 'Chat on gitter',
+          click () { require('electron').shell.openExternal('https://gitter.im/whu-library-seat/Lobby') }
+        }
+      ]
+    }, {
+      label: '关于',
+      role: 'about',
+      submenu: [
+        {
+          label: '版本 v' + appVersion,
+          enabled: false
+        },
+        {
+          label: '更新日志',
+          click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases/tag/v' + appVersion) }
+        },
+        {
+          label: '检查更新',
+          click () { mainWindow.webContents.send('check-update-menu-clicked') }
+        },
+        { type: 'separator' },
+        {
+          label: '文档',
+          click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/') }
+        },
+        {
+          label: '项目',
+          click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat') }
+        },
+        { type: 'separator' },
+        {
+          label: '问题反馈',
+          click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/issues/new') }
+        }
+      ]
+    }
+  ]
+
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 })
-
-const template = [
-  {
-    label: '文件',
-    submenu: [
-      {
-        label: '退出程序',
-        click () {
-          store.set('mainWindowPosition', mainWindow.getPosition())
-          mainWindow = null
-          if (tray) {
-            tray.destroy()
-          }
-          app.exit()
-        }
-      }
-    ]
-  }, {
-    label: '设置',
-    submenu: [
-      {
-        label: '恢复所有设置',
-        click () {
-          store.clear()
-          if (mainWindow) {
-            mainWindow.reload()
-          }
-        }
-      }
-    ]
-  }, {
-    label: '视图',
-    submenu: [
-      { role: 'reload', label: '重新加载' },
-      { role: 'forcereload', label: '强制重新加载' }
-    ]
-  }, {
-    label: '窗口',
-    role: 'window',
-    submenu: [
-      {
-        label: '置顶',
-        type: 'checkbox',
-        checked: store.get('mainWindowOnTop', false),
-        click: (menuItem, browserWindow, event) => {
-          mainWindow.setAlwaysOnTop(menuItem.checked)
-          store.set('mainWindowOnTop', menuItem.checked)
-          if (!mainWindow.isVisible()) {
-            mainWindow.show()
-            mainWindow.setSkipTaskbar(false)
-          }
-        }
-      },
-      { role: 'minimize', label: '最小化' },
-      {
-        label: '退出到托盘',
-        click: (menuItem, browserWindow, event) => {
-          mainWindow.hide()
-          mainWindow.setSkipTaskbar(true)
-        }
-      }
-    ]
-  }, {
-    label: '群聊',
-    submenu: [
-      {
-        label: 'Chat on gitter',
-        click () { require('electron').shell.openExternal('https://gitter.im/whu-library-seat/Lobby') }
-      }
-    ]
-  }, {
-    label: '关于',
-    role: 'about',
-    submenu: [
-      {
-        label: '版本 v' + appVersion,
-        enabled: false
-      },
-      {
-        label: '更新日志',
-        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/releases/tag/v' + appVersion) }
-      },
-      {
-        label: '检查更新',
-        click () { mainWindow.webContents.send('check-update-menu-clicked') }
-      },
-      { type: 'separator' },
-      {
-        label: '文档',
-        click () { require('electron').shell.openExternal('https://home.cs-tao.cc/whu-library-seat/') }
-      },
-      {
-        label: '项目',
-        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat') }
-      },
-      { type: 'separator' },
-      {
-        label: '问题反馈',
-        click () { require('electron').shell.openExternal('https://github.com/CS-Tao/whu-library-seat/issues/new') }
-      }
-    ]
-  }
-]
-
-const menu = Menu.buildFromTemplate(template)
-Menu.setApplicationMenu(menu)
 
 function createWindow () {
   /**
@@ -259,7 +265,7 @@ function createWindow () {
   })
 
   mainWindow.on('show', () => {
-    tray.setHighlightMode('always')
+    tray.setHighlightMode('never')
   })
 
   mainWindow.on('hide', () => {
