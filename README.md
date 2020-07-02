@@ -23,9 +23,9 @@
 
 ### 最新版本下载
 
-|   平台   | Windows | Mac OS | Linux |
-|   :---   | :---: | :---:  | :---: |
-|下载链接| [![Windows 版本下载链接 v1.9.4](https://img.shields.io/badge/v1.9.4-Windows-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.4/whu-library-seat-1.9.4.exe) | [![Mac OS 版本下载链接 v1.9.4](https://img.shields.io/badge/v1.9.4-Mac%20OS-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.4/whu-library-seat-1.9.4.dmg) | [![Linux 版本下载链接 v1.9.4](https://img.shields.io/badge/v1.9.4-Linux-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.4/whu-library-seat-1.9.4-x86_64.AppImage) |
+| 平台     |                                                                                           Windows                                                                                           |                                                                                           Mac OS                                                                                            |                                                                                                Linux                                                                                                |
+| :------- | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------: |
+| 下载链接 | [![Windows 版本下载链接 v1.9.5](https://img.shields.io/badge/v1.9.5-Windows-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.5/whu-library-seat-1.9.5.exe) | [![Mac OS 版本下载链接 v1.9.5](https://img.shields.io/badge/v1.9.5-Mac%20OS-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.5/whu-library-seat-1.9.5.dmg) | [![Linux 版本下载链接 v1.9.5](https://img.shields.io/badge/v1.9.5-Linux-limegreen.svg)](https://github.com/CS-Tao/whu-library-seat/releases/download/v1.9.5/whu-library-seat-1.9.5-x86_64.AppImage) |
 
 ### 申请软件使用权
 
@@ -43,7 +43,7 @@
 
 您可以通过以下步骤自行构建本软件，但请您务必注意，本仓库并未提供任何源码`许可证`，您没有权利将源码更改后继续传播，更没有权利将本软件或源码用于商业活动
 
-``` bash
+```bash
 # 安装依赖
 yarn
 
