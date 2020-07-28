@@ -256,8 +256,10 @@ function createWindow () {
       e.preventDefault()
       if (mainWindow) {
         mainWindow.hide()
-        app.dock.hide()
         mainWindow.setSkipTaskbar(true)
+      }
+      if (app.dock) {
+       app.dock.hide()
       }
     }
   })
