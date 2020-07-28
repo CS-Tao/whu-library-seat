@@ -44,6 +44,7 @@ app.on('ready', () => {
     {
       label: '打开软件',
       click () {
+        app.dock.show()
         mainWindow.show()
       }
     },
@@ -256,6 +257,9 @@ function createWindow () {
       if (mainWindow) {
         mainWindow.hide()
         mainWindow.setSkipTaskbar(true)
+      }
+      if (app.dock) {
+       app.dock.hide()
       }
     }
   })
