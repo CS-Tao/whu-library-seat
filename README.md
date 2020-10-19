@@ -5,7 +5,7 @@
 
 # whu-library-seat
 
-> 武汉大学图书馆抢座软件 - 桌面端
+> 武汉大学图书馆助手 - 桌面端
 
 > 移动端：[https://github.com/CS-Tao/whu-library-seat-mobile](https://github.com/CS-Tao/whu-library-seat-mobile)
 
