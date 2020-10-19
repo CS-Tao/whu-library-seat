@@ -150,261 +150,261 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import io from "socket.io-client";
+import { mapGetters } from 'vuex'
+import io from 'socket.io-client'
 
 const workFlowModes = {
-  none: "none",
-  logining: "logining",
-  waitConfirm: "waitConfirm",
-  logined: "logined",
-  staring: "staring",
-};
+  none: 'none',
+  logining: 'logining',
+  waitConfirm: 'waitConfirm',
+  logined: 'logined',
+  staring: 'staring'
+}
 
-const socketBaseUrl = "https://seat.avosapps.us/";
+const socketBaseUrl = 'https://seat-ghauth.cs-tao.cc'
 
 export default {
-  name: "authen",
-  data() {
+  name: 'authen',
+  data () {
     return {
       workMode: workFlowModes.none,
       comfirmDialogVisible: false,
       socket: null,
       socketFailMessage: null,
-      inputToken: null,
-    };
+      inputToken: null
+    }
   },
   computed: {
     ...mapGetters([
-      "userAccount",
-      "userPasswd",
-      "hasToken",
-      "userToken",
-      "announceViewed",
-      "authInfo",
+      'userAccount',
+      'userPasswd',
+      'hasToken',
+      'userToken',
+      'announceViewed',
+      'authInfo'
     ]),
-    ghBtnloading() {
-      return this.workMode !== workFlowModes.none;
+    ghBtnloading () {
+      return this.workMode !== workFlowModes.none
     },
-    ghBtnDisable() {
-      return this.ghBtnloading;
+    ghBtnDisable () {
+      return this.ghBtnloading
     },
-    ghBtnMessage() {
+    ghBtnMessage () {
       switch (this.workMode) {
         case workFlowModes.logining:
-          return "正在连接服务器";
+          return '正在连接服务器'
         case workFlowModes.waitConfirm:
-          return "等待网页端确认";
+          return '等待网页端确认'
         case workFlowModes.logined:
         case workFlowModes.staring:
-          return "检测是否点星";
+          return '检测是否点星'
         default:
-          return "GitHub star 永久授权";
+          return 'GitHub star 永久授权'
       }
     },
-    showManualTokenDialog() {
-      return this.socketFailMessage !== null;
-    },
+    showManualTokenDialog () {
+      return this.socketFailMessage !== null
+    }
   },
-  mounted() {
-    this.workMode = workFlowModes.none;
+  mounted () {
+    this.workMode = workFlowModes.none
   },
-  beforeDestroy() {
-    this.disconnectSocket();
+  beforeDestroy () {
+    this.disconnectSocket()
   },
   methods: {
-    showError(message) {
-      console.trace();
+    showError (message) {
+      console.trace()
       this.$message({
-        type: "error",
-        duration: "2000",
+        type: 'error',
+        duration: '2000',
         showClose: true,
-        message: message,
-      });
+        message: message
+      })
     },
-    useListBtnClicked() {
+    useListBtnClicked () {
       if (this.authInfo.useListForAuth) {
-        this.$store.commit("TRIGGER_AUTH_FORM", false);
-        return;
+        this.$store.commit('TRIGGER_AUTH_FORM', false)
+        return
       }
-      this.workMode = workFlowModes.none;
-      this.$store.commit("USE_LIST_FOR_AUTH");
-      this.$store.commit("TRIGGER_AUTH_FORM", false);
+      this.workMode = workFlowModes.none
+      this.$store.commit('USE_LIST_FOR_AUTH')
+      this.$store.commit('TRIGGER_AUTH_FORM', false)
     },
-    ghAuthBtnClicked() {
+    ghAuthBtnClicked () {
       if (this.ghBtnDisable) {
-        return;
+        return
       }
       if (this.authInfo.haveStaredRepo) {
-        this.$store.commit("TRIGGER_AUTH_FORM", false);
-        return;
+        this.$store.commit('TRIGGER_AUTH_FORM', false)
+        return
       }
-      this.socketFailMessage = null;
-      this.loginGitHub();
+      this.socketFailMessage = null
+      this.loginGitHub()
     },
-    connectSocket() {
-      this.disconnectSocket();
+    connectSocket () {
+      this.disconnectSocket()
       this.socket = io.connect(socketBaseUrl, {
         reconnection: false,
         transportOptions: {
           polling: {
             extraHeaders: {
-              "x-clientid": "whu-library-seat",
-            },
-          },
-        },
-      });
-      this.socket.on("connect", () => {
-        this.socketFailMessage = null;
-        this.workMode = workFlowModes.waitConfirm;
-      });
-      this.socket.on("connect_error", (error) => {
-        this.socketFailMessage = "无法连接服务器：" + error;
-        this.disconnectSocket();
-        this.workMode = workFlowModes.none;
-      });
-      this.socket.on("error", (error) => {
-        this.socketFailMessage = "无法连接服务器：" + error;
-        this.disconnectSocket();
-        this.workMode = workFlowModes.none;
-      });
-      this.socket.on("disconnect", (reason) => {
-        if (reason !== "io client disconnect") {
-          this.socketFailMessage = "已断开和服务器的连接";
-          this.disconnectSocket();
-          this.workMode = workFlowModes.none;
+              'x-clientid': 'whu-library-seat'
+            }
+          }
         }
-      });
-      this.socket.on("socketId", (socketId) => {
+      })
+      this.socket.on('connect', () => {
+        this.socketFailMessage = null
+        this.workMode = workFlowModes.waitConfirm
+      })
+      this.socket.on('connect_error', (error) => {
+        this.socketFailMessage = '无法连接服务器：' + error
+        this.disconnectSocket()
+        this.workMode = workFlowModes.none
+      })
+      this.socket.on('error', (error) => {
+        this.socketFailMessage = '无法连接服务器：' + error
+        this.disconnectSocket()
+        this.workMode = workFlowModes.none
+      })
+      this.socket.on('disconnect', (reason) => {
+        if (reason !== 'io client disconnect') {
+          this.socketFailMessage = '已断开和服务器的连接'
+          this.disconnectSocket()
+          this.workMode = workFlowModes.none
+        }
+      })
+      this.socket.on('socketId', (socketId) => {
         this.$openLink(
           `${socketBaseUrl}/comfirm?socketid=${socketId}&device=desktop`
-        );
-        this.workMode = workFlowModes.waitConfirm;
-      });
-      this.socket.on("token", (token) => {
-        this.disconnectSocket();
-        this.loginGitHubCallback(token);
-      });
-      this.socket.on("cancel", (socketId) => {
+        )
+        this.workMode = workFlowModes.waitConfirm
+      })
+      this.socket.on('token', (token) => {
+        this.disconnectSocket()
+        this.loginGitHubCallback(token)
+      })
+      this.socket.on('cancel', (socketId) => {
         this.$message({
-          type: "info",
-          duration: "0",
+          type: 'info',
+          duration: '0',
           showClose: true,
-          message: "已取消授权",
-        });
-        this.cancelAuthen();
-        this.disconnectSocket();
-      });
+          message: '已取消授权'
+        })
+        this.cancelAuthen()
+        this.disconnectSocket()
+      })
     },
-    disconnectSocket() {
+    disconnectSocket () {
       if (this.socket !== null && this.socket.connected) {
-        this.socket.disconnect(true);
+        this.socket.disconnect(true)
       }
     },
-    cancelAuthen() {
-      this.comfirmDialogVisible = false;
-      this.socketFailMessage = null;
-      this.workMode = workFlowModes.none;
-      this.$store.commit("RESTORE_AUTH");
+    cancelAuthen () {
+      this.comfirmDialogVisible = false
+      this.socketFailMessage = null
+      this.workMode = workFlowModes.none
+      this.$store.commit('RESTORE_AUTH')
     },
-    loginGitHub() {
-      this.workMode = workFlowModes.logining;
+    loginGitHub () {
+      this.workMode = workFlowModes.logining
       this.$nextTick(() => {
-        this.connectSocket();
-      });
+        this.connectSocket()
+      })
     },
-    loginGitHubCallback(token) {
-      this.workMode = workFlowModes.logined;
-      this.socketFailMessage = null;
+    loginGitHubCallback (token) {
+      this.workMode = workFlowModes.logined
+      this.socketFailMessage = null
       this.$store
-        .dispatch("saveAuthToken", token)
+        .dispatch('saveAuthToken', token)
         .then((token) => {
-          return this.checkIfStared(token);
+          return this.checkIfStared(token)
         })
         .then(([token, haveStared]) => {
           if (haveStared) {
-            this.workMode = workFlowModes.none;
-            this.$store.commit("TRIGGER_STAERD", true);
-            this.$store.commit("TRIGGER_AUTH_FORM", false);
+            this.workMode = workFlowModes.none
+            this.$store.commit('TRIGGER_STAERD', true)
+            this.$store.commit('TRIGGER_AUTH_FORM', false)
             this.$message({
-              type: "success",
-              duration: "3000",
+              type: 'success',
+              duration: '3000',
               showClose: true,
-              message: `GitHub 授权成功`,
-            });
+              message: `GitHub 授权成功`
+            })
           } else {
-            this.comfirmDialogVisible = true;
+            this.comfirmDialogVisible = true
           }
         })
         .catch((error) => {
-          this.cancelAuthen();
-          this.workMode = workFlowModes.none;
-          this.showError(error.message);
-        });
+          this.cancelAuthen()
+          this.workMode = workFlowModes.none
+          this.showError(error.message)
+        })
     },
-    checkIfStared(token) {
-      this.workMode = workFlowModes.staring;
-      return this.$store.dispatch("checkIfStared", { token, cursor: null });
+    checkIfStared (token) {
+      this.workMode = workFlowModes.staring
+      return this.$store.dispatch('checkIfStared', { token, cursor: null })
     },
-    onComfirmStarDialogYes() {
-      this.comfirmDialogVisible = false;
+    onComfirmStarDialogYes () {
+      this.comfirmDialogVisible = false
       if (this.authInfo.githubAuthToken) {
         this.checkIfStared(this.authInfo.githubAuthToken)
           .then(([token, haveStared]) => {
             if (haveStared) {
-              this.workMode = workFlowModes.none;
-              this.$store.commit("TRIGGER_STAERD", true);
-              this.$store.commit("TRIGGER_AUTH_FORM", false);
+              this.workMode = workFlowModes.none
+              this.$store.commit('TRIGGER_STAERD', true)
+              this.$store.commit('TRIGGER_AUTH_FORM', false)
               this.$message({
-                type: "success",
-                duration: "3000",
+                type: 'success',
+                duration: '3000',
                 showClose: true,
-                message: `GitHub 授权成功`,
-              });
+                message: `GitHub 授权成功`
+              })
             } else {
-              this.comfirmDialogVisible = true;
+              this.comfirmDialogVisible = true
             }
           })
           .catch((error) => {
-            this.cancelAuthen();
-            this.workMode = workFlowModes.none;
-            this.showError(error.message);
-          });
+            this.cancelAuthen()
+            this.workMode = workFlowModes.none
+            this.showError(error.message)
+          })
       } else {
         this.$message({
-          type: "warning",
-          duration: "3000",
+          type: 'warning',
+          duration: '3000',
           showClose: true,
-          message: "无 GitHub 令牌，请点击取消按钮，然后重新授权",
-        });
+          message: '无 GitHub 令牌，请点击取消按钮，然后重新授权'
+        })
       }
     },
-    onComfirmStarDialogNo() {
+    onComfirmStarDialogNo () {
       this.$message({
-        type: "warning",
-        duration: "2000",
+        type: 'warning',
+        duration: '2000',
         showClose: true,
-        message: "取消授权",
-      });
-      this.cancelAuthen();
+        message: '取消授权'
+      })
+      this.cancelAuthen()
     },
-    onComfirmInputTokenDialogYes() {
+    onComfirmInputTokenDialogYes () {
       if (this.inputToken && this.inputToken.length === 40) {
-        this.loginGitHubCallback(this.inputToken);
+        this.loginGitHubCallback(this.inputToken)
       } else {
         this.$message({
-          type: "warning",
-          duration: "2000",
+          type: 'warning',
+          duration: '2000',
           showClose: true,
-          message: "请正确输入 Token",
-        });
+          message: '请正确输入 Token'
+        })
       }
     },
-    onComfirmInputTokenDialogNo() {
-      this.cancelAuthen();
-    },
-  },
-};
+    onComfirmInputTokenDialogNo () {
+      this.cancelAuthen()
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
