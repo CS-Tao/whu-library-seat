@@ -2,7 +2,7 @@
   "name": "whu-library-seat",
   "version": "1.9.5",
   "author": "CS-Tao <whucstao@qq.com>",
-  "description": "武汉大学图书馆抢座软件",
+  "description": "图书馆助手",
   "license": null,
   "main": "./dist/electron/main.js",
   "scripts": {

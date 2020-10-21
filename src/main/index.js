@@ -86,7 +86,7 @@ app.on('ready', () => {
       }
     }
   ])
-  tray.setToolTip('武汉大学图书馆抢座软件')
+  tray.setToolTip('图书馆助手')
   tray.setContextMenu(contextMenu)
 
   const template = [
@@ -208,7 +208,7 @@ function createWindow () {
     maximizable: false,
     darkTheme: true,
     webPreferences: { webSecurity: false },
-    title: '武汉大学图书馆抢座软件',
+    title: '图书馆助手',
     backgroundColor: '#1C1E23'
   }
 
@@ -259,7 +259,7 @@ function createWindow () {
         mainWindow.setSkipTaskbar(true)
       }
       if (app.dock) {
-       app.dock.hide()
+        app.dock.hide()
       }
     }
   })
