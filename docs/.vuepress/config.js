@@ -4,7 +4,7 @@ module.exports = {
   locales: {
     '/': {
       lang: 'zh-CN',
-      title: '图书馆抢座软件',
+      title: '图书馆助手',
       description: 'Wuhan university'
     }
   },
