@@ -27,9 +27,9 @@ export default {
     if (!cursor) {
       query = `query {
         viewer { id login }
-        repository(owner:"CS-Tao", name:"${repoName}", orderBy: {field: STARRED_AT, direction: DESC}) {
+        repository(owner:"CS-Tao", name:"${repoName}") {
           id
-          stargazers (first: ${firstUserCount}) {
+          stargazers (first: ${firstUserCount}, orderBy: {field: STARRED_AT, direction: DESC}) {
             edges {
               cursor
               starredAt
@@ -44,9 +44,9 @@ export default {
     } else {
       query = `query {
         viewer { id login }
-        repository(owner:"CS-Tao", name:"${repoName}", orderBy: {field: STARRED_AT, direction: DESC}) {
+        repository(owner:"CS-Tao", name:"${repoName}") {
           id
-          stargazers (first: ${maxUserCount}, after: "${cursor}") {
+          stargazers (first: ${maxUserCount}, orderBy: {field: STARRED_AT, direction: DESC}, after: "${cursor}") {
             edges {
               cursor
               starredAt
