@@ -2,8 +2,8 @@
 	<div class="footer" :class="{'footer-unlogin': !hasToken}">
     <div class="warper flex-col" @click.stop="openMainBody()">
       <span style="cursor: default!important;">&nbsp;&nbsp;</span>
-      <el-button v-if="updateAvailable" type="primary" class="el-icon-download update-button" @click.stop="downloadUpdate()">&nbsp;最新版本(v{{newVersion}})</el-button>
-      <el-button v-if="updateDownloaded" type="primary" class="el-icon-refresh update-button" @click.stop="quitAndUpdate()">&nbsp;重启更新</el-button>
+      <el-button v-if="updateAvailable" type="primary" class="el-icon-download update-button" @click.stop="updateAssetsLink ? openUpdateLink() : downloadUpdate()">&nbsp;最新版本(v{{newVersion}})</el-button>
+      <el-button v-else-if="updateDownloaded" type="primary" class="el-icon-refresh update-button" @click.stop="quitAndUpdate()">&nbsp;重启更新</el-button>
       <div v-if="updateDownloadInfo" class="progress-wraper" @click.stop="showProgressInfo()">
         <el-progress :text-inside="true" :stroke-width="26" color="rgba(0, 204, 0, 0.5)" :percentage="parseFloat(updateDownloadInfo.percent.toFixed(1))"></el-progress>
         <span>&nbsp;&nbsp;{{`${this.getByteFormat(this.updateDownloadInfo.bytesPerSecond)}/s`}}</span>
@@ -62,6 +62,8 @@ import { mapGetters } from 'vuex'
 import { ipcRenderer, remote } from 'electron'
 import androidQrCode from '@/assets/last-android.png'
 
+const updateUrl = 'https://github.com/CS-Tao/whu-library-seat#最新版本下载'
+
 export default {
   props: {
     bodyMode: {
@@ -77,7 +79,8 @@ export default {
       updateDownloadInfo: null,
       // 更新下载完毕
       updateDownloaded: false,
-      notifyUpdateInfo: false
+      notifyUpdateInfo: false,
+      updateAssetsLink: null
     }
   },
   computed: {
@@ -111,6 +114,9 @@ export default {
   mounted () {
     // 有可用更新
     ipcRenderer.on('update-available', (event, args) => {
+      if (args.showOpenLink) {
+        this.updateAssetsLink = updateUrl
+      }
       this.newVersion = args.updateInfo.version
       if (this.notifyUpdateInfo) {
         if (this.updateAvailable) {
@@ -140,11 +146,13 @@ export default {
     ipcRenderer.on('update-downloaded', () => {
       this.updateDownloaded = true
       this.updateDownloadInfo = null
+      this.updateAssetsLink = null
       ipcRenderer.send('show-window-notify', '更新下载完毕', '请重启更新')
     })
     // 检查更新出现错误
     ipcRenderer.on('check-update-error', (event, error) => {
       this.updateDownloadInfo = null
+      this.updateAssetsLink = null
       if (this.notifyUpdateInfo) {
         this.$message({
           type: 'info',
@@ -160,6 +168,7 @@ export default {
       this.notifyUpdateInfo = true
       this.newVersion = null
       this.updateDownloadInfo = null
+      this.updateAssetsLink = null
       this.updateDownloaded = false
       this.$message({
         type: 'info',
@@ -244,6 +253,9 @@ export default {
       this.updateDownloaded = false
       ipcRenderer.send('quit-and-install')
       ipcRenderer.send('exit-app', 0)
+    },
+    openUpdateLink () {
+      this.$openLink(this.updateAssetsLink)
     },
     showProgressInfo () {
       this.$message({

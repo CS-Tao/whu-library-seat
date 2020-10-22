@@ -6,11 +6,13 @@ import path from 'path'
 import Store from 'electron-store'
 import notifier from 'node-notifier'
 
+const isDev = process.env.NODE_ENV !== 'production'
+
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
  */
-if (process.env.NODE_ENV !== 'development') {
+if (!isDev) {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
@@ -19,7 +21,7 @@ const store = new Store({
 })
 
 let mainWindow
-const winURL = process.env.NODE_ENV === 'development'
+const winURL = isDev
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
@@ -309,7 +311,7 @@ ipcMain.on('show-window-notify', (event, title, message) => {
       title: title,
       subTitle: title,
       message: message,
-      icon: process.env.NODE_ENV !== 'production'
+      icon: isDev
         ? path.join(__static, 'toast.png')
         : (process.platform === 'darwin'
           ? './Contents/Resources/static/toast.png'
@@ -331,11 +333,15 @@ autoUpdater.autoDownload = false
 autoUpdater.autoInstallOnAppQuit = true
 autoUpdater.allowDowngrade = true
 
+if (isDev) {
+  autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml')
+}
+
 ipcMain.on('check-updates', (event, arg) => {
   // 检查更新
-  if (process.env.NODE_ENV === 'production') {
+  if (!isDev || process.env.TEST_PUBLISH) {
     autoUpdater.checkForUpdates().then((info) => {
-      mainWindow.webContents.send('update-available', info)
+      mainWindow.webContents.send('update-available', {...info, showOpenLink: process.platform === 'darwin'})
     }).catch((error) => {
       mainWindow.webContents.send('check-update-error', error)
     })
@@ -344,12 +350,12 @@ ipcMain.on('check-updates', (event, arg) => {
 
 ipcMain.on('download-update', (event, arg) => {
   // 下载更新
-  if (process.env.NODE_ENV === 'production') autoUpdater.downloadUpdate()
+  if (!isDev || process.env.TEST_PUBLISH) autoUpdater.downloadUpdate()
 })
 
 ipcMain.on('quit-and-install', (event, arg) => {
   // 退出安装
-  if (process.env.NODE_ENV === 'production') {
+  if (!isDev || process.env.TEST_PUBLISH) {
     if (tray) {
       tray.destroy()
     }
