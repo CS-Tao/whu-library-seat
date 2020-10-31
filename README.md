@@ -11,11 +11,13 @@
 
 ## 📗 使用说明
 
-[![文档地址](https://img.shields.io/badge/文档地址-vuepress-blightgreen.svg)](https://home.cs-tao.cc/whu-library-seat/)
+|文档地址|
+| :---: |
+| [![文档地址](https://img.shields.io/badge/文档地址-vuepress-blightgreen.svg)](https://home.cs-tao.cc/whu-library-seat/)|
 
-### 软件演示
-
-![软件演示](https://home.cs-tao.cc/github-content/contents/github/whu-library-seat/full.gif)
+|软件演示|
+| :---: |
+| ![软件演示](https://home.cs-tao.cc/github-content/contents/github/whu-library-seat/full.gif)|
 
 ## 🚀 下载和安装
 
