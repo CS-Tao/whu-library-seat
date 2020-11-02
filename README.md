@@ -37,7 +37,7 @@ v1.8.0 已移除本功能，改为 GitHub Star 认证，具体请查看 [GitHub 
 
 ### 软件更新
 
-软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮，您可以点击菜单中的 `关于` -> `更新日志` 查看新版本的特性
+软件启动的时候会自动访问[GitHub Release](https://github.com/CS-Tao/whu-library-seat/releases/latest)检查更新，如果有更新，在软件的左下角会出现更新的按钮
 
 ![图片加载失败](https://home.cs-tao.cc/github-content/contents/github/whu-library-seat/update.png)
 
