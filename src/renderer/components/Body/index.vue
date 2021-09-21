@@ -316,15 +316,16 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { ipcRenderer } from 'electron'
+import libraryRestApi from '@/api/library.api'
+import usageApi from '@/api/usage.api'
+import md5 from 'js-md5'
 import monitorMixin from './Monitor/mixin'
 import announceForm from './Announce'
 import userForm from './User'
 import historyForm from './History'
 import timerForm from './Timer'
 import MonitorForm from './Monitor'
-import libraryRestApi from '@/api/library.api'
-import usageApi from '@/api/usage.api'
-import { ipcRenderer } from 'electron'
 
 const emptyMessage = '数据加载失败'
 const maxGrabCount = 8
@@ -407,7 +408,7 @@ export default {
     },
     isVip () {
       return (
-        this.userAccount === 2015302590039 || this.userAccount === 2017302590175
+        md5(String(this.userAccount)) === '463e0b7fd608b7b454a9b7df907a0982' || md5(String(this.userAccount)) === '2851c7e90d2a20b8076b93332c9b7537'
       )
     },
     seatSelectNoDataMessage () {

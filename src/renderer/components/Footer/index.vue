@@ -60,6 +60,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { ipcRenderer, remote } from 'electron'
+import md5 from 'js-md5'
 import androidQrCode from '@/assets/last-android.png'
 
 const updateUrl = 'https://github.com/CS-Tao/whu-library-seat#最新版本下载'
@@ -101,10 +102,11 @@ export default {
       return this.bodyMode === 'historyForm'
     },
     isLover () {
-      return this.userAccount === 2017302590175
+      console.log('isLover', md5(String(this.userAccount)))
+      return md5(String(this.userAccount)) === '2851c7e90d2a20b8076b93332c9b7537'
     },
     isDeveloper () {
-      return this.userAccount === 2015302590039
+      return md5(String(this.userAccount)) === '463e0b7fd608b7b454a9b7df907a0982'
     },
     updateAvailable () {
       var appVersion = remote.app.getVersion()

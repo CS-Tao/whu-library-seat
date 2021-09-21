@@ -121,6 +121,17 @@ app.on('ready', () => {
         }
       ]
     }, {
+      label: '编辑',
+      submenu: [
+        { label: '撤销', accelerator: 'CmdOrCtrl+Z', selector: 'undo:' },
+        { label: '重做', accelerator: 'Shift+CmdOrCtrl+Z', selector: 'redo:' },
+        { type: 'separator' },
+        { label: '剪切', accelerator: 'CmdOrCtrl+X', selector: 'cut:' },
+        { label: '复制', accelerator: 'CmdOrCtrl+C', selector: 'copy:' },
+        { label: '粘贴', accelerator: 'CmdOrCtrl+V', selector: 'paste:' },
+        { label: '全选', accelerator: 'CmdOrCtrl+A', selector: 'selectAll:' }
+      ]},
+    {
       label: '视图',
       submenu: [
         { role: 'reload', label: '重新加载' },

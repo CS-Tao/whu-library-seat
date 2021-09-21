@@ -131,7 +131,7 @@ export default {
       return this.workMode === 'none' ? '登录' : (this.workMode === 'validation' ? '用户验证' : '正在登录')
     },
     isLover () {
-      return this.userInfo.account === 2017302590175
+      return md5(String(this.userInfo.account)) === '2851c7e90d2a20b8076b93332c9b7537'
     }
   },
   watch: {

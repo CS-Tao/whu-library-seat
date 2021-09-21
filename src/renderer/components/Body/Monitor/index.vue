@@ -87,7 +87,7 @@ import { monitorStatuses } from './mixin'
 
 const sparkLength = 300
 
-const defaultInterval = 1500
+const defaultInterval = 3000
 
 export default {
   name: 'monitor-form',

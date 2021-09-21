@@ -472,6 +472,7 @@ export default {
       width: 2px;
       height: 26px;
       background-color: $text-color-middlelight;
+      opacity: .3;
     }
     .text {
       vertical-align: middle;
