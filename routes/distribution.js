@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
         res.json([]);
         return;
       } else {
-        res.json(results);
+        res.json(results.filter(each => each.account.length > 8).map(({ account }) => ({account: account.slice(0, 8) + '*****'})));
       }
   });
   connection.end();
