@@ -1,7 +1,7 @@
 {
 	"status": "success",
 	"code": 0,
-	"locked": false,
-	"message": "",
-	"time": ""
+	"locked": true,
+	"message": "图书馆新增了人机验证，导致本应用无法继续使用",
+	"time": "最近没有精力持续维护，暂时关闭应用"
 }
