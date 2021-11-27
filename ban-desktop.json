@@ -1,7 +1,7 @@
 {
 	"status": "success",
 	"code": 0,
-	"locked": false,
-	"message": "",
-	"time": ""
+	"locked": true,
+	"message": "图书馆后台新增了人机验证，导致本应用无法继续使用，最近没有精力持续维护，暂时关闭应用，请见谅",
+	"time": "2021 年 12 月 31 日"
 }
